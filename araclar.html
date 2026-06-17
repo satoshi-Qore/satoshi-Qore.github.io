@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" class="lang-en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tools — satoshi-Qore</title>
+<meta name="description" content="Open source tools by satoshi-Qore for QoreChain node operators: RPC monitoring, observability stack, incident runbooks.">
+<meta name="theme-color" content="#0d1117">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --bg: #0d1117; --surface: #161b22; --surface-2: #1c2128; --border: #21262d; --border-hi: #30363d; --text: #c9d1d9; --muted: #8b949e; --heading: #f0f6fc; --green: #3fb950; --blue: #58a6ff; --purple: #bc8cff; }
+html { scroll-behavior: smooth; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+.lang-en .tr { display: none !important; }
+.lang-tr .en { display: none !important; }
+nav { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+.nav-wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 56px; gap: 16px; }
+.nav-brand { font-weight: 700; font-size: 0.95rem; color: var(--heading); text-decoration: none; letter-spacing: -0.02em; flex-shrink: 0; }
+.nav-brand em { color: var(--green); font-style: normal; }
+.nav-menu { display: flex; gap: 2px; list-style: none; flex: 1; }
+.nav-menu a { color: var(--muted); text-decoration: none; font-size: 0.84rem; padding: 6px 12px; border-radius: 6px; transition: color .15s, background .15s; }
+.nav-menu a:hover, .nav-menu a.active { color: var(--heading); background: var(--surface); }
+.lang-switch { display: flex; border: 1px solid var(--border-hi); border-radius: 7px; overflow: hidden; flex-shrink: 0; }
+.lang-btn { background: transparent; border: none; color: var(--muted); font-size: 0.75rem; font-weight: 700; padding: 5px 10px; cursor: pointer; letter-spacing: 0.05em; }
+.lang-btn.active { background: var(--surface-2); color: var(--heading); }
+main { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+.page-header { padding: 64px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 56px; }
+.page-tag { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+.page-header h1 { font-size: clamp(1.9rem, 4vw, 2.8rem); font-weight: 800; color: var(--heading); letter-spacing: -0.035em; margin-bottom: 12px; }
+.page-header p { color: var(--muted); font-size: 0.93rem; max-width: 520px; line-height: 1.78; }
+.category { margin-bottom: 56px; }
+.category-label { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.category-label h2 { font-size: 1rem; font-weight: 700; color: var(--heading); }
+.category-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.tool-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px 26px; margin-bottom: 12px; }
+.tool-card-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 12px; }
+.tool-card-icon { font-size: 1.4rem; flex-shrink: 0; }
+.tool-card-title { font-size: 0.95rem; font-weight: 700; color: var(--heading); margin-bottom: 2px; }
+.tool-card-sub { font-size: 0.78rem; color: var(--muted); font-family: monospace; }
+.tool-card-body { font-size: 0.875rem; color: var(--muted); line-height: 1.75; }
+.tool-card-body strong { color: var(--text); font-weight: 600; }
+.tool-card-footer { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.tag { font-size: 0.71rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+.t-green { background: #0d1e12; color: #4cd964; border: 1px solid rgba(76,217,100,.25); }
+.t-blue { background: #0d1526; color: #64b5f6; border: 1px solid rgba(100,181,246,.25); }
+.t-purple { background: #16102a; color: #ce93d8; border: 1px solid rgba(206,147,216,.25); }
+.usage-block { background: #0d1117; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-top: 14px; font-family: monospace; font-size: 0.8rem; color: #85e89d; overflow-x: auto; }
+.usage-comment { color: var(--muted); }
+footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; color: var(--muted); font-size: 0.78rem; }
+footer a { color: var(--blue); text-decoration: none; }
+@media (max-width: 480px) { .nav-menu { display: none; } }
+</style>
+</head>
+<body>
+<nav><div class="nav-wrap">
+  <a class="nav-brand" href="/"><em>satoshi</em>-Qore</a>
+  <ul class="nav-menu">
+    <li><a href="/"><span class="en">Home</span><span class="tr">Ana Sayfa</span></a></li>
+    <li><a href="/projeler.html"><span class="en">Projects</span><span class="tr">Projeler</span></a></li>
+    <li><a href="/araclar.html" class="active"><span class="en">Tools</span><span class="tr">Araçlar</span></a></li>
+    <li><a href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener"><span class="en">Writing</span><span class="tr">Yazılar</span></a></li>
+  </ul>
+  <div class="lang-switch">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-lang="tr" onclick="setLang('tr')">TR</button>
+  </div>
+</div></nav>
+<main>
+  <div class="page-header">
+    <div class="page-tag"><span class="en">Tools</span><span class="tr">Araçlar</span></div>
+    <h1><span class="en">What's inside the repos</span><span class="tr">Depolarda ne var</span></h1>
+    <p class="en">A closer look at the tools in <a href="/projeler.html" style="color:var(--blue)">qorechain-tools</a> and <a href="/projeler.html" style="color:var(--blue)">qorechain-guides</a>.</p>
+    <p class="tr"><a href="/projeler.html" style="color:var(--blue)">qorechain-tools</a> ve <a href="/projeler.html" style="color:var(--blue)">qorechain-guides</a> depolarındaki araçların yakından incelenmesi.</p>
+  </div>
+  <div class="category">
+    <div class="category-label"><h2><span class="en">Monitoring &amp; Observability</span><span class="tr">İzleme ve Gözlemlenebilirlik</span></h2></div>
+    <div class="tool-card">
+      <div class="tool-card-header"><span class="tool-card-icon">📡</span><div><div class="tool-card-title">RPC Health Monitor</div><div class="tool-card-sub">scripts/rpc_health_monitor.py</div></div></div>
+      <div class="tool-card-body en">A <strong>Python CLI tool</strong> that reads endpoints from a JSON config, performs health checks, measures latency, and outputs a <strong>Markdown report</strong>. Zero external dependencies.</div>
+      <div class="tool-card-body tr">JSON yapılandırma dosyasından uç noktaları okuyan, sağlık kontrolü yapan, gecikmeyi ölçen ve <strong>Markdown raporu</strong> üretirn <strong>Python CLI aracı</strong>. Sıfır dış bağımlılık.</div>
+      <div class="usage-block"><span class="usage-comment en"># Copy the example config and fill in your endpoints</span><span class="usage-comment tr"># Örnek yapılandırmayı kopyala</span><br>cp examples/endpoints.example.json endpoints.local.json<br>python scripts/rpc_health_monitor.py endpoints.local.json</div>
+      <div class="tool-card-footer"><span class="tag t-green">Python</span><span class="tag t-blue">stdlib only</span><span class="tag t-blue">Markdown output</span></div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-card-header"><span class="tool-card-icon">📊</span><div><div class="tool-card-title">Prometheus + Grafana Stack</div><div class="tool-card-sub">monitoring/docker-compose.yml</div></div></div>
+      <div class="tool-card-body en">Ready-to-run <strong>Docker Compose</strong> setup: Prometheus on 9090, Grafana on 3000, both localhost-bound. Includes example Prometheus config and alert rules for high CPU, low disk, high memory, node-down.</div>
+      <div class="tool-card-body tr">Çalıştırmaya hazır <strong>Docker Compose</strong> kurulumu: Prometheus 9090, Grafana 3000, her ikisi de localhost'a bağlı. Örnek Prometheus yapılandırması ve yüksek CPU, düşük disk, yüksek bellek, node-down için alarm kuralları dahil.</div>
+      <div class="usage-block">cd monitoring<br>cp prometheus/prometheus.example.yml prometheus/prometheus.yml<br><span class="usage-comment en"># Replace YOUR_NODE_IP in prometheus.yml</span><span class="usage-comment tr"># prometheus.yml içinde YOUR_NODE_IP'yi değiştir</span><br>docker compose up -d</div>
+      <div class="tool-card-footer"><span class="tag t-green">Docker Compose</span><span class="tag t-blue">Prometheus</span><span class="tag t-blue">Grafana</span><span class="tag t-purple">Alerting</span></div>
+    </div>
+  </div>
+  <div class="category">
+    <div class="category-label"><h2><span class="en">Incident Response</span><span class="tr">Olay Müdahalesi</span></h2></div>
+    <div class="tool-card">
+      <div class="tool-card-header"><span class="tool-card-icon">🚨</span><div><div class="tool-card-title"><span class="en">Node-Down Runbook</span><span class="tr">Node-Down Runbook'u</span></div><div class="tool-card-sub">docs/incidents/node-down.md</div></div></div>
+      <div class="tool-card-body en">Severity: <strong>Critical</strong>. SSH checks, systemctl inspection, table of failure causes and remediation steps. Written to be read under pressure.</div>
+      <div class="tool-card-body tr">Önem: <strong>Kritik</strong>. SSH kontrolleri, systemctl incelemesi, hata nedenleri ve düzeltme adımları tablosu. Baskı altında okunacak şekilde yazılmıştır.</div>
+      <div class="tool-card-footer"><span class="tag t-purple">Severity: Critical</span><span class="tag t-blue">SSH</span><span class="tag t-blue">systemctl</span></div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-card-header"><span class="tool-card-icon">📈</span><div><div class="tool-card-title"><span class="en">High Resource Runbook</span><span class="tr">Yüksek Kaynak Kullanımı Runbook'u</span></div><div class="tool-card-sub">docs/incidents/high-resource.md</div></div></div>
+      <div class="tool-card-body en">CPU, memory, and disk saturation scenarios. Diagnostic commands, thresholds, and remediation options per section.</div>
+      <div class="tool-card-body tr">CPU, bellek ve disk doygunluk senaryoları. Her bölümde tanılama komutları, eşikler ve düzeltme seçenekleri.</div>
+      <div class="tool-card-footer"><span class="tag t-purple">CPU</span><span class="tag t-purple">Memory</span><span class="tag t-purple">Disk</span></div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-card-header"><span class="tool-card-icon">🔁</span><div><div class="tool-card-title"><span class="en">Restart Decision Tree</span><span class="tr">Yeniden Başlatma Karar Ağacı</span></div><div class="tool-card-sub">docs/runbooks/restart-decision-tree.md</div></div></div>
+      <div class="tool-card-body en">6-step guide: whether to restart, when, and how — without causing unnecessary downtime.</div>
+      <div class="tool-card-body tr">6 adımlı rehber: yeniden başlatıp başlatmama, ne zaman ve nasıl — gereksiz kesinti süresine yol açmadan.</div>
+      <div class="tool-card-footer"><span class="tag t-blue">Decision Tree</span><span class="tag t-blue">6 Steps</span></div>
+    </div>
+  </div>
+  <div class="category">
+    <div class="category-label"><h2><span class="en">Guides &amp; Documentation</span><span class="tr">Rehberler ve Belgeler</span></h2></div>
+    <div class="tool-card">
+      <div class="tool-card-header"><span class="tool-card-icon">📚</span><div><div class="tool-card-title"><span class="en">Validator Getting Started</span><span class="tr">Validator Başlangıç Rehberi</span></div><div class="tool-card-sub">tr/baslangic-rehberi.md · en/getting-started.md</div></div></div>
+      <div class="tool-card-body en">First-time setup guide for QoreChain participants. Prerequisites, installation, configuration, verification. <strong>Turkish and English.</strong></div>
+      <div class="tool-card-body tr">QoreChain'e ilk kez katılanlar için kurulum kılavuzu. Ön koşullar, kurulum, yapılandırma, doğrulama. <strong>Türkçe ve İngilizce.</strong></div>
+      <div class="tool-card-footer"><span class="tag t-green">Türkçe</span><span class="tag t-blue">English</span><span class="tag t-green">Validator</span></div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-card-header"><span class="tool-card-icon">🔤</span><div><div class="tool-card-title"><span class="en">Terminology Glossary</span><span class="tr">Terimler Sözlüğü</span></div><div class="tool-card-sub">tr/terimler-sozlugu.md</div></div></div>
+      <div class="tool-card-body en">TR/EN reference table for QoreChain technical terms. "Light Node" is never translated as "Hafif Düğüm."</div>
+      <div class="tool-card-body tr">QoreChain teknik terimleri için TR/EN referans tablosu. "Light Node" hiçbir zaman "Hafif Düğüm" olarak çevrilmez.</div>
+      <div class="tool-card-footer"><span class="tag t-green">Türkçe</span><span class="tag t-blue">English</span><span class="tag t-purple">Style Guide</span></div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-card-header"><span class="tool-card-icon">📐</span><div><div class="tool-card-title"><span class="en">Contribution Standards</span><span class="tr">Katkı Standartları</span></div><div class="tool-card-sub">contributing/code-standards.md · contributing/pull-request-template.md</div></div></div>
+      <div class="tool-card-body en">Code style for <strong>Python (PEP 8, type hints), Bash, YAML, JSON</strong>. Commit message conventions and PR template.</div>
+      <div class="tool-card-body tr"><strong>Python (PEP 8, tip ipuçları), Bash, YAML, JSON</strong> için kod stili. Commit mesajı kuralları ve PR şablonu.</div>
+      <div class="tool-card-footer"><span class="tag t-green">Python</span><span class="tag t-blue">Bash</span><span class="tag t-blue">YAML</span><span class="tag t-purple">PR Template</span></div>
+    </div>
+  </div>
+</main>
+<footer><p>© 2026 satoshi-Qore &nbsp;·&nbsp; <a href="https://github.com/satoshi-Qore/satoshi-Qore.github.io"><span class="en">Source</span><span class="tr">Kaynak Kod</span></a></p></footer>
+<script>
+function setLang(l) {
+  document.documentElement.className = 'lang-' + l;
+  document.documentElement.lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
+}
+</script>
+</body>
+</html>
