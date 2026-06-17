@@ -1,253 +1,194 @@
 <!DOCTYPE html>
-<html lang="en" class="lang-en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-site-verification" content="UfKVnKmWDxeHyJ_-FGtRIWRm-WSLJoSOS-xf6At5S9Q" />
 <title>satoshi-Qore</title>
 <meta name="description" content="Blockchain infrastructure researcher and open source developer. QoreChain validator operations, RPC monitoring, and post-quantum cryptography.">
-<meta name="theme-color" content="#0d1117">
+<meta name="theme-color" content="#0c0c0c">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --bg: #0d1117; --surface: #161b22; --surface-2: #1c2128;
-  --border: #21262d; --border-hi: #30363d;
-  --text: #c9d1d9; --muted: #8b949e; --heading: #f0f6fc;
-  --green: #3fb950; --blue: #58a6ff; --purple: #bc8cff;
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0c0c0c;--surface:#111;--surface-2:#161616;
+  --border:#1e1e1e;--border-hi:#2a2a2a;
+  --text:#b8c0cc;--muted:#525866;--heading:#e2e8f0;
+  --green:#00d46a;--green-dim:#00843f;--green-bg:rgba(0,212,106,0.07);
+  --amber:#f59e0b;--blue:#60a5fa;
+  --mono:'JetBrains Mono','Fira Code','Cascadia Code',monospace;
 }
-html { scroll-behavior: smooth; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
-
-/* LANGUAGE TOGGLE */
-.lang-en .tr { display: none !important; }
-.lang-tr .en { display: none !important; }
-
-/* NAV */
-nav { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-.nav-wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 56px; gap: 16px; }
-.nav-brand { font-weight: 700; font-size: 0.95rem; color: var(--heading); text-decoration: none; letter-spacing: -0.02em; flex-shrink: 0; }
-.nav-brand em { color: var(--green); font-style: normal; }
-.nav-menu { display: flex; gap: 2px; list-style: none; flex: 1; }
-.nav-menu a { color: var(--muted); text-decoration: none; font-size: 0.84rem; padding: 6px 12px; border-radius: 6px; transition: color .15s, background .15s; }
-.nav-menu a:hover, .nav-menu a.active { color: var(--heading); background: var(--surface); }
-.lang-switch { display: flex; border: 1px solid var(--border-hi); border-radius: 7px; overflow: hidden; flex-shrink: 0; }
-.lang-btn { background: transparent; border: none; color: var(--muted); font-size: 0.75rem; font-weight: 700; padding: 5px 10px; cursor: pointer; transition: color .15s, background .15s; letter-spacing: 0.05em; }
-.lang-btn.active { background: var(--surface-2); color: var(--heading); }
-.lang-btn:hover:not(.active) { color: var(--text); }
-
-/* LAYOUT */
-main { max-width: 860px; margin: 0 auto; padding: 0 24px; }
-
-/* HERO */
-.hero { padding: 96px 0 80px; }
-.hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green); margin-bottom: 28px; }
-.hero-eyebrow::before { content: ''; display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-.hero h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); font-weight: 800; line-height: 1.12; letter-spacing: -0.04em; color: var(--heading); margin-bottom: 22px; }
-.hero h1 .name { color: var(--green); }
-.hero-desc { font-size: 1rem; color: var(--muted); max-width: 520px; line-height: 1.82; margin-bottom: 40px; }
-.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 8px; font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: all .15s; }
-.btn-filled { background: var(--green); color: #0d1117; }
-.btn-filled:hover { background: #4cd964; transform: translateY(-1px); }
-.btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border-hi); }
-.btn-outline:hover { background: var(--surface); border-color: var(--blue); color: var(--blue); }
-
-/* SECTIONS */
-.section { padding: 64px 0; border-top: 1px solid var(--border); }
-.section-tag { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-bottom: 6px; }
-.section h2 { font-size: clamp(1.4rem, 3vw, 1.85rem); font-weight: 700; color: var(--heading); letter-spacing: -0.025em; margin-bottom: 8px; }
-.section-lead { color: var(--muted); font-size: 0.9rem; margin-bottom: 36px; max-width: 560px; line-height: 1.75; }
-
-/* ABOUT */
-.about-body { font-size: 0.93rem; color: var(--muted); max-width: 640px; line-height: 1.85; margin-bottom: 32px; }
-.about-body strong { color: var(--text); font-weight: 600; }
-.focus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-@media (max-width: 540px) { .focus-grid { grid-template-columns: 1fr; } }
-.focus-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
-.focus-icon { font-size: 1.3rem; margin-bottom: 8px; }
-.focus-card h3 { font-size: 0.875rem; font-weight: 700; color: var(--heading); margin-bottom: 4px; }
-.focus-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
-
-/* REPOS PREVIEW */
-.repo-list { display: flex; flex-direction: column; gap: 12px; }
-.repo-card { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; text-decoration: none; transition: border-color .2s, background .2s; }
-.repo-card:hover { border-color: var(--blue); background: var(--surface-2); }
-.repo-name { font-size: 0.9rem; font-weight: 700; color: var(--blue); font-family: 'SF Mono', 'Fira Code', monospace; margin-bottom: 5px; }
-.repo-card:hover .repo-name { text-decoration: underline; }
-.repo-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; }
-.repo-arrow { color: var(--muted); font-size: 1rem; flex-shrink: 0; margin-top: 2px; transition: transform .15s, color .15s; }
-.repo-card:hover .repo-arrow { transform: translate(2px,-2px); color: var(--blue); }
-
-/* CONNECT */
-.connect-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
-@media (max-width: 540px) { .connect-grid { grid-template-columns: 1fr; } }
-.connect-card { display: flex; align-items: center; gap: 13px; padding: 16px 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; text-decoration: none; color: var(--text); font-size: 0.875rem; font-weight: 600; transition: all .15s; }
-.connect-card:hover { border-color: var(--blue); color: var(--blue); background: var(--surface-2); }
-.connect-icon { font-size: 1.2rem; flex-shrink: 0; }
-.connect-handle { display: block; font-size: 0.75rem; font-weight: 400; color: var(--muted); margin-top: 1px; }
-
-footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; color: var(--muted); font-size: 0.78rem; }
-footer a { color: var(--blue); text-decoration: none; }
-footer a:hover { text-decoration: underline; }
-
-@media (max-width: 480px) { .nav-menu { display: none; } .hero { padding: 56px 0 48px; } .section { padding: 48px 0; } }
+html{scroll-behavior:smooth}
+body{font-family:var(--mono);background:var(--bg);color:var(--text);line-height:1.7;font-size:13px}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px);pointer-events:none;z-index:9999}
+nav{position:sticky;top:0;z-index:100;background:rgba(12,12,12,0.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+.nav-wrap{max-width:860px;margin:0 auto;padding:0 24px}
+.nav-top{display:flex;align-items:center;justify-content:space-between;padding:7px 0 5px;border-bottom:1px solid var(--border)}
+.nav-path{font-size:11px;color:var(--muted)}
+.nav-path .cur{color:var(--green)}
+.nav-path .sep{margin:0 4px;color:var(--border-hi)}
+.lang-selector{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.lang-label{font-size:10px;color:var(--muted)}
+#lang-select{background:var(--surface);border:1px solid var(--border-hi);color:var(--green);font-family:var(--mono);font-size:11px;font-weight:500;padding:3px 6px;border-radius:3px;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;min-width:44px;text-align:center}
+#lang-select:hover,#lang-select:focus{border-color:var(--green-dim)}
+#lang-select option{background:#1a1a1a;color:var(--text)}
+.nav-menu-row{display:flex;align-items:center;padding:5px 0;gap:4px}
+.nav-prompt{color:var(--green);font-size:12px;font-weight:700;flex-shrink:0}
+.nav-menu{display:flex;gap:0;list-style:none}
+.nav-menu a{color:var(--muted);text-decoration:none;font-size:12px;padding:3px 10px;border-radius:3px;transition:color .15s,background .15s}
+.nav-menu a:hover,.nav-menu a.active{color:var(--green);background:var(--green-bg)}
+.nav-sep{color:var(--border-hi);font-size:12px;padding:3px 2px}
+main{max-width:860px;margin:0 auto;padding:0 24px}
+.hero{padding:80px 0 68px}
+.term-block{margin-bottom:24px}
+.term-line{display:flex;align-items:flex-start;gap:8px;margin-bottom:3px}
+.prompt{color:var(--green);font-weight:700;flex-shrink:0}
+.cmd{color:var(--heading)}
+.hero-name{font-size:clamp(1.9rem,5vw,2.9rem);font-weight:700;color:var(--heading);letter-spacing:-0.02em;line-height:1.1;margin-left:22px;margin-top:6px}
+.hero-name em{color:var(--green);font-style:normal}
+.cursor{display:inline-block;width:.55em;height:1em;background:var(--green);vertical-align:text-bottom;animation:blink .9s step-end infinite;margin-left:2px}
+@keyframes blink{50%{opacity:0}}
+.output-block{margin-left:22px;padding:12px 16px;border-left:2px solid var(--border-hi);background:var(--surface);margin-top:6px}
+.mission-text{font-size:15px;font-weight:600;color:var(--heading);line-height:1.4}
+.env-row{margin-left:22px;margin-top:6px;font-size:12px;display:flex;flex-wrap:wrap;gap:0;align-items:center}
+.env-key{color:var(--amber)}
+.env-eq{color:var(--muted);margin:0 1px}
+.env-val{color:var(--green)}
+.env-sep{color:var(--border-hi);margin:0 8px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:4px;font-family:var(--mono);font-size:12px;font-weight:500;text-decoration:none;transition:all .15s;cursor:pointer}
+.btn::before{content:'$ ';color:var(--green-dim);font-weight:400}
+.btn-filled{background:var(--green-bg);color:var(--green);border:1px solid var(--green-dim)}
+.btn-filled:hover{background:rgba(0,212,106,0.14);border-color:var(--green)}
+.btn-outline{background:transparent;color:var(--muted);border:1px solid var(--border-hi)}
+.btn-outline:hover{color:var(--text);border-color:var(--border-hi)}
+.section{padding:52px 0;border-top:1px solid var(--border)}
+.section-cmd{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.about-output{margin-left:22px;color:var(--text);font-size:13px;line-height:1.85;max-width:660px;margin-bottom:24px;padding:14px 16px;border-left:2px solid var(--border-hi);background:var(--surface)}
+.about-output strong{color:var(--green);font-weight:500}
+.tree-block{margin-left:22px}
+.tree-line{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.tree-line:last-child{border-bottom:none}
+.tree-char{color:var(--muted);flex-shrink:0;min-width:22px}
+.tree-name{color:var(--green);flex-shrink:0;min-width:190px}
+.tree-slash{color:var(--green-dim)}
+.tree-desc{color:var(--muted);font-size:12px;line-height:1.5}
+.repo-list{display:flex;flex-direction:column;gap:8px;margin-left:22px}
+.repo-card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:16px 18px;text-decoration:none;transition:border-color .2s;position:relative}
+.repo-card::after{content:'drwxr-xr-x';color:var(--border-hi);font-size:10px;position:absolute;top:16px;right:16px}
+.repo-card:hover{border-color:var(--green-dim)}
+.repo-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px}
+.repo-name{font-size:13px;font-weight:600;color:var(--green)}
+.repo-arrow{color:var(--muted);font-size:12px;flex-shrink:0;margin-top:1px;transition:color .15s}
+.repo-card:hover .repo-arrow{color:var(--green)}
+.repo-desc{font-size:12px;color:var(--muted);line-height:1.6}
+.repo-subtitle{font-size:11px;color:var(--muted);margin-left:22px;margin-bottom:10px;opacity:.7}
+.connect-json{margin-left:22px;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:16px 20px;font-size:13px;max-width:480px}
+.json-brace{color:var(--muted)}
+.json-line{display:flex;align-items:center;padding:4px 0 4px 16px}
+.json-key{color:var(--blue)}
+.json-colon{color:var(--muted);margin:0 6px}
+.json-val{color:var(--text);text-decoration:none;transition:color .15s}
+.json-val:hover{color:var(--green)}
+.json-comma{color:var(--muted)}
+footer{border-top:1px solid var(--border);padding:22px 24px;text-align:center;color:var(--muted);font-size:11px;font-family:var(--mono)}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--green)}
+html[dir="rtl"] .nav-menu-row{flex-direction:row-reverse}
+html[dir="rtl"] .about-output,html[dir="rtl"] .output-block{border-left:none;border-right:2px solid var(--border-hi)}
+html[dir="rtl"] .tree-block,html[dir="rtl"] .repo-list,html[dir="rtl"] .connect-json{margin-left:0;margin-right:22px}
+html[dir="rtl"] .env-row{margin-left:0;margin-right:22px}
+html[dir="rtl"] .hero-name{margin-left:0;margin-right:22px}
+html[dir="rtl"] .repo-subtitle{margin-left:0;margin-right:22px}
+html[dir="rtl"] .repo-card::after{right:auto;left:16px}
+html[dir="rtl"] .section-cmd{flex-direction:row-reverse}
+@media(max-width:520px){.nav-menu-row{display:none}.hero{padding:48px 0 40px}.section{padding:40px 0}.repo-card::after{display:none}}
 </style>
 </head>
 <body>
-
 <nav>
   <div class="nav-wrap">
-    <a class="nav-brand" href="/"><em>satoshi</em>-Qore</a>
-    <ul class="nav-menu">
-      <li><a href="/" class="active"><span class="en">Home</span><span class="tr">Ana Sayfa</span></a></li>
-      <li><a href="/projeler.html"><span class="en">Projects</span><span class="tr">Projeler</span></a></li>
-      <li><a href="/araclar.html"><span class="en">Tools</span><span class="tr">Araçlar</span></a></li>
-      <li><a href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener"><span class="en">Writing</span><span class="tr">Yazılar</span></a></li>
-    </ul>
-    <div class="lang-switch">
-      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
-      <button class="lang-btn" data-lang="tr" onclick="setLang('tr')">TR</button>
+    <div class="nav-top">
+      <div class="nav-path"><span class="cur">satoshi-Qore</span><span class="sep">/</span><span>satoshi-Qore.github.io</span><span class="sep">~</span><span class="cur">main</span></div>
+      <div class="lang-selector">
+        <span class="lang-label">lang:</span>
+        <select id="lang-select" onchange="setLang(this.value)" aria-label="Select language">
+          <option value="en" selected>EN</option><option value="tr">TR</option><option value="ro">RO</option><option value="de">DE</option><option value="it">IT</option><option value="es">ES</option><option value="ar">AR</option><option value="zh">ZH</option><option value="ja">JA</option><option value="ko">KO</option>
+        </select>
+      </div>
+    </div>
+    <div class="nav-menu-row">
+      <span class="nav-prompt">$</span>
+      <ul class="nav-menu">
+        <li><a href="/" class="active" data-i18n="nav.home">home</a></li><li><span class="nav-sep">·</span></li>
+        <li><a href="/projeler.html" data-i18n="nav.projects">projects</a></li><li><span class="nav-sep">·</span></li>
+        <li><a href="/araclar.html" data-i18n="nav.tools">tools</a></li><li><span class="nav-sep">·</span></li>
+        <li><a href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener" data-i18n="nav.writing">writing</a></li>
+      </ul>
     </div>
   </div>
 </nav>
-
 <main>
-
-  <!-- HERO -->
   <section class="hero">
-    <div class="hero-eyebrow">Blockchain Infrastructure · QoreChain</div>
-    <h1>
-      <span class="en">I research infrastructure,<br>build tools, document systems —<br><span class="name">satoshi-Qore</span></span>
-      <span class="tr">Altyapı araştırıyor,<br>araçlar geliştiriyor, sistemleri belgeliyorum —<br><span class="name">satoshi-Qore</span></span>
-    </h1>
-    <p class="hero-desc en">
-      I dig into how blockchain networks actually work, then build open source tooling and write documentation to make that knowledge accessible. My focus is QoreChain validator operations, RPC endpoint monitoring, and post-quantum cryptography.
-    </p>
-    <p class="hero-desc tr">
-      Blockchain ağlarının gerçekte nasıl çalıştığını araştırıyor, edindiğim bilgiyi açık kaynak araçlara ve belgelere dönüştürüyorum. Odak noktam: QoreChain validator operasyonları, RPC uç nokta izleme ve post-kuantum kriptografi.
-    </p>
+    <div class="term-block">
+      <div class="term-line"><span class="prompt">$</span><span class="cmd">whoami</span></div>
+      <div class="hero-name">satoshi-<em>Qore</em><span class="cursor"></span></div>
+    </div>
+    <div class="term-block">
+      <div class="term-line"><span class="prompt">$</span><span class="cmd" data-i18n="hero.cmd.mission">cat mission.txt</span></div>
+      <div class="output-block"><div class="mission-text" data-i18n="hero.mission">I research infrastructure, build tools, document systems.</div></div>
+    </div>
+    <div class="term-block">
+      <div class="term-line"><span class="prompt">$</span><span class="cmd" data-i18n="hero.cmd.focus">echo $FOCUS</span></div>
+      <div class="env-row">
+        <span class="env-key" data-i18n="hero.focus.network.key">NETWORK</span><span class="env-eq">=</span><span class="env-val">QoreChain</span>
+        <span class="env-sep">|</span>
+        <span class="env-key" data-i18n="hero.focus.tools.key">TOOLS</span><span class="env-eq">=</span><span class="env-val" data-i18n="hero.focus.tools.val">RPC·monitoring</span>
+        <span class="env-sep">|</span>
+        <span class="env-key">RESEARCH</span><span class="env-eq">=</span><span class="env-val">post-quantum</span>
+      </div>
+    </div>
     <div class="hero-cta">
-      <a class="btn btn-filled" href="/projeler.html">
-        <span class="en">View Projects</span>
-        <span class="tr">Projelere Bak</span>
-      </a>
-      <a class="btn btn-outline" href="https://github.com/satoshi-Qore" target="_blank" rel="noopener">GitHub →</a>
+      <a class="btn btn-filled" href="/projeler.html" data-i18n="hero.cta.projects">view_projects</a>
+      <a class="btn btn-outline" href="https://github.com/satoshi-Qore" target="_blank" rel="noopener">github.com/satoshi-Qore ↗</a>
     </div>
   </section>
-
-  <!-- ABOUT -->
   <section class="section" id="about">
-    <div class="section-tag"><span class="en">About</span><span class="tr">Hakkımda</span></div>
-    <h2>
-      <span class="en">What I work on</span>
-      <span class="tr">Neler yapıyorum</span>
-    </h2>
-    <p class="section-lead en">Spending time at the intersection of blockchain operations and open source software.</p>
-    <p class="section-lead tr">Blockchain operasyonları ile açık kaynak yazılımın kesiştiği noktada çalışıyorum.</p>
-
-    <p class="about-body en">
-      Curiosity about what happens inside decentralized networks led me to <strong>QoreChain</strong>. I now channel that into concrete artifacts: monitoring tools that have no external dependencies, bilingual guides that don't assume prior knowledge, and runbooks that help operators respond calmly when nodes go down. I also research how post-quantum cryptographic primitives could be integrated into live blockchain protocols.
-    </p>
-    <p class="about-body tr">
-      Merkezi olmayan ağların içinde ne döndüğünü merak etmek beni <strong>QoreChain</strong>'e taşıdı. Bu meracı artık somut çıktılara dönüştürüyorum: dış bağımlılığı olmayan izleme araçları, ön bilgi gerektirmeyen iki dilli rehberler ve node'lar çöktüğünde operatörlerin soğukkanlılıkla başvurabileceği runbook'lar. Bunların yanı sıra post-kuantum kriptografik yapıların çalışan blockchain protokollerine nasıl entegre edileceğini araştırıyorum.
-    </p>
-
-    <div class="focus-grid">
-      <div class="focus-card">
-        <div class="focus-icon">📡</div>
-        <h3><span class="en">Node Operations</span><span class="tr">Node Operasyonları</span></h3>
-        <p class="en">QoreChain validator setup, RPC endpoint health monitoring, and day-to-day operational processes.</p>
-        <p class="tr">QoreChain validator kurulumu, RPC uç nokta sağlığı izleme ve günlük operasyonel süreçler.</p>
-      </div>
-      <div class="focus-card">
-        <div class="focus-icon">🔐</div>
-        <h3><span class="en">Post-Quantum Cryptography</span><span class="tr">Post-Kuantum Kriptografi</span></h3>
-        <p class="en">Researching protocol-level resilience against quantum computing threats in blockchain systems.</p>
-        <p class="tr">Blockchain sistemlerinde kuantum bilgisayar tehditlerine karşı protokol düzeyinde dayanıklılık araştırması.</p>
-      </div>
-      <div class="focus-card">
-        <div class="focus-icon">🛠️</div>
-        <h3><span class="en">Open Source Tooling</span><span class="tr">Açık Kaynak Araçlar</span></h3>
-        <p class="en">Dependency-free Python tools, Docker monitoring stacks, and CI/CD workflows — all public.</p>
-        <p class="tr">Bağımlılıksız Python araçları, Docker monitoring stack'leri ve CI/CD iş akışları — hepsi açık kaynak.</p>
-      </div>
-      <div class="focus-card">
-        <div class="focus-icon">📖</div>
-        <h3><span class="en">Technical Documentation</span><span class="tr">Teknik Belgeleme</span></h3>
-        <p class="en">Turkish and English guides, troubleshooting references, and contribution standards.</p>
-        <p class="tr">Türkçe ve İngilizce rehberler, sorun giderme kılavuzları ve katkı standartları.</p>
-      </div>
+    <div class="section-cmd"><span class="prompt">$</span><span class="cmd" data-i18n="about.cmd">cat about.md</span></div>
+    <div class="about-output" data-i18n-html="about.body">Curiosity about what happens inside decentralized networks led me to <strong>QoreChain</strong>. I now channel that into concrete artifacts: monitoring tools with no external dependencies, bilingual guides that don't assume prior knowledge, and runbooks that help operators respond calmly when nodes go down. I also research how post-quantum cryptographic primitives could be integrated into live blockchain protocols.</div>
+    <div class="section-cmd"><span class="prompt">$</span><span class="cmd" data-i18n="about.ls">ls focus/</span></div>
+    <div class="tree-block">
+      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">node-operations<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="focus.1.desc">QoreChain validator setup, RPC endpoint health monitoring, day-to-day ops</span></div>
+      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">post-quantum<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="focus.2.desc">Protocol-level resilience against quantum computing threats in blockchain</span></div>
+      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">open-source<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="focus.3.desc">Dependency-free Python tools, Docker monitoring stacks, CI/CD workflows</span></div>
+      <div class="tree-line"><span class="tree-char">└──</span><span class="tree-name">documentation<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="focus.4.desc">Bilingual guides, troubleshooting references, contribution standards</span></div>
     </div>
   </section>
-
-  <!-- PROJECTS PREVIEW -->
   <section class="section" id="projects">
-    <div class="section-tag"><span class="en">Projects</span><span class="tr">Projeler</span></div>
-    <h2>
-      <span class="en">Open source repositories</span>
-      <span class="tr">Açık kaynak depolar</span>
-    </h2>
-    <p class="section-lead en">Everything consolidated into two repositories — tools in one, guides in the other.</p>
-    <p class="section-lead tr">Her şey iki depoda toplandı — araçlar birinde, rehberler diğerinde.</p>
+    <div class="section-cmd"><span class="prompt">$</span><span class="cmd" data-i18n="projects.cmd">ls -la repos/</span></div>
+    <div class="repo-subtitle" data-i18n="projects.subtitle">total 2 · sorted by last commit</div>
     <div class="repo-list">
-      <a class="repo-card" href="/projeler.html">
-        <div>
-          <div class="repo-name">satoshi-Qore / qorechain-tools</div>
-          <div class="repo-desc en">RPC health monitoring, Prometheus + Grafana stack, incident runbooks, and upgrade checklists.</div>
-          <div class="repo-desc tr">RPC sağlık izleme, Prometheus + Grafana stack, incident runbook'ları ve yükseltme kontrol listeleri.</div>
-        </div>
-        <span class="repo-arrow">↗</span>
-      </a>
-      <a class="repo-card" href="/projeler.html">
-        <div>
-          <div class="repo-name">satoshi-Qore / qorechain-guides</div>
-          <div class="repo-desc en">Validator setup, Light Node docs, FAQ, troubleshooting, and contribution standards. Turkish + English.</div>
-          <div class="repo-desc tr">Validator kurulumu, Light Node belgeleri, SSS, sorun giderme ve katkı standartları. Türkçe ve İngilizce.</div>
-        </div>
-        <span class="repo-arrow">↗</span>
-      </a>
+      <a class="repo-card" href="/projeler.html"><div class="repo-header"><div class="repo-name">satoshi-Qore / qorechain-tools</div><span class="repo-arrow">↗</span></div><div class="repo-desc" data-i18n="repo.tools.desc">RPC health monitoring, Prometheus + Grafana stack, incident runbooks, upgrade checklists.</div></a>
+      <a class="repo-card" href="/projeler.html"><div class="repo-header"><div class="repo-name">satoshi-Qore / qorechain-guides</div><span class="repo-arrow">↗</span></div><div class="repo-desc" data-i18n="repo.guides.desc">Validator setup, Light Node docs, FAQ, troubleshooting, contribution standards. Multilingual.</div></a>
     </div>
   </section>
-
-  <!-- CONNECT -->
   <section class="section" id="connect">
-    <div class="section-tag"><span class="en">Connect</span><span class="tr">İletişim</span></div>
-    <h2>
-      <span class="en">Get in touch</span>
-      <span class="tr">Bağlantı kuralım</span>
-    </h2>
-    <p class="section-lead en">Find me on GitHub, X, or Medium.</p>
-    <p class="section-lead tr">GitHub, X veya Medium üzerinden ulaşabilirsiniz.</p>
-    <div class="connect-grid">
-      <a class="connect-card" href="https://github.com/satoshi-Qore" target="_blank" rel="noopener">
-        <span class="connect-icon">🐙</span>
-        <div>GitHub<span class="connect-handle">satoshi-Qore</span></div>
-      </a>
-      <a class="connect-card" href="https://x.com/satoshi_Qore" target="_blank" rel="noopener">
-        <span class="connect-icon">𝕏</span>
-        <div>X (Twitter)<span class="connect-handle">@satoshi_Qore</span></div>
-      </a>
-      <a class="connect-card" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener">
-        <span class="connect-icon">📝</span>
-        <div>Medium<span class="connect-handle">@satoshi_Qore</span></div>
-      </a>
+    <div class="section-cmd"><span class="prompt">$</span><span class="cmd">cat contact.json</span></div>
+    <div class="connect-json">
+      <div class="json-brace">{</div>
+      <div class="json-line"><span class="json-key">"github"</span><span class="json-colon">:</span><a class="json-val" href="https://github.com/satoshi-Qore" target="_blank" rel="noopener">"github.com/satoshi-Qore"</a><span class="json-comma">,</span></div>
+      <div class="json-line"><span class="json-key">"x"</span><span class="json-colon">:</span><a class="json-val" href="https://x.com/satoshi_Qore" target="_blank" rel="noopener">"@satoshi_Qore"</a><span class="json-comma">,</span></div>
+      <div class="json-line"><span class="json-key">"medium"</span><span class="json-colon">:</span><a class="json-val" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener">"medium.com/@satoshi_Qore"</a></div>
+      <div class="json-brace">}</div>
     </div>
   </section>
-
 </main>
-
-<footer>
-  <p>© 2026 satoshi-Qore &nbsp;·&nbsp; <a href="https://github.com/satoshi-Qore/satoshi-Qore.github.io"><span class="en">Source</span><span class="tr">Kaynak Kod</span></a></p>
-</footer>
-
+<footer><p>© 2026 satoshi-Qore &nbsp;·&nbsp; <a href="https://github.com/satoshi-Qore/satoshi-Qore.github.io" data-i18n="footer.source">source</a> &nbsp;·&nbsp; <span style="color:var(--green)">●</span> online</p></footer>
 <script>
-function setLang(l) {
-  document.documentElement.className = 'lang-' + l;
-  document.documentElement.lang = l;
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
-}
+const T={en:{'nav.home':'home','nav.projects':'projects','nav.tools':'tools','nav.writing':'writing','hero.cmd.mission':'cat mission.txt','hero.mission':'I research infrastructure, build tools, document systems.','hero.cmd.focus':'echo $FOCUS','hero.focus.network.key':'NETWORK','hero.focus.tools.key':'TOOLS','hero.focus.tools.val':'RPC·monitoring','hero.cta.projects':'view_projects','about.cmd':'cat about.md','about.body':'Curiosity about what happens inside decentralized networks led me to <strong>QoreChain</strong>. I now channel that into concrete artifacts: monitoring tools with no external dependencies, bilingual guides that don\'t assume prior knowledge, and runbooks that help operators respond calmly when nodes go down. I also research how post-quantum cryptographic primitives could be integrated into live blockchain protocols.','about.ls':'ls focus/','focus.1.desc':'QoreChain validator setup, RPC endpoint health monitoring, day-to-day ops','focus.2.desc':'Protocol-level resilience against quantum computing threats in blockchain','focus.3.desc':'Dependency-free Python tools, Docker monitoring stacks, CI/CD workflows','focus.4.desc':'Bilingual guides, troubleshooting references, contribution standards','projects.cmd':'ls -la repos/','projects.subtitle':'total 2 · sorted by last commit','repo.tools.desc':'RPC health monitoring, Prometheus + Grafana stack, incident runbooks, upgrade checklists.','repo.guides.desc':'Validator setup, Light Node docs, FAQ, troubleshooting, contribution standards. Multilingual.','footer.source':'source'},tr:{'nav.home':'ana sayfa','nav.projects':'projeler','nav.tools':'araçlar','nav.writing':'yazılar','hero.cmd.mission':'cat gorev.txt','hero.mission':'Altyapı araştırır, araçlar geliştirir, sistemleri belgelerim.','hero.cmd.focus':'echo $ODAK','hero.focus.network.key':'AĞ','hero.focus.tools.key':'ARAÇLAR','hero.focus.tools.val':'RPC·izleme','hero.cta.projects':'projelere_bak','about.cmd':'cat hakkimda.md','about.body':'Merkezi olmayan ağların içinde ne döndüğünü merak etmek beni <strong>QoreChain</strong>\'e taşıdı. Bu merağı somut çıktılara dönüştürüyorum: dış bağımlılığı olmayan izleme araçları, ön bilgi gerektirmeyen çok dilli rehberler ve node\'lar çöktüğünde operatörlerin başvurabileceyi runbook\'lar. Post-kuantum kriptografik yapıların çalışan blockchain protokollerine nasıl entegre edileceğini de araştırıyorum.','about.ls':'ls odak/','focus.1.desc':'QoreChain validator kurulumu, RPC uç nokta izleme, günlük operasyonlar','focus.2.desc':'Blockchain sistemlerinde kuantum tehditlerine karşı protokol düzeyinde dayanıklılık','focus.3.desc':'Bağımlılıksız Python araçları, Docker monitoring stack\'leri, CI/CD iş akışları','focus.4.desc':'Çok dilli rehberler, sorun giderme referansları, katkı standartları','projects.cmd':'ls -la depolar/','projects.subtitle':'toplam 2 · son commit sırasına göre','repo.tools.desc':'RPC sağlık izleme, Prometheus + Grafana stack, incident runbook\'ları, yükseltme kontrol listeleri.','repo.guides.desc':'Validator kurulumu, Light Node belgeleri, SSS, sorun giderme, katkı standartları. Çok dilli.','footer.source':'kaynak'},ro:{'nav.home':'acasă','nav.projects':'proiecte','nav.tools':'unelte','nav.writing':'articole','hero.cmd.mission':'cat misiune.txt','hero.mission':'Cercetez infrastructura, construiesc unelte, documentez sisteme.','hero.cmd.focus':'echo $FOCUS','hero.focus.network.key':'REŢEA','hero.focus.tools.key':'UNELTE','hero.focus.tools.val':'monitorizare·RPC','hero.cta.projects':'vezi_proiecte','about.cmd':'cat despre.md','about.body':'Curiozitatea despre ce se întâmplă în rețelele descentralizate m-a dus la <strong>QoreChain</strong>. Acum transform asta în artefacte concrete: instrumente de monitorizare fără dependențe externe, ghiduri multilingve şi runbook-uri care ajută operatorii să răspundă calm când nodurile cad.','about.ls':'ls focus/','focus.1.desc':'Configurare validator QoreChain, monitorizare endpoint RPC, operațiuni zilnice','focus.2.desc':'Reziliență la nivel de protocol împotriva amenințărilor calculului cuantic în blockchain','focus.3.desc':'Unelte Python fără dependențe, stive Docker de monitorizare, fluxuri CI/CD','focus.4.desc':'Ghiduri multilingve, referințe de depanare, standarde de contribuție','projects.cmd':'ls -la repozitorii/','projects.subtitle':'total 2 · sortate după ultimul commit','repo.tools.desc':'Monitorizare RPC, stack Prometheus + Grafana, runbook-uri pentru incidente, liste de verificare.','repo.guides.desc':'Configurare validator, documentație Light Node, FAQ, depanare, standarde de contribuție.','footer.source':'sursă'},de:{'nav.home':'start','nav.projects':'projekte','nav.tools':'werkzeuge','nav.writing':'artikel','hero.cmd.mission':'cat auftrag.txt','hero.mission':'Ich erforsche Infrastruktur, baue Werkzeuge, dokumentiere Systeme.','hero.cmd.focus':'echo $FOKUS','hero.focus.network.key':'NETZWERK','hero.focus.tools.key':'WERKZEUGE','hero.focus.tools.val':'RPC·Überwachung','hero.cta.projects':'projekte_anzeigen','about.cmd':'cat ueber-mich.md','about.body':'Die Neugier darüber, was in dezentralen Netzwerken passiert, führte mich zu <strong>QoreChain</strong>. Jetzt wandle ich das in konkrete Ergebnisse um: Monitoring-Tools ohne externe Abhängigkeiten, mehrsprachige Guides und Runbooks, die Operatoren helfen, ruhig zu reagieren, wenn Nodes ausfallen.','about.ls':'ls schwerpunkte/','focus.1.desc':'QoreChain-Validator-Setup, RPC-Endpunkt-Überwachung, täglicher Betrieb','focus.2.desc':'Protokollebene Resilienz gegen Quantencomputing-Bedrohungen in Blockchain','focus.3.desc':'Abhängigkeitsfreie Python-Tools, Docker-Monitoring-Stacks, CI/CD-Workflows','focus.4.desc':'Mehrsprachige Guides, Fehlerbehebungsreferenzen, Beitragsstandards','projects.cmd':'ls -la repositories/','projects.subtitle':'gesamt 2 · sortiert nach letztem Commit','repo.tools.desc':'RPC-Überwachung, Prometheus + Grafana Stack, Incident-Runbooks, Upgrade-Checklisten.','repo.guides.desc':'Validator-Setup, Light Node Dokumentation, FAQ, Fehlerbehebung, Beitragsstandards.','footer.source':'quellcode'},it:{'nav.home':'home','nav.projects':'progetti','nav.tools':'strumenti','nav.writing':'articoli','hero.cmd.mission':'cat missione.txt','hero.mission':'Ricerco infrastrutture, costruisco strumenti, documento sistemi.','hero.cmd.focus':'echo $FOCUS','hero.focus.network.key':'RETE','hero.focus.tools.key':'STRUMENTI','hero.focus.tools.val':'monitoraggio·RPC','hero.cta.projects':'vedi_progetti','about.cmd':'cat informazioni.md','about.body':'La curiosità su cosa accade nelle reti decentralizzate mi ha portato a <strong>QoreChain</strong>. Ora trasformo questo in artefatti concreti: strumenti di monitoraggio senza dipendenze esterne, guide multilingue e runbook che aiutano gli operatori a rispondere con calma quando i nodi cadono.','about.ls':'ls focus/','focus.1.desc':'Configurazione validator QoreChain, monitoraggio endpoint RPC, operazioni quotidiane','focus.2.desc':'Resilienza a livello di protocollo contro le minacce del calcolo quantistico','focus.3.desc':'Strumenti Python senza dipendenze, stack Docker di monitoraggio, workflow CI/CD','focus.4.desc':'Guide multilingue, riferimenti per la risoluzione dei problemi, standard di contribuzione','projects.cmd':'ls -la repository/','projects.subtitle':'totale 2 · ordinati per ultimo commit','repo.tools.desc':'Monitoraggio RPC, stack Prometheus + Grafana, runbook per incidenti, checklist.','repo.guides.desc':'Configurazione validator, documentazione Light Node, FAQ, risoluzione problemi, standard.','footer.source':'sorgente'},es:{'nav.home':'inicio','nav.projects':'proyectos','nav.tools':'herramientas','nav.writing':'artículos','hero.cmd.mission':'cat mision.txt','hero.mission':'Investigo infraestructura, construyo herramientas, documento sistemas.','hero.cmd.focus':'echo $ENFOQUE','hero.focus.network.key':'RED','hero.focus.tools.key':'HERRAMIENTAS','hero.focus.tools.val':'monitoreo·RPC','hero.cta.projects':'ver_proyectos','about.cmd':'cat sobre-mi.md','about.body':'La curiosidad sobre lo que sucede dentro de las redes descentralizadas me llevó a <strong>QoreChain</strong>. Ahora canalizo eso en artefactos concretos: herramientas de monitoreo sin dependencias externas, guías multilingües y runbooks que ayudan a los operadores a responder con calma cuando los nodos fallan.','about.ls':'ls enfoque/','focus.1.desc':'Configuración de validator QoreChain, monitoreo de endpoints RPC, operaciones diarias','focus.2.desc':'Resiliencia a nivel de protocolo contra amenazas de computación cuántica en blockchain','focus.3.desc':'Herramientas Python sin dependencias, stacks Docker de monitoreo, flujos CI/CD','focus.4.desc':'Guías multilingües, referencias de resolución de problemas, estándares de contribución','projects.cmd':'ls -la repositorios/','projects.subtitle':'total 2 · ordenados por último commit','repo.tools.desc':'Monitoreo RPC, stack Prometheus + Grafana, runbooks de incidentes, listas de verificación.','repo.guides.desc':'Configuración de validator, documentación Light Node, FAQ, solución de problemas, estándares.','footer.source':'código fuente'},ar:{'nav.home':'الرئيسية','nav.projects':'المشاريع','nav.tools':'الأدوات','nav.writing':'المقالات','hero.cmd.mission':'cat mission.txt','hero.mission':'أبحث في البنية التحتية، أبني الأدوات، أوثّق الأنظمة.','hero.cmd.focus':'echo $FOCUS','hero.focus.network.key':'الشبكة','hero.focus.tools.key':'الأدوات','hero.focus.tools.val':'مراقبة·RPC','hero.cta.projects':'عرض_المشاريع','about.cmd':'cat about.md','about.body':'الفضول حول ما يحدث داخل الشبكات اللامركزية قادني إلى <strong>QoreChain</strong>. أحوّل ذلك الآن إلى نتائج ملموسة: أدوات مراقبة بدون تبعيات، أدلة متعددة اللغات، وكتب تشغيل تساعد المشغلين على الاستجابة بهدوء عند توقف العقد.','about.ls':'ls focus/','focus.1.desc':'إعداد validator لـ QoreChain، مراقبة نقاط نهاية RPC، العمليات اليومية','focus.2.desc':'المرونة على مستوى البروتوكول ضد تهديدات الحوسبة الكمية','focus.3.desc':'أدوات Python بدون تبعيات، حزم Docker للمراقبة، سير عمل CI/CD','focus.4.desc':'أدلة متعددة اللغات، مراجع استكشاف الأخطاء، معايير المساهمة','projects.cmd':'ls -la repos/','projects.subtitle':'المجموع 2 · مرتب حسب آخر commit','repo.tools.desc':'مراقبة RPC، حزمة Prometheus + Grafana، كتب تشغيل الحوادث، قوائم التحقق.','repo.guides.desc':'إعداد validator، توثيق Light Node، الأسئلة الشائعة، استكشاف الأخطاء، معايير المساهمة.','footer.source':'المصدر'},zh:{'nav.home':'主页','nav.projects':'项目','nav.tools':'工具','nav.writing':'文章','hero.cmd.mission':'cat mission.txt','hero.mission':'研究基础设施，构建工具，记录系统。','hero.cmd.focus':'echo $FOCUS','hero.focus.network.key':'网络','hero.focus.tools.key':'工具','hero.focus.tools.val':'RPC·监控','hero.cta.projects':'查看项目','about.cmd':'cat about.md','about.body':'对去中心化网络内部运作的好奇心将我引向了 <strong>QoreChain</strong>。我现在将其转化为具体成果：无外部依赖的监控工具、多语言指南以及帮助运营者在节点宕机时冷静应对的运行手册。我还研究如何将后量子密码学原语集成到活跃的区块链协议中。','about.ls':'ls focus/','focus.1.desc':'QoreChain 验证者配置，RPC 端点健康监控，日常运营','focus.2.desc':'区块链中抗拒量子计算威胁的协议级弹性研究','focus.3.desc':'无依赖 Python 工具，Docker 监控栈，CI/CD 工作流','focus.4.desc':'多语言指南，故障排除参考，贡献标准','projects.cmd':'ls -la repos/','projects.subtitle':'共 2 个 · 按最后提交时间排序','repo.tools.desc':'RPC 健康监控，Prometheus + Grafana 栈，事件运行手册，升级清单。','repo.guides.desc':'验证者配置，Light Node 文档，FAQ，故障排除，贡献标准。多语言。','footer.source':'源码'},ja:{'nav.home':'ホーム','nav.projects':'プロジェクト','nav.tools':'ツール','nav.writing':'記事','hero.cmd.mission':'cat mission.txt','hero.mission':'インフラを研究し、ツールを構築し、システムを文書化する。','hero.cmd.focus':'echo $FOCUS','hero.focus.network.key':'ネットワーク','hero.focus.tools.key':'ツール','hero.focus.tools.val':'RPC·監視','hero.cta.projects':'プロジェクトを見る','about.cmd':'cat about.md','about.body':'分散型ネットワークの内部で何が起きているかへの好奇心が、私を<strong>QoreChain</strong>へと導きました。今はその好奇心を具体的な成果物に変えています：外部依存なしの監視ツール、多言語ガイド、そしてノードが停止した際にオペレーターが冷静に対応できるランブック。','about.ls':'ls focus/','focus.1.desc':'QoreChainバリデーター設定、RPCエンドポイント監視、日常運用','focus.2.desc':'ブロックチェーンにおける量子コンピューティング脅威へのプロトコルレベルの耗性','focus.3.desc':'依存関係なしPythonツール、Docker監視スタック、CI/CDワークフロー','focus.4.desc':'多言語ガイド、トラブルシューティングリファレンス、コントリビューション標準','projects.cmd':'ls -la repos/','projects.subtitle':'合計 2 · 最終コミット順','repo.tools.desc':'RPCヘルス監視、Prometheus + Grafanaスタック、インシデントランブック、アップグレードチェックリスト。','repo.guides.desc':'バリデーター設定、Light Nodeドキュメント、FAQ、トラブルシューティング、コントリビューション標準。','footer.source':'ソースコード'},ko:{'nav.home':'홈','nav.projects':'프로젝트','nav.tools':'도구','nav.writing':'글','hero.cmd.mission':'cat mission.txt','hero.mission':'인프라를 연구하고, 도구를 만들고, 시스템을 문서화합니다.','hero.cmd.focus':'echo $FOCUS','hero.focus.network.key':'네트워크','hero.focus.tools.key':'도구','hero.focus.tools.val':'RPC·모니터링','hero.cta.projects':'프로젝트_보기','about.cmd':'cat about.md','about.body':'탈중앙앙화 네트워크 내부에서 무슨 일이 일어나는지에 대한 호기심이 저를 <strong>QoreChain</strong>으로 이끌었습니다. 이제 그것을 구체적인 결과물로 전환하고 있습니다: 외부 의존성 없는 모니터링 도구, 다국어 가이드, 노드가 다운될 때 운영자가 침착하게 대응할 수 있는 런북.','about.ls':'ls focus/','focus.1.desc':'QoreChain 밸리데이터 설정, RPC 엔드포인트 상태 모니터링, 일상 운영','focus.2.desc':'블록체인에서 양자 컴퓨팅 위협에 대한 프로토콜 수준의 탄력성','focus.3.desc':'의존성 없는 Python 도구, Docker 모니터링 스택, CI/CD 워크플로우','focus.4.desc':'다국어 가이드, 문제 해결 참조, 기여 표준','projects.cmd':'ls -la repos/','projects.subtitle':'옵 2개 · 마지막 커밋 순','repo.tools.desc':'RPC 상태 모니터링, Prometheus + Grafana 스택, 인시던트 런북, 업그레이드 체크리스트.','repo.guides.desc':'밸리데이터 설정, Light Node 문서, FAQ, 문제 해결, 기여 표준. 다국어.','footer.source':'소스코드'}};
+function setLang(lang){const t=T[lang]||T.en;document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(t[k]!==undefined)el.textContent=t[k]});document.querySelectorAll('[data-i18n-html]').forEach(el=>{const k=el.getAttribute('data-i18n-html');if(t[k]!==undefined)el.innerHTML=t[k]});document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';const sel=document.getElementById('lang-select');if(sel)sel.value=lang;}
 </script>
-
 </body>
 </html>
