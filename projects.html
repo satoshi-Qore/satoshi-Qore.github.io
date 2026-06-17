@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects · satoshi-Qore</title>
+<meta name="theme-color" content="#0c0c0c">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0c0c0c;--surface:#111;--surface-2:#161616;--border:#1e1e1e;--border-hi:#2a2a2a;--text:#b8c0cc;--muted:#525866;--heading:#e2e8f0;--green:#00d46a;--green-dim:#00843f;--green-bg:rgba(0,212,106,0.07);--amber:#f59e0b;--blue:#60a5fa;--mono:'JetBrains Mono','Fira Code',monospace;}
+html{scroll-behavior:smooth}
+body{font-family:var(--mono);background:var(--bg);color:var(--text);line-height:1.7;font-size:13px}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px);pointer-events:none;z-index:9999}
+nav{position:sticky;top:0;z-index:100;background:rgba(12,12,12,0.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+.nav-wrap{max-width:860px;margin:0 auto;padding:0 24px}
+.nav-top{display:flex;align-items:center;justify-content:space-between;padding:7px 0 5px;border-bottom:1px solid var(--border)}
+.nav-path{font-size:11px;color:var(--muted)}.nav-path .cur{color:var(--green)}.nav-path .sep{margin:0 4px;color:var(--border-hi)}
+.lang-selector{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.lang-label{font-size:10px;color:var(--muted)}
+#lang-select{background:var(--surface);border:1px solid var(--border-hi);color:var(--green);font-family:var(--mono);font-size:11px;font-weight:500;padding:3px 6px;border-radius:3px;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;min-width:44px;text-align:center}
+#lang-select:hover,#lang-select:focus{border-color:var(--green-dim)}
+#lang-select option{background:#1a1a1a;color:var(--text)}
+.nav-menu-row{display:flex;align-items:center;padding:5px 0;gap:4px}
+.nav-prompt{color:var(--green);font-size:12px;font-weight:700;flex-shrink:0}
+.nav-menu{display:flex;gap:0;list-style:none}
+.nav-menu a{color:var(--muted);text-decoration:none;font-size:12px;padding:3px 10px;border-radius:3px;transition:color .15s,background .15s}
+.nav-menu a:hover,.nav-menu a.active{color:var(--green);background:var(--green-bg)}
+.nav-sep{color:var(--border-hi);font-size:12px;padding:3px 2px}
+main{max-width:860px;margin:0 auto;padding:0 24px}
+.page-header{padding:64px 0 48px}
+.term-line{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px}
+.prompt{color:var(--green);font-weight:700;flex-shrink:0}
+.cmd{color:var(--heading)}
+.page-title{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;color:var(--heading);letter-spacing:-0.02em;line-height:1.1;margin-left:22px;margin-top:8px}
+.page-title em{color:var(--green);font-style:normal}
+.cursor{display:inline-block;width:.55em;height:1em;background:var(--green);vertical-align:text-bottom;animation:blink .9s step-end infinite;margin-left:2px}
+@keyframes blink{50%{opacity:0}}
+.section{padding:48px 0;border-top:1px solid var(--border)}
+.section-cmd{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.repo-meta{margin-left:22px;margin-bottom:20px;font-size:11px;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap}
+.repo-meta a{color:var(--green);text-decoration:none}
+.repo-meta a:hover{text-decoration:underline}
+.repo-badge{display:inline-flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);padding:2px 8px;border-radius:3px;font-size:10px}
+.desc-block{margin-left:22px;padding:12px 16px;border-left:2px solid var(--border-hi);background:var(--surface);font-size:13px;color:var(--text);line-height:1.8;margin-bottom:20px;max-width:660px}
+.tree-block{margin-left:22px}
+.tree-line{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.tree-line:last-child{border-bottom:none}
+.tree-char{color:var(--muted);flex-shrink:0;min-width:22px}
+.tree-name{color:var(--green);flex-shrink:0;min-width:220px}
+.tree-slash{color:var(--green-dim)}
+.tree-desc{color:var(--muted);font-size:12px;line-height:1.5}
+.tag-row{margin-left:22px;margin-top:16px;display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:10px;padding:2px 8px;border:1px solid var(--border-hi);border-radius:3px;color:var(--muted)}
+footer{border-top:1px solid var(--border);padding:22px 24px;text-align:center;color:var(--muted);font-size:11px;font-family:var(--mono)}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--green)}
+html[dir="rtl"] .desc-block{border-left:none;border-right:2px solid var(--border-hi)}
+html[dir="rtl"] .tree-block,html[dir="rtl"] .tag-row,html[dir="rtl"] .repo-meta{margin-left:0;margin-right:22px}
+html[dir="rtl"] .page-title{margin-left:0;margin-right:22px}
+html[dir="rtl"] .section-cmd{flex-direction:row-reverse}
+@media(max-width:520px){.nav-menu-row{display:none}.page-header{padding:40px 0 32px}.section{padding:36px 0}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-wrap">
+    <div class="nav-top">
+      <div class="nav-path"><span class="cur">satoshi-Qore</span><span class="sep">/</span><span>satoshi-Qore.github.io</span><span class="sep">~</span><span class="cur">main</span></div>
+      <div class="lang-selector">
+        <span class="lang-label">lang:</span>
+        <select id="lang-select" onchange="setLang(this.value)" aria-label="Select language">
+          <option value="en" selected>EN</option><option value="tr">TR</option><option value="ro">RO</option><option value="de">DE</option><option value="it">IT</option><option value="es">ES</option><option value="ar">AR</option><option value="zh">ZH</option><option value="ja">JA</option><option value="ko">KO</option>
+        </select>
+      </div>
+    </div>
+    <div class="nav-menu-row">
+      <span class="nav-prompt">$</span>
+      <ul class="nav-menu">
+        <li><a href="/" data-i18n="nav.home">home</a></li><li><span class="nav-sep">·</span></li>
+        <li><a href="/projects.html" class="active" data-i18n="nav.projects">projects</a></li><li><span class="nav-sep">·</span></li>
+        <li><a href="/tools.html" data-i18n="nav.tools">tools</a></li><li><span class="nav-sep">·</span></li>
+        <li><a href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener" data-i18n="nav.writing">writing</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<main>
+  <div class="page-header">
+    <div class="term-line"><span class="prompt">$</span><span class="cmd" data-i18n="page.cmd">ls -la projects/</span></div>
+    <div class="page-title" data-i18n="page.title">Open source projects<span class="cursor"></span></div>
+  </div>
+
+  <section class="section">
+    <div class="section-cmd"><span class="prompt">$</span><span class="cmd">cat qorechain-tools/README.md</span></div>
+    <div class="repo-meta">
+      <a href="https://github.com/satoshi-Qore/qorechain-tools" target="_blank" rel="noopener">github.com/satoshi-Qore/qorechain-tools ↗</a>
+      <span class="repo-badge">python</span>
+      <span class="repo-badge">docker</span>
+      <span class="repo-badge">prometheus</span>
+    </div>
+    <div class="desc-block" data-i18n-html="tools.desc">RPC health monitoring, Prometheus + Grafana stack, incident runbooks, and upgrade checklists. Dependency-free Python tools for QoreChain operators.</div>
+    <div class="section-cmd" style="margin-top:16px"><span class="prompt">$</span><span class="cmd">ls qorechain-tools/</span></div>
+    <div class="tree-block">
+      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">scripts<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="tools.item1">rpc_health_monitor.py — endpoint health checker, no dependencies</span></div>
+      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">docker<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="tools.item2">prometheus-stack/ — full monitoring setup with Grafana dashboards</span></div>
+      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">runbooks<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="tools.item3">node-down.md, high-latency.md — operator response guides</span></div>
+      <div class="tree-line"><span class="tree-char">└──</span><span class="tree-name">checklists<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="tools.item4">upgrade.md — pre/post upgrade verification steps</span></div>
+    </div>
+    <div class="tag-row">
+      <span class="tag">python</span><span class="tag">monitoring</span><span class="tag">prometheus</span><span class="tag">grafana</span><span class="tag">docker</span><span class="tag">runbooks</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-cmd"><span class="prompt">$</span><span class="cmd">cat qorechain-guides/README.md</span></div>
+    <div class="repo-meta">
+      <a href="https://github.com/satoshi-Qore/qorechain-guides" target="_blank" rel="noopener">github.com/satoshi-Qore/qorechain-guides ↗</a>
+      <span class="repo-badge">multilingual</span>
+      <span class="repo-badge">docs</span>
+    </div>
+    <div class="desc-block" data-i18n-html="guides.desc">Validator setup guides, Light Node documentation, FAQ, troubleshooting, and contribution standards. Available in Turkish and English.</div>
+    <div class="section-cmd" style="margin-top:16px"><span class="prompt">$</span><span class="cmd">ls qorechain-guides/</span></div>
+    <div class="tree-block">
+      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">en<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="guides.item1">getting-started.md, faq.md, troubleshooting.md</span></div>
+      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">tr<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="guides.item2">baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md</span></div>
+      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">LIGHTNODE_SETUP.md</span><span class="tree-desc" data-i18n="guides.item3">Light Node setup — step-by-step validator installation guide</span></div>
+      <div class="tree-line"><span class="tree-char">└──</span><span class="tree-name">CONTRIBUTING.md</span><span class="tree-desc" data-i18n="guides.item4">Contribution standards, style guide, PR process</span></div>
+    </div>
+    <div class="tag-row">
+      <span class="tag">documentation</span><span class="tag">multilingual</span><span class="tag">validator</span><span class="tag">light-node</span><span class="tag">faq</span>
+    </div>
+  </section>
+</main>
+<footer><p>© 2026 satoshi-Qore &nbsp;·&nbsp; <a href="https://github.com/satoshi-Qore/satoshi-Qore.github.io" data-i18n="footer.source">source</a> &nbsp;·&nbsp; <span style="color:var(--green)">●</span> online</p></footer>
+<script>
+const T={en:{'nav.home':'home','nav.projects':'projects','nav.tools':'tools','nav.writing':'writing','page.cmd':'ls -la projects/','page.title':'Open source projects','tools.desc':'RPC health monitoring, Prometheus + Grafana stack, incident runbooks, and upgrade checklists. Dependency-free Python tools for QoreChain operators.','tools.item1':'rpc_health_monitor.py — endpoint health checker, no dependencies','tools.item2':'prometheus-stack/ — full monitoring setup with Grafana dashboards','tools.item3':'node-down.md, high-latency.md — operator response guides','tools.item4':'upgrade.md — pre/post upgrade verification steps','guides.desc':'Validator setup guides, Light Node documentation, FAQ, troubleshooting, and contribution standards. Available in Turkish and English.','guides.item1':'getting-started.md, faq.md, troubleshooting.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'Light Node setup — step-by-step validator installation guide','guides.item4':'Contribution standards, style guide, PR process','footer.source':'source'},tr:{'nav.home':'ana sayfa','nav.projects':'projeler','nav.tools':'araçlar','nav.writing':'yazılar','page.cmd':'ls -la projeler/','page.title':'Açık kaynak projeler','tools.desc':'RPC sağlık izleme, Prometheus + Grafana stack, incident runbook'ları ve yükseltme kontrol listeleri. QoreChain operatörleri için bağımlılıksız Python araçları.','tools.item1':'rpc_health_monitor.py — bağımlılıksız uç nokta sağlık denetleyicisi','tools.item2':'prometheus-stack/ — Grafana dashboard'larıyla tam izleme kurulumu','tools.item3':'node-down.md, high-latency.md — operatör müdahale rehberleri','tools.item4':'upgrade.md — yükseltme öncesi/sonrası doğrulama adımları','guides.desc':'Validator kurulum rehberleri, Light Node belgeleri, SSS, sorun giderme ve katkı standartları. Türkçe ve İngilizce.','guides.item1':'getting-started.md, faq.md, troubleshooting.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'Light Node kurulumu — adım adım validator yükleme rehberi','guides.item4':'Katkı standartları, stil kılavuzu, PR süreci','footer.source':'kaynak'},de:{'nav.home':'start','nav.projects':'projekte','nav.tools':'werkzeuge','nav.writing':'artikel','page.cmd':'ls -la projekte/','page.title':'Open-Source-Projekte','tools.desc':'RPC-Überwachung, Prometheus + Grafana Stack, Incident-Runbooks und Upgrade-Checklisten. Abhängigkeitsfreie Python-Tools für QoreChain-Operatoren.','tools.item1':'rpc_health_monitor.py — Endpunkt-Gesundheitsprüfer, keine Abhängigkeiten','tools.item2':'prometheus-stack/ — vollständiges Monitoring mit Grafana-Dashboards','tools.item3':'node-down.md, high-latency.md — Operator-Reaktionsleitfäden','tools.item4':'upgrade.md — Vor/Nach-Upgrade-Verifizierungsschritte','guides.desc':'Validator-Setup-Guides, Light Node Dokumentation, FAQ, Fehlerbehebung und Beitragsstandards. Auf Deutsch und Englisch.','guides.item1':'getting-started.md, faq.md, troubleshooting.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'Light Node Setup — Schritt-für-Schritt Validator-Installationsanleitung','guides.item4':'Beitragsstandards, Stilhandbuch, PR-Prozess','footer.source':'quellcode'},es:{'nav.home':'inicio','nav.projects':'proyectos','nav.tools':'herramientas','nav.writing':'artículos','page.cmd':'ls -la proyectos/','page.title':'Proyectos de código abierto','tools.desc':'Monitoreo de salud RPC, stack Prometheus + Grafana, runbooks de incidentes y listas de verificación. Herramientas Python sin dependencias para operadores QoreChain.','tools.item1':'rpc_health_monitor.py — verificador de salud de endpoints, sin dependencias','tools.item2':'prometheus-stack/ — configuración completa de monitoreo con dashboards Grafana','tools.item3':'node-down.md, high-latency.md — guías de respuesta para operadores','tools.item4':'upgrade.md — pasos de verificación pre/post actualización','guides.desc':'Guías de configuración de validator, documentación Light Node, FAQ, solución de problemas y estándares de contribución. En español e inglés.','guides.item1':'getting-started.md, faq.md, troubleshooting.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'Configuración Light Node — guía de instalación paso a paso','guides.item4':'Estándares de contribución, guía de estilo, proceso de PR','footer.source':'código fuente'},fr:{'nav.home':'accueil','nav.projects':'projets','nav.tools':'outils','nav.writing':'articles','page.cmd':'ls -la projets/','page.title':'Projets open source','tools.desc':'Surveillance RPC, stack Prometheus + Grafana, runbooks d'incidents et listes de contrôle. Outils Python sans dépendances pour les opérateurs QoreChain.','tools.item1':'rpc_health_monitor.py — vérificateur de santé des endpoints, sans dépendances','tools.item2':'prometheus-stack/ — configuration complète avec tableaux de bord Grafana','tools.item3':'node-down.md, high-latency.md — guides de réponse opérateur','tools.item4':'upgrade.md — étapes de vérification pré/post mise à niveau','guides.desc':'Guides de configuration validator, documentation Light Node, FAQ, dépannage et standards de contribution. En français et anglais.','guides.item1':'getting-started.md, faq.md, troubleshooting.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'Configuration Light Node — guide d'installation étape par étape','guides.item4':'Standards de contribution, guide de style, processus PR','footer.source':'source'},ro:{'nav.home':'acasă','nav.projects':'proiecte','nav.tools':'unelte','nav.writing':'articole','page.cmd':'ls -la proiecte/','page.title':'Proiecte open source','tools.desc':'Monitorizare RPC, stack Prometheus + Grafana, runbook-uri pentru incidente și liste de verificare. Unelte Python fără dependențe pentru operatorii QoreChain.','tools.item1':'rpc_health_monitor.py — verificator sănătate endpoint, fără dependențe','tools.item2':'prometheus-stack/ — configurație completă cu dashboard-uri Grafana','tools.item3':'node-down.md, high-latency.md — ghiduri de răspuns operator','tools.item4':'upgrade.md — pași de verificare pre/post actualizare','guides.desc':'Ghiduri de configurare validator, documentație Light Node, FAQ, depanare și standarde de contribuție. În română și engleză.','guides.item1':'getting-started.md, faq.md, troubleshooting.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'Configurare Light Node — ghid de instalare pas cu pas','guides.item4':'Standarde de contribuție, ghid de stil, proces PR','footer.source':'sursă'},it:{'nav.home':'home','nav.projects':'progetti','nav.tools':'strumenti','nav.writing':'articoli','page.cmd':'ls -la progetti/','page.title':'Progetti open source','tools.desc':'Monitoraggio RPC, stack Prometheus + Grafana, runbook per incidenti e checklist. Strumenti Python senza dipendenze per gli operatori QoreChain.','tools.item1':'rpc_health_monitor.py — verificatore di salute endpoint, senza dipendenze','tools.item2':'prometheus-stack/ — configurazione completa con dashboard Grafana','tools.item3':'node-down.md, high-latency.md — guide di risposta operatore','tools.item4':'upgrade.md — passaggi di verifica pre/post aggiornamento','guides.desc':'Guide di configurazione validator, documentazione Light Node, FAQ, risoluzione problemi e standard di contribuzione. In italiano e inglese.','guides.item1':'getting-started.md, faq.md, troubleshooting.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'Configurazione Light Node — guida all'installazione passo dopo passo','guides.item4':'Standard di contribuzione, guida di stile, processo PR','footer.source':'sorgente'},ar:{'nav.home':'الرئيسية','nav.projects':'المشاريع','nav.tools':'الأدوات','nav.writing':'المقالات','page.cmd':'ls -la projects/','page.title':'مشاريع مفتوحة المصدر','tools.desc':'مراقبة صحة RPC، حزمة Prometheus + Grafana، كتب تشغيل الحوادث وقوائم التحقق. أدوات Python بدون تبعيات لمشغلي QoreChain.','tools.item1':'rpc_health_monitor.py — مدقق صحة نقاط النهاية، بدون تبعيات','tools.item2':'prometheus-stack/ — إعداد مراقبة كامل مع لوحات Grafana','tools.item3':'node-down.md, high-latency.md — أدلة استجابة المشغل','tools.item4':'upgrade.md — خطوات التحقق قبل/بعد الترقية','guides.desc':'أدلة إعداد validator، توثيق Light Node، الأسئلة الشائعة، استكشاف الأخطاء ومعايير المساهمة. بالعربية والإنجليزية.','guides.item1':'getting-started.md, faq.md, troubleshooting.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'إعداد Light Node — دليل تثبيت validator خطوة بخطوة','guides.item4':'معايير المساهمة، دليل الأسلوب، عملية PR','footer.source':'المصدر'},zh:{'nav.home':'主页','nav.projects':'项目','nav.tools':'工具','nav.writing':'文章','page.cmd':'ls -la projects/','page.title':'开源项目','tools.desc':'RPC 健康监控，Prometheus + Grafana 栈，事件运行手册和升级清单。为 QoreChain 运营者提供的无依赖 Python 工具。','tools.item1':'rpc_health_monitor.py — 端点健康检查器，无依赖','tools.item2':'prometheus-stack/ — 带 Grafana 仪表板的完整监控设置','tools.item3':'node-down.md, high-latency.md — 运营者响应指南','tools.item4':'upgrade.md — 升级前后验证步骤','guides.desc':'验证者配置指南，Light Node 文档，FAQ，故障排除和贡献标准。中文和英文版本。','guides.item1':'getting-started.md, faq.md, troubleshooting.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'Light Node 设置 — 分步验证者安装指南','guides.item4':'贡献标准，风格指南，PR 流程','footer.source':'源码'},ja:{'nav.home':'ホーム','nav.projects':'プロジェクト','nav.tools':'ツール','nav.writing':'記事','page.cmd':'ls -la projects/','page.title':'オープンソースプロジェクト','tools.desc':'RPCヘルス監視、Prometheus + Grafanaスタック、インシデントランブック、アップグレードチェックリスト。QoreChainオペレーター向けの依存関係なしPythonツール。','tools.item1':'rpc_health_monitor.py — 依存なしエンドポイントヘルスチェッカー','tools.item2':'prometheus-stack/ — Grafanaダッシュボード付き完全監視設定','tools.item3':'node-down.md, high-latency.md — オペレーター対応ガイド','tools.item4':'upgrade.md — アップグレード前後の検証手順','guides.desc':'バリデーター設定ガイド、Light Nodeドキュメント、FAQ、トラブルシューティング、コントリビューション標準。日本語と英語で利用可能。','guides.item1':'getting-started.md, faq.md, troubleshooting.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'Light Nodeセットアップ — ステップバイステップのバリデーターインストールガイド','guides.item4':'コントリビューション標準、スタイルガイド、PRプロセス','footer.source':'ソースコード'},ko:{'nav.home':'홈','nav.projects':'프로젝트','nav.tools':'도구','nav.writing':'글','page.cmd':'ls -la projects/','page.title':'오픈소스 프로젝트','tools.desc':'RPC 상태 모니터링, Prometheus + Grafana 스택, 인시던트 런북 및 업그레이드 체크리스트. QoreChain 운영자를 위한 의존성 없는 Python 도구.','tools.item1':'rpc_health_monitor.py — 의존성 없는 엔드포인트 상태 검사기','tools.item2':'prometheus-stack/ — Grafana 대시보드가 포함된 완전한 모니터링 설정','tools.item3':'node-down.md, high-latency.md — 운영자 대응 가이드','tools.item4':'upgrade.md — 업그레이드 전후 검증 단계','guides.desc':'밸리데이터 설정 가이드, Light Node 문서, FAQ, 문제 해결 및 기여 표준. 한국어와 영어로 제공.','guides.item1':'getting-started.md, faq.md, troubleshooting.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'Light Node 설정 — 단계별 밸리데이터 설치 가이드','guides.item4':'기여 표준, 스타일 가이드, PR 프로세스','footer.source':'소스코드'}};
+function setLang(lang){const t=T[lang]||T.en;document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(t[k]!==undefined)el.textContent=t[k]});document.querySelectorAll('[data-i18n-html]').forEach(el=>{const k=el.getAttribute('data-i18n-html');if(t[k]!==undefined)el.innerHTML=t[k]});document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';const sel=document.getElementById('lang-select');if(sel)sel.value=lang;}
+</script>
+</body>
+</html>
