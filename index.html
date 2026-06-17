@@ -1,85 +1,185 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-site-verification" content="UfKVnKmWDxeHyJ_-FGtRIWRm-WSLJoSOS-xf6At5S9Q" />
-<title>satoshi-Qore | Blockchain Infrastructure Research</title>
-<meta name="description" content="satoshi-Qore - Blockchain infrastructure researcher and developer. QoreChain guides, validator documentation, and post-quantum cryptography research.">
+<title>satoshi-Qore | Blockchain Altyapı Araştırması</title>
+<meta name="description" content="satoshi-Qore — Blockchain altyapı araştırmacısı ve geliştirici. QoreChain validator belgeleri, RPC izleme araçları ve post-kuantum kriptografi araştırmaları.">
+<meta property="og:title" content="satoshi-Qore | Blockchain Infrastructure Research">
+<meta property="og:description" content="QoreChain validator docs, RPC health monitoring, and post-quantum cryptography research.">
+<meta property="og:url" content="https://satoshi-qore.github.io">
+<meta name="theme-color" content="#0d1117">
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.6; }
-.container { max-width: 800px; margin: 0 auto; padding: 60px 24px; }
-h1 { font-size: 2.5rem; color: #f0f6fc; margin-bottom: 8px; }
-.tagline { color: #8b949e; font-size: 1.1rem; margin-bottom: 40px; }
-h2 { font-size: 1.3rem; color: #f0f6fc; margin: 40px 0 16px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
-p { margin-bottom: 16px; color: #8b949e; }
-.links { display: flex; flex-direction: column; gap: 12px; }
-.link-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #161b22; border: 1px solid #21262d; border-radius: 8px; text-decoration: none; color: #c9d1d9; transition: border-color 0.2s; }
-.link-item:hover { border-color: #388bfd; color: #58a6ff; }
-.link-icon { font-size: 1.2rem; }
-.repos { display: grid; gap: 12px; }
-.repo-card { padding: 16px; background: #161b22; border: 1px solid #21262d; border-radius: 8px; }
-.repo-card a { color: #58a6ff; text-decoration: none; font-weight: 600; }
-.repo-card a:hover { text-decoration: underline; }
-.repo-desc { color: #8b949e; font-size: 0.9rem; margin-top: 6px; }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0d1117; --bg-card: #161b22; --bg-card-hover: #1c2128;
+    --border: #21262d; --border-hover: #30363d;
+    --text: #c9d1d9; --text-muted: #8b949e; --text-heading: #f0f6fc;
+    --accent: #3fb950; --accent-2: #58a6ff; --accent-3: #bc8cff;
+    --tag-bg: #1f2937; --tag-text: #3fb950;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+  .nav-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  .nav-logo { font-weight: 700; font-size: 1rem; color: var(--text-heading); text-decoration: none; letter-spacing: -0.02em; }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 4px; list-style: none; }
+  .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; padding: 6px 12px; border-radius: 6px; transition: color 0.15s, background 0.15s; }
+  .nav-links a:hover { color: var(--text-heading); background: var(--bg-card); }
+  .hero { max-width: 900px; margin: 0 auto; padding: 80px 24px 64px; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--tag-bg); color: var(--tag-text); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(63,185,80,0.25); margin-bottom: 24px; }
+  .hero-badge::before { content: "●"; font-size: 0.6em; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; color: var(--text-heading); line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 16px; }
+  .hero h1 .highlight { color: var(--accent); }
+  .hero-sub { font-size: 1.05rem; color: var(--text-muted); max-width: 560px; margin-bottom: 36px; line-height: 1.75; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: all 0.15s; cursor: pointer; border: none; }
+  .btn-primary { background: var(--accent); color: #0d1117; }
+  .btn-primary:hover { background: #4cd964; transform: translateY(-1px); }
+  .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border-hover); }
+  .btn-secondary:hover { background: var(--bg-card); border-color: var(--accent-2); color: var(--accent-2); }
+  section { max-width: 900px; margin: 0 auto; padding: 56px 24px; border-top: 1px solid var(--border); }
+  .section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .section-title { font-size: clamp(1.3rem, 3vw, 1.75rem); font-weight: 700; color: var(--text-heading); letter-spacing: -0.02em; margin-bottom: 8px; }
+  .section-sub { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 32px; }
+  .bilingual { color: var(--text-muted); font-style: italic; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+  @media (max-width: 600px) { .about-grid { grid-template-columns: 1fr; } }
+  .about-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+  .about-card-icon { font-size: 1.4rem; margin-bottom: 10px; }
+  .about-card h3 { font-size: 0.9rem; font-weight: 700; color: var(--text-heading); margin-bottom: 6px; }
+  .about-card p { font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; }
+  .projects-grid { display: grid; gap: 16px; }
+  .project-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; transition: border-color 0.2s, background 0.2s; text-decoration: none; display: block; }
+  .project-card:hover { border-color: var(--accent-2); background: var(--bg-card-hover); }
+  .project-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+  .project-name { font-size: 1rem; font-weight: 700; color: var(--accent-2); font-family: 'SF Mono', 'Fira Code', monospace; }
+  .project-card:hover .project-name { text-decoration: underline; }
+  .project-arrow { color: var(--text-muted); font-size: 1rem; flex-shrink: 0; transition: transform 0.15s; }
+  .project-card:hover .project-arrow { transform: translate(2px,-2px); color: var(--accent-2); }
+  .project-desc { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.65; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-size: 0.73rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: #1f2937; color: #64b5f6; border: 1px solid rgba(100,181,246,0.2); }
+  .tag.green { color: #4cd964; border-color: rgba(76,217,100,0.2); background: #0d1e12; }
+  .tag.purple { color: #ce93d8; border-color: rgba(206,147,216,0.2); background: #1a1028; }
+  .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+  .tool-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; display: flex; gap: 14px; align-items: flex-start; }
+  .tool-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+  .tool-name { font-size: 0.875rem; font-weight: 700; color: var(--text-heading); margin-bottom: 3px; }
+  .tool-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+  .writing-list { display: flex; flex-direction: column; gap: 12px; }
+  .writing-item { display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; text-decoration: none; transition: border-color 0.2s; }
+  .writing-item:hover { border-color: var(--accent); }
+  .writing-icon { font-size: 1.1rem; flex-shrink: 0; }
+  .writing-text { flex: 1; }
+  .writing-title { font-size: 0.9rem; font-weight: 600; color: var(--text-heading); margin-bottom: 2px; }
+  .writing-meta { font-size: 0.78rem; color: var(--text-muted); }
+  .writing-arrow { color: var(--text-muted); font-size: 0.9rem; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .connect-card { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; text-decoration: none; color: var(--text); font-size: 0.875rem; font-weight: 600; transition: all 0.15s; }
+  .connect-card:hover { border-color: var(--accent-2); color: var(--accent-2); background: var(--bg-card-hover); }
+  .connect-icon { font-size: 1.2rem; }
+  .connect-handle { font-size: 0.75rem; font-weight: 400; color: var(--text-muted); display: block; }
+  footer { border-top: 1px solid var(--border); text-align: center; padding: 32px 24px; color: var(--text-muted); font-size: 0.8rem; }
+  footer a { color: var(--accent-2); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  @media (max-width: 540px) { .nav-links { display: none; } .hero { padding: 48px 20px 40px; } section { padding: 40px 20px; } }
 </style>
 </head>
 <body>
-<div class="container">
-<h1>satoshi-Qore</h1>
-<p class="tagline">Blockchain Infrastructure Research &amp; Development</p>
-
-<h2>About</h2>
-<p>Researching and documenting blockchain infrastructure with a focus on QoreChain validator operations, post-quantum cryptography, and decentralized network resilience.</p>
-
-<h2>Connect</h2>
-<div class="links">
-<a class="link-item" href="https://github.com/satoshi-Qore">
-<span class="link-icon">&#128736;</span> GitHub &mdash; github.com/satoshi-Qore
-</a>
-<a class="link-item" href="https://x.com/satoshi_Qore">
-<span class="link-icon">&#128279;</span> X (Twitter) &mdash; @satoshi_Qore
-</a>
-<a class="link-item" href="https://medium.com/@satoshi_Qore">
-<span class="link-icon">&#128221;</span> Medium &mdash; @satoshi_Qore
-</a>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#"><span>satoshi</span>-Qore</a>
+    <ul class="nav-links">
+      <li><a href="#hakkinda">Hakkında</a></li>
+      <li><a href="#projeler">Projeler</a></li>
+      <li><a href="#araclar">Araçlar</a></li>
+      <li><a href="#yazilar">Yazılar</a></li>
+      <li><a href="#iletisim">İletişim</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="hero">
+  <div class="hero-badge">Blockchain Altyapı Araştırması</div>
+  <h1>Merhaba, ben<br><span class="highlight">satoshi-Qore</span></h1>
+  <p class="hero-sub">Blockchain altyapısını araştırıyor, belgeliyor ve araçlar geliştiriyorum.<br>QoreChain validator operasyonları, RPC izleme ve post-kuantum kriptografi üzerine çalışıyorum.</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="#projeler">Projeleri Gör</a>
+    <a class="btn btn-secondary" href="https://github.com/satoshi-Qore" target="_blank" rel="noopener">GitHub →</a>
+  </div>
 </div>
-
-<h2>Projects</h2>
-<div class="repos">
-<div class="repo-card">
-<a href="https://github.com/satoshi-Qore/qorechain-guides">satoshi-Qore/qorechain-guides</a>
-<p class="repo-desc">QoreChain validator setup guides, light node documentation, and network participation resources.</p>
-</div>
-<div class="repo-card">
-<a href="https://github.com/satoshi-Qore/qorechain-rpc-health-monitor">satoshi-Qore/qorechain-rpc-health-monitor</a>
-<p class="repo-desc">Python CLI tool to monitor QoreChain RPC endpoint health and generate Markdown reports.</p>
-</div>
-<div class="repo-card">
-<a href="https://github.com/satoshi-Qore/qorechain-node-observability">satoshi-Qore/qorechain-node-observability</a>
-<p class="repo-desc">Docker Compose stack with Prometheus and Grafana for QoreChain node monitoring and observability.</p>
-</div>
-<div class="repo-card">
-<a href="https://github.com/satoshi-Qore/qorechain-operator-playbook">satoshi-Qore/qorechain-operator-playbook</a>
-<p class="repo-desc">Incident response runbooks and operational playbooks for QoreChain node operators.</p>
-</div>
-<div class="repo-card">
-<a href="https://github.com/satoshi-Qore/qorechain-academy-site">satoshi-Qore/qorechain-academy-site</a>
-<p class="repo-desc">Educational content and tutorials for QoreChain validators, node operators, and contributors.</p>
-</div>
-<div class="repo-card">
-<a href="https://github.com/satoshi-Qore/qorechain-contributor-onboarding-kit">satoshi-Qore/qorechain-contributor-onboarding-kit</a>
-<p class="repo-desc">Contributor onboarding kit for QoreChain — guides, coding standards, and PR templates.</p>
-</div>
-</div>
-
-<h2>Writing</h2>
-<div class="links">
-<a class="link-item" href="https://medium.com/@satoshi_Qore">
-<span class="link-icon">&#128196;</span> Articles on QoreChain, post-quantum cryptography, and blockchain infrastructure
-</a>
-</div>
-</div>
+<section id="hakkinda">
+  <div class="section-label">Hakkında / About</div>
+  <h2 class="section-title">Kim Ben? <span class="bilingual">/ Who am I?</span></h2>
+  <p class="section-sub">Blockchain ağlarının içini anlayarak daha sağlam altyapılar kurmaya odaklanıyorum.</p>
+  <div class="about-grid">
+    <div class="about-card"><div class="about-card-icon">🔭</div><h3>Araştırma / Research</h3><p>QoreChain ağ altyapısı, validator operasyonları ve post-kuantum kriptografi protokolleri üzerine aktif araştırma yürütüyorum.</p></div>
+    <div class="about-card"><div class="about-card-icon">🛠️</div><h3>Araç Geliştirme / Tooling</h3><p>RPC endpoint izleme, Prometheus/Grafana monitoring stack ve operatör playbook'ları gibi açık kaynak araçlar geliştiriyorum.</p></div>
+    <div class="about-card"><div class="about-card-icon">📖</div><h3>Belgeleme / Documentation</h3><p>Türkçe ve İngilizce teknik rehberler, Light Node kurulum kılavuzları ve katkı belgeleri hazırlıyorum.</p></div>
+    <div class="about-card"><div class="about-card-icon">🌐</div><h3>Topluluk / Community</h3><p>QoreChain topluluğunun büyümesine katkı standartları, onboarding kitler ve açık kaynak kültürüyle destek oluyorum.</p></div>
+  </div>
+</section>
+<section id="projeler">
+  <div class="section-label">Projeler / Projects</div>
+  <h2 class="section-title">Depolar <span class="bilingual">/ Repositories</span></h2>
+  <p class="section-sub">Açık kaynak araç ve rehberlerin konsolide edildiği iki ana depo.</p>
+  <div class="projects-grid">
+    <a class="project-card" href="https://github.com/satoshi-Qore/qorechain-tools" target="_blank" rel="noopener">
+      <div class="project-header"><span class="project-name">satoshi-Qore / qorechain-tools</span><span class="project-arrow">↗</span></div>
+      <p class="project-desc">QoreChain node operatörleri için araçlar ve operasyonel kaynaklar. RPC endpoint sağlık izleme, Prometheus + Grafana monitoring stack, incident response runbook'ları ve upgrade checklistleri içerir.</p>
+      <div class="project-tags"><span class="tag green">Python</span><span class="tag green">Docker</span><span class="tag">Prometheus</span><span class="tag">Grafana</span><span class="tag purple">Incident Response</span></div>
+    </a>
+    <a class="project-card" href="https://github.com/satoshi-Qore/qorechain-guides" target="_blank" rel="noopener">
+      <div class="project-header"><span class="project-name">satoshi-Qore / qorechain-guides</span><span class="project-arrow">↗</span></div>
+      <p class="project-desc">QoreChain katılımı için kapsamlı rehberler. Validator kurulumu, Light Node dokümantasyonu, SSS, sorun giderme kılavuzları ve katkı standartları. Türkçe ve İngilizce.</p>
+      <div class="project-tags"><span class="tag">Türkçe / TR</span><span class="tag">English / EN</span><span class="tag green">Validator</span><span class="tag green">Light Node</span><span class="tag purple">Contributing</span></div>
+    </a>
+  </div>
+</section>
+<section id="araclar">
+  <div class="section-label">Araçlar / Tools</div>
+  <h2 class="section-title">Ne Var İçeride? <span class="bilingual">/ What's inside?</span></h2>
+  <p class="section-sub">İki repoda toplanan başlıca kaynaklar.</p>
+  <div class="tools-grid">
+    <div class="tool-item"><div class="tool-icon">📡</div><div><div class="tool-name">RPC Health Monitor</div><div class="tool-desc">Python CLI — endpoint sağlığını kontrol eder, Markdown raporu üretir. Dış bağımlılık yok.</div></div></div>
+    <div class="tool-item"><div class="tool-icon">📊</div><div><div class="tool-name">Monitoring Stack</div><div class="tool-desc">Docker Compose ile Prometheus + Grafana. Node metrikleri ve alert kuralları dahil.</div></div></div>
+    <div class="tool-item"><div class="tool-icon">🚨</div><div><div class="tool-name">Incident Runbooks</div><div class="tool-desc">Node-down, yüksek kaynak kullanımı senaryoları için adım adım müdahale kılavuzları.</div></div></div>
+    <div class="tool-item"><div class="tool-icon">⬆️</div><div><div class="tool-name">Upgrade Checklist</div><div class="tool-desc">Node yükseltmelerinde before/during/after adımları ve rollback planı.</div></div></div>
+    <div class="tool-item"><div class="tool-icon">📚</div><div><div class="tool-name">Validator Rehberleri</div><div class="tool-desc">QoreChain ağına validator olarak katılım için kapsamlı TR/EN belgeler.</div></div></div>
+    <div class="tool-item"><div class="tool-icon">🔗</div><div><div class="tool-name">Light Node Docs</div><div class="tool-desc">Light Node kurulum ve yapılandırma belgesi — orijinal terimler korunmuş.</div></div></div>
+    <div class="tool-item"><div class="tool-icon">🤝</div><div><div class="tool-name">Katkı Standartları</div><div class="tool-desc">Python, Bash, YAML, commit mesajı kuralları ve PR şablonları.</div></div></div>
+    <div class="tool-item"><div class="tool-icon">🔍</div><div><div class="tool-name">SSS / Sorun Giderme</div><div class="tool-desc">Yaygın QoreChain sorunları için soru-cevap ve tanılama adımları. TR + EN.</div></div></div>
+  </div>
+</section>
+<section id="yazilar">
+  <div class="section-label">Yazılar / Writing</div>
+  <h2 class="section-title">Makaleler <span class="bilingual">/ Articles</span></h2>
+  <p class="section-sub">Blockchain altyapısı, post-kuantum kriptografi ve QoreChain üzerine yazılar.</p>
+  <div class="writing-list">
+    <a class="writing-item" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener">
+      <span class="writing-icon">✍️</span>
+      <div class="writing-text"><div class="writing-title">Medium — @satoshi_Qore</div><div class="writing-meta">QoreChain, post-kuantum kriptografi ve blockchain altyapısı üzerine makaleler</div></div>
+      <span class="writing-arrow">↗</span>
+    </a>
+    <a class="writing-item" href="https://github.com/satoshi-Qore/qorechain-guides" target="_blank" rel="noopener">
+      <span class="writing-icon">📄</span>
+      <div class="writing-text"><div class="writing-title">Teknik Belgeler / Technical Docs</div><div class="writing-meta">github.com/satoshi-Qore/qorechain-guides — Türkçe ve İngilizce rehberler</div></div>
+      <span class="writing-arrow">↗</span>
+    </a>
+  </div>
+</section>
+<section id="iletisim">
+  <div class="section-label">İletişim / Connect</div>
+  <h2 class="section-title">Ulaşın <span class="bilingual">/ Get in touch</span></h2>
+  <p class="section-sub">GitHub, X veya Medium üzerinden bağlantı kurabilirsiniz.</p>
+  <div class="connect-grid">
+    <a class="connect-card" href="https://github.com/satoshi-Qore" target="_blank" rel="noopener"><span class="connect-icon">🐙</span><div>GitHub<span class="connect-handle">github.com/satoshi-Qore</span></div></a>
+    <a class="connect-card" href="https://x.com/satoshi_Qore" target="_blank" rel="noopener"><span class="connect-icon">𝕏</span><div>X (Twitter)<span class="connect-handle">@satoshi_Qore</span></div></a>
+    <a class="connect-card" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener"><span class="connect-icon">📝</span><div>Medium<span class="connect-handle">@satoshi_Qore</span></div></a>
+  </div>
+</section>
+<footer><p>© 2026 satoshi-Qore · MIT License · <a href="https://github.com/satoshi-Qore" target="_blank" rel="noopener">github.com/satoshi-Qore</a></p></footer>
 </body>
 </html>
