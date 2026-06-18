@@ -4,130 +4,554 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tools · satoshi-Qore</title>
-<meta name="theme-color" content="#0c0c0c">
+<meta name="description" content="Operator toolbox — RPC health monitor, Prometheus stack, and incident runbooks for QoreChain nodes.">
+<meta name="theme-color" content="#08080f">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0c0c0c;--surface:#111;--surface-2:#161616;--border:#1e1e1e;--border-hi:#2a2a2a;--text:#b8c0cc;--muted:#525866;--heading:#e2e8f0;--green:#00d46a;--green-dim:#00843f;--green-bg:rgba(0,212,106,0.07);--amber:#f59e0b;--blue:#60a5fa;--mono:'JetBrains Mono','Fira Code',monospace;}
+:root{
+  --bg:#08080f;
+  --surface:#0f0f1a;
+  --border:rgba(255,255,255,0.06);
+  --border-hi:rgba(255,255,255,0.12);
+  --text:#94a3b8;
+  --heading:#e2e8f0;
+  --muted:#475569;
+  --accent:#6366f1;
+  --accent-2:#8b5cf6;
+  --accent-3:#0ea5e9;
+  --green:#10b981;
+  --amber:#f59e0b;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Inter',-apple-system,sans-serif;
+  --glow:rgba(99,102,241,0.15);
+  --glow-2:rgba(139,92,246,0.1);
+}
 html{scroll-behavior:smooth}
-body{font-family:var(--mono);background:var(--bg);color:var(--text);line-height:1.7;font-size:13px}
-body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px);pointer-events:none;z-index:9999}
-nav{position:sticky;top:0;z-index:100;background:rgba(12,12,12,0.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
-.nav-wrap{max-width:860px;margin:0 auto;padding:0 24px}
-.nav-top{display:flex;align-items:center;justify-content:space-between;padding:7px 0 5px;border-bottom:1px solid var(--border)}
-.nav-path{font-size:11px;color:var(--muted)}.nav-path .cur{color:var(--green)}.nav-path .sep{margin:0 4px;color:var(--border-hi)}
-.lang-selector{display:flex;align-items:center;gap:5px;flex-shrink:0}
-.lang-label{font-size:10px;color:var(--muted)}
-#lang-select{background:var(--surface);border:1px solid var(--border-hi);color:var(--green);font-family:var(--mono);font-size:11px;font-weight:500;padding:3px 6px;border-radius:3px;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;min-width:44px;text-align:center}
-#lang-select:hover,#lang-select:focus{border-color:var(--green-dim)}
-#lang-select option{background:#1a1a1a;color:var(--text)}
-.nav-menu-row{display:flex;align-items:center;padding:5px 0;gap:4px}
-.nav-prompt{color:var(--green);font-size:12px;font-weight:700;flex-shrink:0}
-.nav-menu{display:flex;gap:0;list-style:none}
-.nav-menu a{color:var(--muted);text-decoration:none;font-size:12px;padding:3px 10px;border-radius:3px;transition:color .15s,background .15s}
-.nav-menu a:hover,.nav-menu a.active{color:var(--green);background:var(--green-bg)}
-.nav-sep{color:var(--border-hi);font-size:12px;padding:3px 2px}
-main{max-width:860px;margin:0 auto;padding:0 24px}
-.page-header{padding:64px 0 48px}
-.term-line{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px}
-.prompt{color:var(--green);font-weight:700;flex-shrink:0}
-.cmd{color:var(--heading)}
-.page-title{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;color:var(--heading);letter-spacing:-0.02em;line-height:1.1;margin-left:22px;margin-top:8px}
-.cursor{display:inline-block;width:.55em;height:1em;background:var(--green);vertical-align:text-bottom;animation:blink .9s step-end infinite;margin-left:2px}
-@keyframes blink{50%{opacity:0}}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;min-height:100vh}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 10%,rgba(99,102,241,0.08) 0%,transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 80%,rgba(139,92,246,0.06) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 60% at 60% 30%,rgba(14,165,233,0.04) 0%,transparent 70%);
+  pointer-events:none;z-index:0
+}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(8,8,15,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:900px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px}
+.nav-logo{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--heading);text-decoration:none;letter-spacing:-.01em}
+.nav-logo span{background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;padding:6px 12px;border-radius:8px;transition:color .2s,background .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--heading);background:rgba(255,255,255,0.06)}
+.lang-wrap{display:flex;align-items:center;gap:6px;padding-left:12px;border-left:1px solid var(--border)}
+.lang-label{font-size:11px;color:var(--muted);font-family:var(--mono)}
+#lang-select{background:rgba(255,255,255,0.05);border:1px solid var(--border-hi);color:var(--heading);font-family:var(--mono);font-size:11px;font-weight:500;padding:4px 8px;border-radius:6px;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;min-width:46px;text-align:center;transition:border-color .2s,background .2s}
+#lang-select:hover,#lang-select:focus{border-color:var(--accent);background:rgba(99,102,241,0.1)}
+#lang-select option{background:#1a1a2e;color:var(--heading)}
+
+/* LAYOUT */
+main{max-width:900px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+
+/* PAGE HERO */
+.page-hero{padding:72px 0 56px}
+.page-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;color:var(--accent);border:1px solid rgba(99,102,241,0.3);border-radius:20px;padding:4px 14px;margin-bottom:20px;background:rgba(99,102,241,0.06)}
+.page-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.page-title{font-size:clamp(2rem,5vw,3rem);font-weight:700;color:var(--heading);letter-spacing:-0.03em;line-height:1.1;margin-bottom:16px}
+.page-title .grad{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 50%,var(--accent-3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.page-subtitle{font-size:16px;color:var(--text);max-width:560px;line-height:1.7}
+
+/* SECTION HEADER */
 .section{padding:48px 0;border-top:1px solid var(--border)}
-.section-cmd{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.desc-block{margin-left:22px;padding:12px 16px;border-left:2px solid var(--border-hi);background:var(--surface);font-size:13px;color:var(--text);line-height:1.8;margin-bottom:20px;max-width:660px}
-.tool-grid{margin-left:22px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
-.tool-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:16px;transition:border-color .15s}
-.tool-card:hover{border-color:var(--green-dim)}
-.tool-card-name{color:var(--green);font-size:13px;font-weight:700;margin-bottom:6px}
-.tool-card-desc{color:var(--muted);font-size:12px;line-height:1.6}
-.tool-card-tag{display:inline-block;margin-top:8px;font-size:10px;padding:1px 7px;border:1px solid var(--border-hi);border-radius:3px;color:var(--muted)}
-.code-block{margin-left:22px;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:14px 16px;font-size:12px;line-height:1.8;max-width:620px;overflow-x:auto}
+.section-label{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.section-heading{font-size:22px;font-weight:700;color:var(--heading);margin-bottom:6px;letter-spacing:-.02em}
+.section-desc{font-size:14px;color:var(--text);max-width:620px;line-height:1.8;margin-top:8px}
+
+/* TOOL BLOCK */
+.tool-block{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:32px;
+  margin:28px 0;
+  opacity:0;transform:translateY(24px);
+  transition:border-color .3s,box-shadow .3s;
+}
+.tool-block.visible{opacity:1;transform:translateY(0);transition:opacity .5s ease,transform .5s ease,border-color .3s,box-shadow .3s}
+.tool-block:hover{border-color:rgba(99,102,241,0.3);box-shadow:0 0 32px var(--glow)}
+
+.tool-block-title{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--heading);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.tool-block-title .icon{font-size:18px}
+.tool-desc{color:var(--text);font-size:14px;line-height:1.8;margin-bottom:20px;max-width:640px}
+
+/* CODE BLOCK */
+.code-block{
+  background:rgba(0,0,0,0.4);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:18px 20px;
+  font-family:var(--mono);
+  font-size:12px;
+  line-height:2;
+  overflow-x:auto;
+  margin-bottom:20px;
+}
 .code-block .comment{color:var(--muted)}
-.code-block .key{color:var(--blue)}
+.code-block .cmd{color:var(--accent)}
+.code-block .arg{color:var(--accent-3)}
 .code-block .val{color:var(--green)}
-.code-block .str{color:var(--amber)}
-footer{border-top:1px solid var(--border);padding:22px 24px;text-align:center;color:var(--muted);font-size:11px;font-family:var(--mono)}
-footer a{color:var(--muted);text-decoration:none}
-footer a:hover{color:var(--green)}
-html[dir="rtl"] .desc-block{border-left:none;border-right:2px solid var(--border-hi)}
-html[dir="rtl"] .tool-grid,html[dir="rtl"] .code-block{margin-left:0;margin-right:22px}
-html[dir="rtl"] .page-title{margin-left:0;margin-right:22px}
-html[dir="rtl"] .section-cmd{flex-direction:row-reverse}
-@media(max-width:520px){.nav-menu-row{display:none}.page-header{padding:40px 0 32px}.section{padding:36px 0}.tool-grid{grid-template-columns:1fr}}
+.code-block .prompt{color:var(--accent-2);margin-right:8px;user-select:none}
+
+/* GRID */
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:4px}
+.mini-card{
+  background:rgba(255,255,255,0.02);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:16px 18px;
+  transition:border-color .2s,background .2s;
+}
+.mini-card:hover{border-color:rgba(99,102,241,0.3);background:rgba(99,102,241,0.04)}
+.mini-card-name{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--heading);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.mini-card-port{font-size:10px;color:var(--muted);font-family:var(--mono);border:1px solid var(--border-hi);border-radius:4px;padding:1px 6px}
+.mini-card-desc{font-size:12px;color:var(--muted);line-height:1.6}
+
+/* RUNBOOK LIST */
+.runbook-list{display:grid;gap:10px;margin-top:4px}
+.runbook-item{
+  background:rgba(255,255,255,0.02);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:16px 18px;
+  display:flex;align-items:flex-start;gap:14px;
+  transition:border-color .2s;
+}
+.runbook-item:hover{border-color:rgba(99,102,241,0.25)}
+.runbook-badge{font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:5px;flex-shrink:0;margin-top:2px}
+.runbook-badge.runbook{background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);color:var(--accent)}
+.runbook-badge.checklist{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:var(--green)}
+.runbook-name{font-family:var(--mono);font-size:13px;color:var(--heading);margin-bottom:4px}
+.runbook-desc{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:28px;text-align:center;color:var(--muted);font-family:var(--mono);font-size:12px;position:relative;z-index:1;margin-top:48px}
+footer a{color:var(--muted);text-decoration:none;transition:color .2s}
+footer a:hover{color:var(--heading)}
+.footer-dot{color:var(--green);margin:0 4px}
+
+/* RTL */
+html[dir="rtl"] .tool-desc,.section-desc{margin-right:0}
+html[dir="rtl"] .mini-card-name{flex-direction:row-reverse}
+
+@media(max-width:600px){
+  .page-hero{padding:48px 0 36px}
+  .page-title{font-size:1.8rem}
+  .tool-block{padding:20px}
+  .tool-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+}
 </style>
 </head>
 <body>
 <nav>
-  <div class="nav-wrap">
-    <div class="nav-top">
-      <div class="nav-path"><span class="cur">satoshi-Qore</span><span class="sep">/</span><span>satoshi-Qore.github.io</span><span class="sep">~</span><span class="cur">main</span></div>
-      <div class="lang-selector">
-        <span class="lang-label">lang:</span>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><span>satoshi</span>-Qore</a>
+    <div class="nav-right">
+      <nav class="nav-links">
+        <a href="/" data-i18n="nav.home">home</a>
+        <a href="/projects.html" data-i18n="nav.projects">projects</a>
+        <a href="/tools.html" class="active" data-i18n="nav.tools">tools</a>
+        <a href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener" data-i18n="nav.writing">writing</a>
+      </nav>
+      <div class="lang-wrap">
+        <span class="lang-label">lang</span>
         <select id="lang-select" onchange="setLang(this.value)" aria-label="Select language">
-          <option value="en" selected>EN</option><option value="tr">TR</option><option value="ro">RO</option><option value="de">DE</option><option value="it">IT</option><option value="es">ES</option><option value="ar">AR</option><option value="zh">ZH</option><option value="ja">JA</option><option value="ko">KO</option>
+          <option value="en" selected>EN</option>
+          <option value="tr">TR</option>
+          <option value="ro">RO</option>
+          <option value="de">DE</option>
+          <option value="it">IT</option>
+          <option value="es">ES</option>
+          <option value="ar">AR</option>
+          <option value="zh">ZH</option>
+          <option value="ja">JA</option>
+          <option value="ko">KO</option>
         </select>
       </div>
     </div>
-    <div class="nav-menu-row">
-      <span class="nav-prompt">$</span>
-      <ul class="nav-menu">
-        <li><a href="/" data-i18n="nav.home">home</a></li><li><span class="nav-sep">·</span></li>
-        <li><a href="/projects.html" data-i18n="nav.projects">projects</a></li><li><span class="nav-sep">·</span></li>
-        <li><a href="/tools.html" class="active" data-i18n="nav.tools">tools</a></li><li><span class="nav-sep">·</span></li>
-        <li><a href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener" data-i18n="nav.writing">writing</a></li>
-      </ul>
-    </div>
   </div>
 </nav>
+
 <main>
-  <div class="page-header">
-    <div class="term-line"><span class="prompt">$</span><span class="cmd" data-i18n="page.cmd">ls -la tools/</span></div>
-    <div class="page-title" data-i18n="page.title">Operator toolbox<span class="cursor"></span></div>
+  <div class="page-hero">
+    <div class="page-eyebrow" data-i18n="hero.eyebrow">operator tools</div>
+    <h1 class="page-title"><span class="grad" data-i18n="hero.title">Toolbox</span></h1>
+    <p class="page-subtitle" data-i18n="hero.subtitle">RPC health monitoring, Prometheus stack, and incident runbooks for QoreChain node operators.</p>
   </div>
 
-  <section class="section">
-    <div class="section-cmd"><span class="prompt">$</span><span class="cmd" data-i18n="rpc.cmd">python rpc_health_monitor.py --help</span></div>
-    <div class="desc-block" data-i18n-html="rpc.desc">Lightweight RPC endpoint health checker. No external dependencies — runs anywhere Python 3.7+ is installed. Checks latency, block height, and peer count across multiple endpoints simultaneously.</div>
-    <div class="section-cmd" style="margin-top:16px"><span class="prompt">$</span><span class="cmd" data-i18n="rpc.usage">cat usage.txt</span></div>
+  <!-- RPC Health Monitor -->
+  <div class="section">
+    <div class="section-label" data-i18n="rpc.label">health checker</div>
+    <div class="section-heading" data-i18n="rpc.heading">RPC Health Monitor</div>
+    <p class="section-desc" data-i18n="rpc.section-desc">Lightweight endpoint health checker. No external dependencies — runs anywhere Python 3.7+ is installed.</p>
+  </div>
+
+  <div class="tool-block" data-animate>
+    <div class="tool-block-title"><span class="icon">🔍</span> <span data-i18n="rpc.title">rpc_health_monitor.py</span></div>
+    <p class="tool-desc" data-i18n="rpc.desc">Checks latency, block height, and peer count across multiple endpoints simultaneously. Outputs JSON — easy to pipe into alerts or dashboards. Zero dependencies, single file.</p>
     <div class="code-block">
       <div><span class="comment"># single endpoint</span></div>
-      <div><span class="val">python rpc_health_monitor.py</span> <span class="str">http://localhost:8545</span></div>
-      <div style="margin-top:8px"><span class="comment"># multiple endpoints</span></div>
-      <div><span class="val">python rpc_health_monitor.py</span> <span class="str">http://node1:8545 http://node2:8545</span></div>
-      <div style="margin-top:8px"><span class="comment"># with config file</span></div>
-      <div><span class="val">python rpc_health_monitor.py</span> <span class="key">--config</span> <span class="str">endpoints.json</span> <span class="key">--interval</span> <span class="val">30</span></div>
+      <div><span class="prompt">$</span><span class="cmd">python rpc_health_monitor.py</span> <span class="arg">http://localhost:8545</span></div>
+      <div style="margin-top:10px"><span class="comment"># multiple endpoints</span></div>
+      <div><span class="prompt">$</span><span class="cmd">python rpc_health_monitor.py</span> <span class="arg">http://node1:8545 http://node2:8545</span></div>
+      <div style="margin-top:10px"><span class="comment"># with config file + interval</span></div>
+      <div><span class="prompt">$</span><span class="cmd">python rpc_health_monitor.py</span> <span class="val">--config</span> <span class="arg">endpoints.json</span> <span class="val">--interval</span> <span class="arg">30</span></div>
     </div>
-  </section>
+  </div>
 
-  <section class="section">
-    <div class="section-cmd"><span class="prompt">$</span><span class="cmd" data-i18n="stack.cmd">docker compose -f prometheus-stack/docker-compose.yml up -d</span></div>
-    <div class="desc-block" data-i18n-html="stack.desc">Full Prometheus + Grafana monitoring stack for QoreChain nodes. Pre-configured dashboards for block height, RPC latency, peer count, and system metrics. One command to deploy.</div>
-    <div class="tool-grid">
-      <div class="tool-card"><div class="tool-card-name">Prometheus</div><div class="tool-card-desc" data-i18n="stack.prom">Metrics collection from all RPC endpoints and system exporters</div><span class="tool-card-tag">:9090</span></div>
-      <div class="tool-card"><div class="tool-card-name">Grafana</div><div class="tool-card-desc" data-i18n="stack.grafana">Pre-built dashboards for node health, latency, and block progression</div><span class="tool-card-tag">:3000</span></div>
-      <div class="tool-card"><div class="tool-card-name">Alertmanager</div><div class="tool-card-desc" data-i18n="stack.alert">Alert routing for node-down, high-latency, and sync-behind events</div><span class="tool-card-tag">:9093</span></div>
-    </div>
-  </section>
+  <!-- Prometheus Stack -->
+  <div class="section">
+    <div class="section-label" data-i18n="stack.label">monitoring stack</div>
+    <div class="section-heading" data-i18n="stack.heading">Prometheus + Grafana</div>
+    <p class="section-desc" data-i18n="stack.section-desc">Full monitoring stack for QoreChain nodes. Pre-configured dashboards. One command to deploy.</p>
+  </div>
 
-  <section class="section">
-    <div class="section-cmd"><span class="prompt">$</span><span class="cmd" data-i18n="run.cmd">cat runbooks/node-down.md</span></div>
-    <div class="desc-block" data-i18n-html="run.desc">Step-by-step incident runbooks for common QoreChain operator scenarios. Written to be followed under pressure during an outage — no guesswork required.</div>
-    <div class="tool-grid">
-      <div class="tool-card"><div class="tool-card-name">node-down.md</div><div class="tool-card-desc" data-i18n="run.item1">Node unreachable — diagnosis steps, restart sequence, escalation path</div><span class="tool-card-tag">runbook</span></div>
-      <div class="tool-card"><div class="tool-card-name">high-latency.md</div><div class="tool-card-desc" data-i18n="run.item2">RPC response time degradation — root cause checklist and mitigations</div><span class="tool-card-tag">runbook</span></div>
-      <div class="tool-card"><div class="tool-card-name">upgrade.md</div><div class="tool-card-desc" data-i18n="run.item3">Pre/post upgrade checklist — version verification, rollback procedure</div><span class="tool-card-tag">checklist</span></div>
+  <div class="tool-block" data-animate>
+    <div class="tool-block-title"><span class="icon">📊</span> <span data-i18n="stack.title">prometheus-stack</span></div>
+    <p class="tool-desc" data-i18n="stack.desc">Full Prometheus + Grafana monitoring stack for QoreChain nodes. Pre-configured dashboards for block height, RPC latency, peer count, and system metrics.</p>
+    <div class="code-block">
+      <div><span class="prompt">$</span><span class="cmd">docker compose</span> <span class="val">-f</span> <span class="arg">prometheus-stack/docker-compose.yml</span> <span class="val">up -d</span></div>
     </div>
-  </section>
+    <div class="tool-grid">
+      <div class="mini-card">
+        <div class="mini-card-name">Prometheus <span class="mini-card-port">:9090</span></div>
+        <div class="mini-card-desc" data-i18n="stack.prom">Metrics collection from all RPC endpoints and system exporters</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-name">Grafana <span class="mini-card-port">:3000</span></div>
+        <div class="mini-card-desc" data-i18n="stack.grafana">Pre-built dashboards for node health, latency, and block progression</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-name">Alertmanager <span class="mini-card-port">:9093</span></div>
+        <div class="mini-card-desc" data-i18n="stack.alert">Alert routing for node-down, high-latency, and sync-behind events</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Runbooks -->
+  <div class="section">
+    <div class="section-label" data-i18n="run.label">incident runbooks</div>
+    <div class="section-heading" data-i18n="run.heading">Runbooks &amp; Checklists</div>
+    <p class="section-desc" data-i18n="run.section-desc">Step-by-step guides for common operator scenarios. Written to follow under pressure — no guesswork.</p>
+  </div>
+
+  <div class="tool-block" data-animate>
+    <div class="tool-block-title"><span class="icon">📋</span> <span data-i18n="run.title">runbooks/</span></div>
+    <p class="tool-desc" data-i18n="run.desc">Step-by-step incident runbooks for common QoreChain operator scenarios. Written to be followed under pressure during an outage — no guesswork required.</p>
+    <div class="runbook-list">
+      <div class="runbook-item">
+        <span class="runbook-badge runbook">runbook</span>
+        <div>
+          <div class="runbook-name">node-down.md</div>
+          <div class="runbook-desc" data-i18n="run.item1">Node unreachable — diagnosis steps, restart sequence, escalation path</div>
+        </div>
+      </div>
+      <div class="runbook-item">
+        <span class="runbook-badge runbook">runbook</span>
+        <div>
+          <div class="runbook-name">high-latency.md</div>
+          <div class="runbook-desc" data-i18n="run.item2">RPC response time degradation — root cause checklist and mitigations</div>
+        </div>
+      </div>
+      <div class="runbook-item">
+        <span class="runbook-badge checklist">checklist</span>
+        <div>
+          <div class="runbook-name">upgrade.md</div>
+          <div class="runbook-desc" data-i18n="run.item3">Pre/post upgrade checklist — version verification, rollback procedure</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </main>
-<footer><p>© 2026 satoshi-Qore &nbsp;·&nbsp; <a href="https://github.com/satoshi-Qore/satoshi-Qore.github.io" data-i18n="footer.source">source</a> &nbsp;·&nbsp; <span style="color:var(--green)">●</span> online</p></footer>
+
+<footer>
+  <p>© 2026 satoshi-Qore <span class="footer-dot">·</span> <a href="https://github.com/satoshi-Qore/satoshi-Qore.github.io" data-i18n="footer.source">source</a> <span class="footer-dot">·</span> <span style="color:var(--green)">●</span> online</p>
+</footer>
+
 <script>
-const T={en:{'nav.home':'home','nav.projects':'projects','nav.tools':'tools','nav.writing':'writing','page.cmd':'ls -la tools/','page.title':'Operator toolbox','rpc.cmd':'python rpc_health_monitor.py --help','rpc.desc':'Lightweight RPC endpoint health checker. No external dependencies — runs anywhere Python 3.7+ is installed. Checks latency, block height, and peer count across multiple endpoints simultaneously.','rpc.usage':'cat usage.txt','stack.cmd':'docker compose -f prometheus-stack/docker-compose.yml up -d','stack.desc':'Full Prometheus + Grafana monitoring stack for QoreChain nodes. Pre-configured dashboards for block height, RPC latency, peer count, and system metrics. One command to deploy.','stack.prom':'Metrics collection from all RPC endpoints and system exporters','stack.grafana':'Pre-built dashboards for node health, latency, and block progression','stack.alert':'Alert routing for node-down, high-latency, and sync-behind events','run.cmd':'cat runbooks/node-down.md','run.desc':'Step-by-step incident runbooks for common QoreChain operator scenarios. Written to be followed under pressure during an outage.','run.item1':'Node unreachable — diagnosis steps, restart sequence, escalation path','run.item2':'RPC response time degradation — root cause checklist and mitigations','run.item3':'Pre/post upgrade checklist — version verification, rollback procedure','footer.source':'source'},tr:{'nav.home':'ana sayfa','nav.projects':'projeler','nav.tools':'araçlar','nav.writing':'yazılar','page.cmd':'ls -la araçlar/','page.title':'Operatör araç kutusu','rpc.cmd':'python rpc_health_monitor.py --help','rpc.desc':'Hafif RPC uç nokta sağlık denetleyicisi. Harici bağımlılık yok — Python 3.7+ kurulu her yerde çalışır. Birden fazla uç noktada eş zamanlı gecikme, blok yüksekliği ve eş sayısını kontrol eder.','rpc.usage':'cat kullanim.txt','stack.cmd':'docker compose -f prometheus-stack/docker-compose.yml up -d','stack.desc':'QoreChain düğümleri için tam Prometheus + Grafana izleme yığını. Blok yüksekliği, RPC gecikmesi, eş sayısı ve sistem metrikleri için önceden yapılandırılmış dashboard'lar. Tek komutla devreye alın.','stack.prom':'Tüm RPC uç noktaları ve sistem ihracatçılarından metrik toplama','stack.grafana':'Düğüm sağlığı, gecikme ve blok ilerlemesi için hazır dashboard'lar','stack.alert':'Düğüm-düştü, yüksek gecikme ve senkronizasyon gecikmesi için uyarı yönlendirme','run.cmd':'cat runbooks/node-down.md','run.desc':'QoreChain operatörleri için yaygın senaryolara yönelik adım adım müdahale runbook'ları. Kesinti sırasında baskı altında takip edilmek üzere yazıldı.','run.item1':'Düğüme erişilemiyor — tanı adımları, yeniden başlatma sırası, yükseltme yolu','run.item2':'RPC yanıt süresi düşüşü — kök neden kontrol listesi ve azaltmalar','run.item3':'Yükseltme öncesi/sonrası kontrol listesi — sürüm doğrulama, geri alma prosedürü','footer.source':'kaynak'},de:{'nav.home':'start','nav.projects':'projekte','nav.tools':'werkzeuge','nav.writing':'artikel','page.cmd':'ls -la werkzeuge/','page.title':'Operator-Werkzeugkasten','rpc.cmd':'python rpc_health_monitor.py --help','rpc.desc':'Leichtgewichtiger RPC-Endpunkt-Gesundheitsprüfer. Keine externen Abhängigkeiten. Überprüft Latenz, Blockhöhe und Peer-Anzahl über mehrere Endpunkte gleichzeitig.','rpc.usage':'cat verwendung.txt','stack.cmd':'docker compose -f prometheus-stack/docker-compose.yml up -d','stack.desc':'Vollständiger Prometheus + Grafana Monitoring-Stack für QoreChain-Knoten. Vorkonfigurierte Dashboards. Ein Befehl zum Bereitstellen.','stack.prom':'Metriken von allen RPC-Endpunkten und System-Exportern','stack.grafana':'Vorgefertigte Dashboards für Knotengesundheit und Latenz','stack.alert':'Alarmweiterleitung für Knoten-down, hohe Latenz und Sync-Verzögerung','run.cmd':'cat runbooks/node-down.md','run.desc':'Schritt-für-Schritt Incident-Runbooks für häufige QoreChain-Operator-Szenarien.','run.item1':'Knoten nicht erreichbar — Diagnose, Neustart-Sequenz, Eskalationspfad','run.item2':'RPC-Antwortzeit-Verschlechterung — Grundursachen-Checkliste','run.item3':'Vor/Nach-Upgrade-Checkliste — Versionsverifizierung, Rollback','footer.source':'quellcode'},es:{'nav.home':'inicio','nav.projects':'proyectos','nav.tools':'herramientas','nav.writing':'artículos','page.cmd':'ls -la herramientas/','page.title':'Caja de herramientas del operador','rpc.cmd':'python rpc_health_monitor.py --help','rpc.desc':'Verificador de salud de endpoints RPC ligero. Sin dependencias externas. Verifica latencia, altura de bloque y conteo de pares en múltiples endpoints simultáneamente.','rpc.usage':'cat uso.txt','stack.cmd':'docker compose -f prometheus-stack/docker-compose.yml up -d','stack.desc':'Stack completo de monitoreo Prometheus + Grafana para nodos QoreChain. Dashboards preconfigurados. Un comando para desplegar.','stack.prom':'Recopilación de métricas de todos los endpoints RPC','stack.grafana':'Dashboards preconstruidos para salud del nodo y latencia','stack.alert':'Enrutamiento de alertas para nodo-caído, alta latencia y sincronización retrasada','run.cmd':'cat runbooks/node-down.md','run.desc':'Runbooks de incidentes paso a paso para escenarios comunes de operadores QoreChain.','run.item1':'Nodo inaccesible — pasos de diagnóstico, secuencia de reinicio, ruta de escalada','run.item2':'Degradación del tiempo de respuesta RPC — lista de verificación de causa raíz','run.item3':'Lista de verificación pre/post actualización — verificación de versión, procedimiento de reversión','footer.source':'código fuente'},ro:{'nav.home':'acasă','nav.projects':'proiecte','nav.tools':'unelte','nav.writing':'articole','page.cmd':'ls -la unelte/','page.title':'Cutia de unelte a operatorului','rpc.cmd':'python rpc_health_monitor.py --help','rpc.desc':'Verificator de sănătate RPC ușor. Fără dependențe externe. Verifică latența, înălțimea blocului și numărul de perechi pe mai multe endpoint-uri simultan.','rpc.usage':'cat utilizare.txt','stack.cmd':'docker compose -f prometheus-stack/docker-compose.yml up -d','stack.desc':'Stack complet Prometheus + Grafana pentru noduri QoreChain. Dashboard-uri preconfigurate. O comandă pentru a implementa.','stack.prom':'Colectare de metrici de la toate endpoint-urile RPC','stack.grafana':'Dashboard-uri pre-construite pentru sănătatea nodului și latență','stack.alert':'Rutare alerte pentru nod-down, latență mare și sincronizare întârziată','run.cmd':'cat runbooks/node-down.md','run.desc':'Runbook-uri de incidente pas cu pas pentru scenarii comune ale operatorilor QoreChain.','run.item1':'Nod inaccesibil — pași de diagnosticare, secvență de repornire, cale de escaladare','run.item2':'Degradarea timpului de răspuns RPC — listă de verificare cauze principale','run.item3':'Listă de verificare pre/post actualizare — verificare versiune, procedură rollback','footer.source':'sursă'},it:{'nav.home':'home','nav.projects':'progetti','nav.tools':'strumenti','nav.writing':'articoli','page.cmd':'ls -la strumenti/','page.title':'Cassetta degli attrezzi dell'operatore','rpc.cmd':'python rpc_health_monitor.py --help','rpc.desc':'Verificatore di salute degli endpoint RPC leggero. Nessuna dipendenza esterna. Controlla latenza, altezza del blocco e conteggio dei peer su più endpoint contemporaneamente.','rpc.usage':'cat utilizzo.txt','stack.cmd':'docker compose -f prometheus-stack/docker-compose.yml up -d','stack.desc':'Stack di monitoraggio Prometheus + Grafana completo per i nodi QoreChain. Dashboard preconfigurati. Un comando per distribuire.','stack.prom':'Raccolta di metriche da tutti gli endpoint RPC','stack.grafana':'Dashboard precostruiti per la salute del nodo e la latenza','stack.alert':'Instradamento degli avvisi per nodo-down, alta latenza e sincronizzazione in ritardo','run.cmd':'cat runbooks/node-down.md','run.desc':'Runbook degli incidenti passo dopo passo per scenari comuni degli operatori QoreChain.','run.item1':'Nodo irraggiungibile — passaggi di diagnosi, sequenza di riavvio, percorso di escalation','run.item2':'Degradazione del tempo di risposta RPC — lista di controllo delle cause principali','run.item3':'Lista di controllo pre/post aggiornamento — verifica versione, procedura di rollback','footer.source':'sorgente'},ar:{'nav.home':'الرئيسية','nav.projects':'المشاريع','nav.tools':'الأدوات','nav.writing':'المقالات','page.cmd':'ls -la tools/','page.title':'صندوق أدوات المشغل','rpc.cmd':'python rpc_health_monitor.py --help','rpc.desc':'مدقق صحة نقاط نهاية RPC خفيف الوزن. لا توجد تبعيات خارجية. يفحص الكمون وارتفاع الكتلة وعدد الأقران عبر نقاط نهاية متعددة في وقت واحد.','rpc.usage':'cat الاستخدام.txt','stack.cmd':'docker compose -f prometheus-stack/docker-compose.yml up -d','stack.desc':'حزمة مراقبة Prometheus + Grafana الكاملة لعقد QoreChain. لوحات معلومات مُهيأة مسبقاً. أمر واحد للنشر.','stack.prom':'جمع المقاييس من جميع نقاط نهاية RPC','stack.grafana':'لوحات معلومات جاهزة لصحة العقدة والكمون','stack.alert':'توجيه التنبيهات لأحداث العقدة-معطلة والكمون العالي','run.cmd':'cat runbooks/node-down.md','run.desc':'كتب تشغيل الحوادث خطوة بخطوة لسيناريوهات مشغلي QoreChain الشائعة.','run.item1':'العقدة غير قابلة للوصول — خطوات التشخيص، تسلسل إعادة التشغيل، مسار التصعيد','run.item2':'تدهور وقت استجابة RPC — قائمة تحقق السبب الجذري','run.item3':'قائمة التحقق قبل/بعد الترقية — التحقق من الإصدار، إجراء التراجع','footer.source':'المصدر'},zh:{'nav.home':'主页','nav.projects':'项目','nav.tools':'工具','nav.writing':'文章','page.cmd':'ls -la tools/','page.title':'运营者工具箱','rpc.cmd':'python rpc_health_monitor.py --help','rpc.desc':'轻量级 RPC 端点健康检查器。无外部依赖。同时检查多个端点的延迟、块高度和对等点数量。','rpc.usage':'cat 使用说明.txt','stack.cmd':'docker compose -f prometheus-stack/docker-compose.yml up -d','stack.desc':'QoreChain 节点的完整 Prometheus + Grafana 监控栈。预配置仪表板。一条命令部署。','stack.prom':'从所有 RPC 端点和系统导出器收集指标','stack.grafana':'节点健康、延迟和块进度的预构建仪表板','stack.alert':'节点宕机、高延迟和同步落后事件的告警路由','run.cmd':'cat runbooks/node-down.md','run.desc':'QoreChain 运营者常见场景的逐步事件手册。','run.item1':'节点无法访问 — 诊断步骤、重启序列、升级路径','run.item2':'RPC 响应时间下降 — 根因检查清单和缓解措施','run.item3':'升级前后检查清单 — 版本验证、回滚程序','footer.source':'源码'},ja:{'nav.home':'ホーム','nav.projects':'プロジェクト','nav.tools':'ツール','nav.writing':'記事','page.cmd':'ls -la tools/','page.title':'オペレーターツールボックス','rpc.cmd':'python rpc_health_monitor.py --help','rpc.desc':'軽量RPCエンドポイントヘルスチェッカー。外部依存なし。複数エンドポイントのレイテンシ、ブロック高、ピア数を同時確認。','rpc.usage':'cat 使用方法.txt','stack.cmd':'docker compose -f prometheus-stack/docker-compose.yml up -d','stack.desc':'QoreChainノード向けの完全なPrometheus + Grafanaモニタリングスタック。事前設定済みダッシュボード。1コマンドでデプロイ。','stack.prom':'すべてのRPCエンドポイントとシステムエクスポーターからのメトリクス収集','stack.grafana':'ノードヘルス、レイテンシ、ブロック進行の既製ダッシュボード','stack.alert':'ノードダウン、高レイテンシ、同期遅延イベントのアラートルーティング','run.cmd':'cat runbooks/node-down.md','run.desc':'一般的なQoreChainオペレーターシナリオのステップバイステップインシデントランブック。','run.item1':'ノード到達不能 — 診断手順、再起動シーケンス、エスカレーションパス','run.item2':'RPC応答時間低下 — 根本原因チェックリストと緩和策','run.item3':'アップグレード前後チェックリスト — バージョン確認、ロールバック手順','footer.source':'ソースコード'},ko:{'nav.home':'홈','nav.projects':'프로젝트','nav.tools':'도구','nav.writing':'글','page.cmd':'ls -la tools/','page.title':'운영자 도구 상자','rpc.cmd':'python rpc_health_monitor.py --help','rpc.desc':'경량 RPC 엔드포인트 상태 검사기. 외부 의존성 없음. 여러 엔드포인트에서 동시에 지연 시간, 블록 높이, 피어 수를 확인합니다.','rpc.usage':'cat 사용법.txt','stack.cmd':'docker compose -f prometheus-stack/docker-compose.yml up -d','stack.desc':'QoreChain 노드를 위한 완전한 Prometheus + Grafana 모니터링 스택. 사전 구성된 대시보드. 한 명령으로 배포.','stack.prom':'모든 RPC 엔드포인트와 시스템 익스포터에서 메트릭 수집','stack.grafana':'노드 상태, 지연 시간, 블록 진행을 위한 사전 구축된 대시보드','stack.alert':'노드 다운, 높은 지연 시간, 동기화 지연 이벤트에 대한 알림 라우팅','run.cmd':'cat runbooks/node-down.md','run.desc':'일반적인 QoreChain 운영자 시나리오를 위한 단계별 인시던트 런북.','run.item1':'노드 연결 불가 — 진단 단계, 재시작 순서, 에스컬레이션 경로','run.item2':'RPC 응답 시간 저하 — 근본 원인 체크리스트 및 완화 조치','run.item3':'업그레이드 전후 체크리스트 — 버전 검증, 롤백 절차','footer.source':'소스코드'}};
-function setLang(lang){const t=T[lang]||T.en;document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(t[k]!==undefined)el.textContent=t[k]});document.querySelectorAll('[data-i18n-html]').forEach(el=>{const k=el.getAttribute('data-i18n-html');if(t[k]!==undefined)el.innerHTML=t[k]});document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';const sel=document.getElementById('lang-select');if(sel)sel.value=lang;}
+const T={
+en:{
+  'nav.home':'home','nav.projects':'projects','nav.tools':'tools','nav.writing':'writing',
+  'hero.eyebrow':'operator tools','hero.title':'Toolbox',
+  'hero.subtitle':'RPC health monitoring, Prometheus stack, and incident runbooks for QoreChain node operators.',
+  'rpc.label':'health checker','rpc.heading':'RPC Health Monitor',
+  'rpc.section-desc':'Lightweight endpoint health checker. No external dependencies — runs anywhere Python 3.7+ is installed.',
+  'rpc.title':'rpc_health_monitor.py',
+  'rpc.desc':'Checks latency, block height, and peer count across multiple endpoints simultaneously. Outputs JSON — easy to pipe into alerts or dashboards. Zero dependencies, single file.',
+  'stack.label':'monitoring stack','stack.heading':'Prometheus + Grafana',
+  'stack.section-desc':'Full monitoring stack for QoreChain nodes. Pre-configured dashboards. One command to deploy.',
+  'stack.title':'prometheus-stack',
+  'stack.desc':'Full Prometheus + Grafana monitoring stack for QoreChain nodes. Pre-configured dashboards for block height, RPC latency, peer count, and system metrics.',
+  'stack.prom':'Metrics collection from all RPC endpoints and system exporters',
+  'stack.grafana':'Pre-built dashboards for node health, latency, and block progression',
+  'stack.alert':'Alert routing for node-down, high-latency, and sync-behind events',
+  'run.label':'incident runbooks','run.heading':'Runbooks & Checklists',
+  'run.section-desc':'Step-by-step guides for common operator scenarios. Written to follow under pressure — no guesswork.',
+  'run.title':'runbooks/',
+  'run.desc':'Step-by-step incident runbooks for common QoreChain operator scenarios. Written to be followed under pressure during an outage — no guesswork required.',
+  'run.item1':'Node unreachable — diagnosis steps, restart sequence, escalation path',
+  'run.item2':'RPC response time degradation — root cause checklist and mitigations',
+  'run.item3':'Pre/post upgrade checklist — version verification, rollback procedure',
+  'footer.source':'source'
+},
+tr:{
+  'nav.home':'ana sayfa','nav.projects':'projeler','nav.tools':'araçlar','nav.writing':'yazılar',
+  'hero.eyebrow':'operatör araçları','hero.title':'Araç Kutusu',
+  'hero.subtitle':'QoreChain düğüm operatörleri için RPC sağlık izleme, Prometheus stack ve incident runbook\'ları.',
+  'rpc.label':'sağlık denetleyici','rpc.heading':'RPC Sağlık Monitörü',
+  'rpc.section-desc':'Hafif uç nokta sağlık denetleyicisi. Harici bağımlılık yok — Python 3.7+ kurulu her yerde çalışır.',
+  'rpc.title':'rpc_health_monitor.py',
+  'rpc.desc':'Birden fazla uç noktada eş zamanlı gecikme, blok yüksekliği ve eş sayısını kontrol eder. JSON çıktısı verir — uyarılara veya dashboard\'lara kolayca aktarılabilir. Sıfır bağımlılık, tek dosya.',
+  'stack.label':'izleme stack\'i','stack.heading':'Prometheus + Grafana',
+  'stack.section-desc':'QoreChain düğümleri için tam izleme stack\'i. Önceden yapılandırılmış dashboard\'lar. Tek komutla devreye alın.',
+  'stack.title':'prometheus-stack',
+  'stack.desc':'QoreChain düğümleri için tam Prometheus + Grafana izleme stack\'i. Blok yüksekliği, RPC gecikmesi, eş sayısı ve sistem metrikleri için önceden yapılandırılmış dashboard\'lar.',
+  'stack.prom':'Tüm RPC uç noktaları ve sistem ihracatçılarından metrik toplama',
+  'stack.grafana':'Düğüm sağlığı, gecikme ve blok ilerlemesi için hazır dashboard\'lar',
+  'stack.alert':'Düğüm-düştü, yüksek gecikme ve senkronizasyon gecikmesi için uyarı yönlendirme',
+  'run.label':'incident runbook\'ları','run.heading':'Runbook\'lar ve Kontrol Listeleri',
+  'run.section-desc':'Yaygın operatör senaryoları için adım adım rehberler. Baskı altında takip edilmek üzere yazıldı.',
+  'run.title':'runbooks/',
+  'run.desc':'QoreChain operatörleri için yaygın senaryolara yönelik adım adım müdahale runbook\'ları. Kesinti sırasında baskı altında takip edilmek øzere yazıldı.',
+  'run.item1':'Døğüme erişilemiyor — tanı adımları, yeniden başlatma sırası, yükseltme yolu',
+  'run.item2':'RPC yanıt süresi døşüşü — kök neden kontrol listesi ve azaltmalar',
+  'run.item3':'Yükseltme öncesi/sonrası kontrol listesi — sürüm doğrulama, geri alma prosedürü',
+  'footer.source':'kaynak'
+},
+ro:{
+  'nav.home':'acasă','nav.projects':'proiecte','nav.tools':'unelte','nav.writing':'articole',
+  'hero.eyebrow':'instrumente operator','hero.title':'Cutia de Unelte',
+  'hero.subtitle':'Monitorizare sănătate RPC, stack Prometheus și runbook-uri de incidente pentru operatorii de noduri QoreChain.',
+  'rpc.label':'verificator sănătate','rpc.heading':'Monitor Sănătate RPC',
+  'rpc.section-desc':'Verificator de sănătate endpoint ușor. Fără dependențe externe — rulează oriunde este instalat Python 3.7+.',
+  'rpc.title':'rpc_health_monitor.py',
+  'rpc.desc':'Verifică latența, înălțimea blocului și numărul de perechi pe mai multe endpoint-uri simultan. Ieșire JSON — ușor de conectat la alerte sau dashboard-uri.',
+  'stack.label':'stack de monitorizare','stack.heading':'Prometheus + Grafana',
+  'stack.section-desc':'Stack complet de monitorizare pentru noduri QoreChain. Dashboard-uri preconfigurate. Un singur comandă pentru a implementa.',
+  'stack.title':'prometheus-stack',
+  'stack.desc':'Stack complet Prometheus + Grafana pentru noduri QoreChain. Dashboard-uri preconfigurate pentru înălțimea blocului, latența RPC, numărul de perechi și metrici de sistem.',
+  'stack.prom':'Colectare de metrici de la toate endpoint-urile RPC',
+  'stack.grafana':'Dashboard-uri pre-construite pentru sănătatea nodului și latență',
+  'stack.alert':'Rutare alerte pentru nod-down, latență mare și sincronizare întârziată',
+  'run.label':'runbook-uri incidente','run.heading':'Runbook-uri și Liste de Verificare',
+  'run.section-desc':'Ghiduri pas cu pas pentru scenarii comune ale operatorilor. Scrise pentru a fi urmate sub presiune.',
+  'run.title':'runbooks/',
+  'run.desc':'Runbook-uri de incidente pas cu pas pentru scenarii comune ale operatorilor QoreChain.',
+  'run.item1':'Nod inaccesibil — pași de diagnosticare, secvență de repornire, cale de escaladare',
+  'run.item2':'Degradarea timpului de răspuns RPC — listD� de verificare cauze principale',
+  'run.item3':'Listă de verificare pre/post actualizare — verificare versiune, procedură rollback',
+  'footer.source':'sursă'
+},
+de:{
+  'nav.home':'start','nav.projects':'projekte','nav.tools':'werkzeuge','nav.writing':'artikel',
+  'hero.eyebrow':'operator-werkzeuge','hero.title':'Werkzeugkasten',
+  'hero.subtitle':'RPC-Gesundheitsüberwachung, Prometheus-Stack und Incident-Runbooks für QoreChain-Knotenbetreiber.',
+  'rpc.label':'gesundheitsprüfer','rpc.heading':'RPC-Gesundheitsmonitor',
+  'rpc.section-desc':'Leichtgewichtiger Endpunkt-Gesundheitsprüfer. Keine externen Abhängigkeiten.',
+  'rpc.title':'rpc_health_monitor.py',
+  'rpc.desc':'Überprüft Latenz, Blockhöhe und Peer-Anzahl über mehrere Endpunkte gleichzeitig. JSON-Ausgabe — einfach in Alarme oder Dashboards weiterzuleiten.',
+  'stack.label':'monitoring-stack','stack.heading':'Prometheus + Grafana',
+  'stack.section-desc':'Vollständiger Monitoring-Stack für QoreChain-Knoten. Vorkonfigurierte Dashboards. Ein Befehl zum Bereitstellen.',
+  'stack.title':'prometheus-stack',
+  'stack.desc':'Vollständiger Prometheus + Grafana Monitoring-Stack für QoreChain-Knoten. Vorkonfigurierte Dashboards für Blockhöhe, RPC-Latenz, Peer-Anzahl und Systemmetriken.',
+  'stack.prom':'Metriken von allen RPC-Endpunkten und System-Exportern',
+  'stack.grafana':'Vorgefertigte Dashboards für Knotengesundheit und Latenz',
+  'stack.alert':'Alarmweiterleitung für Knoten-down, hohe Latenz und Sync-Verzögerung',
+  'run.label':'incident-runbooks','run.heading':'Runbooks & Checklisten',
+  'run.section-desc':'Schritt-für-Schritt-Anleitungen für häufige Operator-Szenarien.',
+  'run.title':'runbooks/',
+  'run.desc':'Schritt-für-Schritt Incident-Runbooks für häufige QoreChain-Operator-Szenarien.',
+  'run.item1':'Knoten nicht erreichbar — Diagnose, Neustart-Sequenz, Eskalationspfad',
+  'run.item2':'RPC-Antwortzeit-Verschlechterung — Grundursachen-Checkliste',
+  'run.item3':'Vor/Nach-Upgrade-Checkliste — Versionsverifizierung, Rollback',
+  'footer.source':'quellcode'
+},
+it:{
+  'nav.home':'home','nav.projects':'progetti','nav.tools':'strumenti','nav.writing':'articoli',
+  'hero.eyebrow':'strumenti operatore','hero.title':'Cassetta degli Attrezzi',
+  'hero.subtitle':'Monitoraggio salute RPC, stack Prometheus e runbook per incidenti per gli operatori di nodi QoreChain.',
+  'rpc.label':'verificatore salute','rpc.heading':'Monitor Salute RPC',
+  'rpc.section-desc':'Verificatore di salute endpoint leggero. Nessuna dipendenza esterna.',
+  'rpc.title':'rpc_health_monitor.py',
+  'rpc.desc':'Controlla latenza, altezza del blocco e conteggio dei peer su più endpoint contemporaneamente. Output JSON.',
+  'stack.label':'stack di monitoraggio','stack.heading':'Prometheus + Grafana',
+  'stack.section-desc':'Stack di monitoraggio completo per i nodi QoreChain. Dashboard preconfigurati. Un comando per distribuire.',
+  'stack.title':'prometheus-stack',
+  'stack.desc':'Stack di monitoraggio Prometheus + Grafana completo per i nodi QoreChain. Dashboard preconfigurati per altezza blocco, latenza RPC, conteggio peer e metriche di sistema.',
+  'stack.prom':'Raccolta di metriche da tutti gli endpoint RPC',
+  'stack.grafana':'Dashboard precostruiti per la salute del nodo e la latenza',
+  'stack.alert':'Instradamento degli avvisi per nodo-down, alta latenza e sincronizzazione in ritardo',
+  'run.label':'runbook incidenti','run.heading':'Runbook e Checklist',
+  'run.section-desc':'Guide passo dopo passo per scenari comuni degli operatori.',
+  'run.title':'runbooks/',
+  'run.desc':'Runbook degli incidenti passo dopo passo per scenari comuni degli operatori QoreChain.',
+  'run.item1':'Nodo irraggiungibile — passaggi di diagnosi, sequenza di riavvio, percorso di escalation',
+  'run.item2':'Degradazione del tempo di risposta RPC — lista di controllo delle cause principali',
+  'run.item3':'Lista di controllo pre/post aggiornamento — verifica versione, procedura di rollback',
+  'footer.source':'sorgente'
+},
+es:{
+  'nav.home':'inicio','nav.projects':'proyectos','nav.tools':'herramientas','nav.writing':'artículos',
+  'hero.eyebrow':'herramientas de operador','hero.title':'Caja de Herramientas',
+  'hero.subtitle':'Monitoreo de salud RPC, stack Prometheus y runbooks de incidentes para operadores de nodos QoreChain.',
+  'rpc.label':'verificador de salud','rpc.heading':'Monitor de Salud RPC',
+  'rpc.section-desc':'Verificador de salud de endpoints ligero. Sin dependencias externas.',
+  'rpc.title':'rpc_health_monitor.py',
+  'rpc.desc':'Verifica latencia, altura de bloque y conteo de pares en múltiples endpoints simultáneamente. Salida JSON.',
+  'stack.label':'stack de monitoreo','stack.heading':'Prometheus + Grafana',
+  'stack.section-desc':'Stack completo de monitoreo para nodos QoreChain. Dashboards preconfigurados. Un comando para desplegar.',
+  'stack.title':'prometheus-stack',
+  'stack.desc':'Stack de monitoreo Prometheus + Grafana completo para nodos QoreChain. Dashboards preconfigurados para altura de bloque, latencia RPC, conteo de pares y métricas del sistema.',
+  'stack.prom':'Recopilación de métricas de todos los endpoints RPC',
+  'stack.grafana':'Dashboards preconstruidos para salud del nodo y latencia',
+  'stack.alert':'Enrutamiento de alertas para nodo-caído, alta latencia y sincronización retrasada',
+  'run.label':'runbooks de incidentes','run.heading':'Runbooks y Listas de Verificación',
+  'run.section-desc':'Guías paso a paso para escenarios comunes de operadores.',
+  'run.title':'runbooks/',
+  'run.desc':'Runbooks de incidentes paso a paso para escenarios comunes de operadores QoreChain.',
+  'run.item1':'Nodo inaccesible — pasos de diagnóstico, secuencia de reinicio, ruta de escalada',
+  'run.item2':'Degradación del tiempo de respuesta RPC — lista de verificación de causa raíz',
+  'run.item3':'Lista de verificación pre/post actualización — verificación de versión, procedimiento de reversión',
+  'footer.source':'código fuente'
+},
+ar:{
+  'nav.home':'الرئيسية','nav.projects':'المشاريع','nav.tools':'الأدوات','nav.writing':'المقالات',
+  'hero.eyebrow':'أدوات المشغل','hero.title':'صندوق الأدوات',
+  'hero.subtitle':'مراقبة صحة RPC وحزمة Prometheus وكتب تشغيل الحوادث لمشغلي عقد QoreChain.',
+  'rpc.label':'مدقق الصحة','rpc.heading':'مراقب صحة RPC',
+  'rpc.section-desc':'مدقق صحة نقاط النهاية خفيف الوزن. لا توجد تبعيات خارجية.',
+  'rpc.title':'rpc_health_monitor.py',
+  'rpc.desc':'يفحص الكمون وارتفاع الكتلة وعدد الأقران عبر نقاط نهاية متعددة في وقت واحد. إخراج JSON.',
+  'stack.label':'حزمة المراقبة','stack.heading':'Prometheus + Grafana',
+  'stack.section-desc':'حزمة مراقبة كاملة لعقد QoreChain. لوحات معلومات مُهيأة مسبقاً. أمر واحد للنشر.',
+  'stack.title':'prometheus-stack',
+  'stack.desc':'حزمة مراقبة Prometheus + Grafana الكاملة لعقد QoreChain. لوحات معلومات مُهيأة مسبقاً لارتفاع الكتلة والكمون وعدد الأقران.',
+  'stack.prom':'جمع المقاييس من جميع نقاط نهاية RPC',
+  'stack.grafana':'لوحات معلومات جاهزة لصحة العقدة والكمون',
+  'stack.alert':'توجيه التنبيهات لأحداث العقدة-معطلة والكمون العالي',
+  'run.label':'كتب تشغيل الحوادث','run.heading':'كتب التشغيل وقوائم التحقق',
+  'run.section-desc':'أدلة خطوة بخطوة لسيناريوهات المشغل الشائعة.',
+  'run.title':'runbooks/',
+  'run.desc':'كتب تشغيل الحوادث خطوة بخطوة لسيناريوهات مشغلي QoreChain الشائعة.',
+  'run.item1':'العقدة غير قابلة للوصول — خطوات التشخيص، تسلسل إعادة التشغيل، مسار التصعيد',
+  'run.item2':'تدهور وقت استجابة RPC — قائمة تحقق السبب الجذري',
+  'run.item3':'قائمة التحقق قبل/بعد الترقية — التحقق من الإصدار، إجراء التراجع',
+  'footer.source':'المصدر'
+},
+zh:{
+  'nav.home':'主页','nav.projects':'项目','nav.tools':'工具','nav.writing':'文章',
+  'hero.eyebrow':'运营工具','hero.title':'工具箱',
+  'hero.subtitle':'为 QoreChain 节点运营者提供的 RPC 健康监控、Prometheus 栈和事件运行手册。',
+  'rpc.label':'健康检查器','rpc.heading':'RPC 健康监控器',
+  'rpc.section-desc':'轻量级端点健康检查器。无外部依赖 — 在安装了 Python 3.7+ 的任何地方运行。',
+  'rpc.title':'rpc_health_monitor.py',
+  'rpc.desc':'同时检查多个端点的延迟、块高度和对等点数量。JSON 输出 — 易于传输到告警或仪表板。',
+  'stack.label':'监控栈','stack.heading':'Prometheus + Grafana',
+  'stack.section-desc':'QoreChain 节点的完整监控栈。预配置仪表板。一条命令部署。',
+  'stack.title':'prometheus-stack',
+  'stack.desc':'QoreChain 节点的完整 Prometheus + Grafana 监控栈。块高度、RPC 延迟、对等点数量和系统指标的预配置仪表板。',
+  'stack.prom':'从所有 RPC 端点和系统导出器收集指标',
+  'stack.grafana':'节点健康、延迟和块进度的预构建仪表板',
+  'stack.alert':'节点宕机、高延迟和同步落后事件的告警路由',
+  'run.label':'事件运行手册','run.heading':'运行手册和检查清单',
+  'run.section-desc':'常见运营者场景的分步指南。在压力下遵循 — 无需猜测。',
+  'run.title':'runbooks/',
+  'run.desc':'QoreChain 运营者常见场景的逐步事件手册。',
+  'run.item1':'节点无法访问 — 诊断步骤、重启序列、升级路径',
+  'run.item2':'RPC 响应时间下降 — 根因检查清单和缓解措施',
+  'run.item3':'升级前后检查清单 — 版本验证、回滚程序',
+  'footer.source':'源码'
+},
+ja:{
+  'nav.home':'ホーム','nav.projects':'プロジェクト','nav.tools':'ツール','nav.writing':'記事',
+  'hero.eyebrow':'オペレーターツール','hero.title':'ツールボックス',
+  'hero.subtitle':'QoreChainノードオペレーター向けのRPCヘルス監視、Prometheusスタック、インシデントランブック。',
+  'rpc.label':'ヘルスチェッカー','rpc.heading':'RPCヘルスモニター',
+  'rpc.section-desc':'軽量エンドポイントヘルスチェッカー。外部依存なし。',
+  'rpc.title':'rpc_health_monitor.py',
+  'rpc.desc':'複数エンドポイントのレイテンシ、ブロック高、ピア数を同時確認。JSON出力 — アラートやダッシュボードに簡単に接続可能。',
+  'stack.label':'モニタリングスタック','stack.heading':'Prometheus + Grafana',
+  'stack.section-desc':'QoreChainノード向けの完全なモニタリングスタック。事前設定済みダッシュボード。1コマンドでデプロイ。',
+  'stack.title':'prometheus-stack',
+  'stack.desc':'QoreChainノード向けの完全なPrometheus + Grafanaモニタリングスタック。ブロック高、RPCレイテンシ、ピア数、システムメトリクスの事前設定済みダッシュボード。',
+  'stack.prom':'すべてのRPCエンドポイントとシステムエクスポーターからのメトリクス収集',
+  'stack.grafana':'ノードヘルス、レイテンシ、ブロック進行の既製ダッシュボード',
+  'stack.alert':'ノードダウン、高レイテンシ、同期遅延イベントのアラートルーティング',
+  'run.label':'インシデントランブック','run.heading':'ランブックとチェックリスト',
+  'run.section-desc':'一般的なオペレーターシナリオのステップバイステップガイド。',
+  'run.title':'runbooks/',
+  'run.desc':'一般的なQoreChainオペレーターシナリオのステップバイステップインシデントランブック。',
+  'run.item1':'ノード到達不能 — 診断手順、再起動シーケンス、エスカレーションパス',
+  'run.item2':'RPC応答時間低下 — 根本原因チェックリストと緩和策',
+  'run.item3':'アップグレード前後チェックリスト — バージョン確認、ロールバック手順',
+  'footer.source':'ソースコード'
+},
+ko:{
+  'nav.home':'홈','nav.projects':'프로젝트','nav.tools':'도구','nav.writing':'글',
+  'hero.eyebrow':'운영자 도구','hero.title':'도구 상자',
+  'hero.subtitle':'QoreChain 노드 운영자를 위한 RPC 상태 모니터링, Prometheus 스택, 인시던트 런북.',
+  'rpc.label':'상태 검사기','rpc.heading':'RPC 상태 모니터',
+  'rpc.section-desc':'경량 엔드포인트 상태 검사기. 외부 의존성 없음.',
+  'rpc.title':'rpc_health_monitor.py',
+  'rpc.desc':'여러 엔드포인트에서 동시에 지연 시간, 블록 높이, 피어 수를 확인합니다. JSON 출력 — 알림이나 대시보드에 쉽게 연결 가능.',
+  'stack.label':'모니터링 스택','stack.heading':'Prometheus + Grafana',
+  'stack.section-desc':'QoreChain 노드를 위한 완전한 모니터링 스택. 사전 구성된 대시보드. 한 명령으로 배포.',
+  'stack.title':'prometheus-stack',
+  'stack.desc':'QoreChain 노드를 위한 완전한 Prometheus + Grafana 모니터링 스택. 블록 높이, RPC 지연 시간, 피어 수, 시스템 메트릭을 위한 사전 구성된 대시보드.',
+  'stack.prom':'모든 RPC 엔드포인트와 시스템 익스포터에서 메트릭 수집',
+  'stack.grafana':'노드 상태, 지연 시간, 블록 진행을 위한 사전 구축된 대시보드',
+  'stack.alert':'노드 다운, 높은 지연 시간, 동기화 지연 이벤트에 대한 알림 라우팅',
+  'run.label':'인시던트 런북','run.heading':'런북 및 체크리스트',
+  'run.section-desc':'일반적인 운영자 시나리오를 위한 단계별 가이드.',
+  'run.title':'runbooks/',
+  'run.desc':'일반적인 QoreChain 운영자 시나리오를 위한 단계별 인시던트 런북.',
+  'run.item1':'노드 연결 불가 — 진단 단계, 재시작 순서, 에스컬레이션 경로',
+  'run.item2':'RPC 응답 시간 저하 — 근본 원인 체크리스트 및 완화 조치',
+  'run.item3':'업그레이드 전후 체크리스트 — 버전 검증, 롤백 절차',
+  'footer.source':'소스코드'
+}
+};
+
+function setLang(lang){
+  const t=T[lang]||T.en;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(t[k]!==undefined) el.textContent=t[k];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{
+    const k=el.getAttribute('data-i18n-html');
+    if(t[k]!==undefined) el.innerHTML=t[k];
+  });
+  document.documentElement.lang=lang;
+  document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+  const sel=document.getElementById('lang-select');
+  if(sel) sel.value=lang;
+}
+
+// Scroll animations
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('[data-animate]').forEach(el=>observer.observe(el));
 </script>
 </body>
 </html>
