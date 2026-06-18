@@ -180,7 +180,11 @@ main{max-width:900px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
   border:1px solid var(--border);
   border-radius:14px;
   padding:24px;
-  transition:border-color .2s,transform .2s,box-shadow .2s
+  transition:border-color .2s,transform .2s,box-shadow .2s;
+  display:block;
+  text-decoration:none;
+  color:inherit;
+  cursor:pointer
 }
 .focus-card:hover{border-color:rgba(99,102,241,0.3);transform:translateY(-2px);box-shadow:0 12px 40px rgba(99,102,241,0.08)}
 .focus-icon{font-size:22px;margin-bottom:12px}
@@ -458,26 +462,26 @@ body{animation:pageIn .35s ease both}
     </p>
 
     <div class="focus-grid">
-      <div class="focus-card">
+      <a class="focus-card" href="/projects.html">
         <div class="focus-icon">⚙️</div>
         <div class="focus-name" data-i18n="focus.1.name">Node Operations</div>
         <div class="focus-desc" data-i18n="focus.1.desc">QoreChain validator setup, RPC endpoint health monitoring, day-to-day ops</div>
-      </div>
-      <div class="focus-card">
+      </a>
+      <a class="focus-card" href="/writing.html">
         <div class="focus-icon">🔐</div>
         <div class="focus-name" data-i18n="focus.2.name">Post-Quantum Research</div>
         <div class="focus-desc" data-i18n="focus.2.desc">Protocol-level resilience against quantum computing threats in blockchain</div>
-      </div>
-      <div class="focus-card">
+      </a>
+      <a class="focus-card" href="/tools.html">
         <div class="focus-icon">🛠️</div>
         <div class="focus-name" data-i18n="focus.3.name">Open Source Tools</div>
         <div class="focus-desc" data-i18n="focus.3.desc">Dependency-free Python tools, Docker monitoring stacks, CI/CD workflows</div>
-      </div>
-      <div class="focus-card">
+      </a>
+      <a class="focus-card" href="https://github.com/satoshi-Qore/qorechain-guides" target="_blank" rel="noopener">
         <div class="focus-icon">📚</div>
         <div class="focus-name" data-i18n="focus.4.name">Documentation</div>
         <div class="focus-desc" data-i18n="focus.4.desc">Bilingual guides, troubleshooting references, contribution standards</div>
-      </div>
+      </a>
     </div>
   </section>
 
