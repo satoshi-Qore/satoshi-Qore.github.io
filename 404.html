@@ -197,8 +197,48 @@ html[dir="rtl"] .lang-wrap{padding-left:0;padding-right:12px;border-left:none;bo
 /* RESPONSIVE */
 @media(max-width:640px){
   .nav-links{display:none}
+  .hamburger{display:flex}
   .error-terminal{font-size:12px;padding:16px}
 }
+
+/* HAMBURGER */
+.hamburger{
+  display:none;
+  flex-direction:column;justify-content:center;align-items:center;
+  width:36px;height:36px;cursor:pointer;
+  background:rgba(255,255,255,0.05);border:1px solid var(--border-hi);
+  border-radius:8px;gap:5px;transition:background .2s;
+  margin-left:8px;flex-shrink:0
+}
+.hamburger:hover{background:rgba(255,255,255,0.09)}
+.hamburger span{display:block;width:16px;height:1.5px;background:var(--heading);border-radius:2px;transition:all .25s}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* MOBILE MENU */
+.mobile-menu{
+  display:none;
+  position:fixed;top:60px;left:0;right:0;
+  background:rgba(8,8,15,0.97);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+  padding:16px 24px 24px;z-index:99;
+  animation:slideDown .2s ease
+}
+.mobile-menu.open{display:block}
+.mobile-menu a{
+  display:block;padding:12px 4px;
+  font-size:15px;font-weight:500;color:var(--muted);text-decoration:none;
+  border-bottom:1px solid var(--border);transition:color .2s
+}
+.mobile-menu a:last-child{border-bottom:none}
+.mobile-menu a:hover,.mobile-menu a.active{color:var(--heading)}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+
+/* PAGE TRANSITION */
+body{animation:pageIn .35s ease both}
+@keyframes pageIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes pageOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-4px)}}
 </style>
 </head>
 <body>
@@ -228,9 +268,18 @@ html[dir="rtl"] .lang-wrap{padding-left:0;padding-right:12px;border-left:none;bo
           <option value="ko">KO</option>
         </select>
       </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/" data-i18n="nav.home">Home</a>
+  <a href="/projects.html" data-i18n="nav.projects">Projects</a>
+  <a href="/tools.html" data-i18n="nav.tools">Tools</a>
+  <a href="/writing.html" data-i18n="nav.writing">Writing</a>
+</div>
 
 <main>
   <div class="error-container">
@@ -403,6 +452,35 @@ function setLang(lang){
 }
 setLang(localStorage.getItem('lang')||'en');
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js').catch(()=>{}); }
+
+// Hamburger menu
+const burger=document.getElementById('hamburger');
+const mobileMenu=document.getElementById('mobile-menu');
+if(burger&&mobileMenu){
+  burger.addEventListener('click',()=>{
+    const open=mobileMenu.classList.toggle('open');
+    burger.classList.toggle('open',open);
+    burger.setAttribute('aria-expanded',open);
+  });
+  document.addEventListener('click',e=>{
+    if(!burger.contains(e.target)&&!mobileMenu.contains(e.target)){
+      mobileMenu.classList.remove('open');
+      burger.classList.remove('open');
+      burger.setAttribute('aria-expanded','false');
+    }
+  });
+}
+
+// Smooth page transitions
+document.querySelectorAll('a[href]').forEach(a=>{
+  const href=a.getAttribute('href');
+  if(!href||href.startsWith('http')||href.startsWith('#')||href.startsWith('mailto')||a.target==='_blank') return;
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    document.body.style.animation='pageOut .19s ease both';
+    setTimeout(()=>{ window.location.href=href; },190);
+  });
+});
 </script>
 </body>
 </html>
