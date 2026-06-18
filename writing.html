@@ -310,9 +310,45 @@ html[dir="rtl"] .featured-arrow{right:auto;left:40px}
 body{animation:pageIn .35s ease both}
 @keyframes pageIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @keyframes pageOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-4px)}}
+
+/* SIDE DECORATIONS */
+@media(min-width:1200px){
+  .side-deco{position:fixed;top:80px;bottom:60px;width:36px;display:flex;flex-direction:column;align-items:center;pointer-events:none;z-index:0}
+  .side-deco-l{left:calc(50% - 488px)}
+  .side-deco-r{right:calc(50% - 488px)}
+  .sd-line{width:1px;flex:1;min-height:32px;background:linear-gradient(to bottom,transparent,rgba(99,102,241,0.18),transparent)}
+  .sd-item{font-family:var(--mono);font-size:9px;color:rgba(148,163,184,0.3);writing-mode:vertical-rl;text-orientation:mixed;letter-spacing:.14em;white-space:nowrap;padding:10px 0;animation:sdFloat 8s ease-in-out infinite}
+  .sd-item:nth-child(2){animation-delay:-2s}
+  .sd-item:nth-child(4){animation-delay:-4s}
+  .sd-item:nth-child(6){animation-delay:-6s}
+  .side-deco-l .sd-item{transform:rotate(180deg)}
+  @keyframes sdFloat{0%,100%{opacity:.3}50%{opacity:.6}}
+}
+@media(max-width:1199px){.side-deco{display:none}}
 </style>
 </head>
 <body>
+
+<div class="side-deco side-deco-l" aria-hidden="true">
+  <span class="sd-item">// validator</span>
+  <div class="sd-line"></div>
+  <span class="sd-item">epoch 1847</span>
+  <div class="sd-line"></div>
+  <span class="sd-item">≥ 99.9% uptime</span>
+  <div class="sd-line"></div>
+  <span class="sd-item">mainnet</span>
+  <div class="sd-line"></div>
+</div>
+<div class="side-deco side-deco-r" aria-hidden="true">
+  <span class="sd-item">rpc: online</span>
+  <div class="sd-line"></div>
+  <span class="sd-item">0x4a7f…3e2d</span>
+  <div class="sd-line"></div>
+  <span class="sd-item">peers: 48</span>
+  <div class="sd-line"></div>
+  <span class="sd-item">// qorechain</span>
+  <div class="sd-line"></div>
+</div>
 
 <nav>
   <div class="nav-inner">
