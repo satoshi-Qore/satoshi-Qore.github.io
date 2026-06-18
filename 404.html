@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — satoshi-Qore</title>
+<meta name="description" content="Page not found — satoshi-Qore">
+<meta name="theme-color" content="#08080f">
+<meta property="og:title" content="404 — satoshi-Qore">
+<meta property="og:description" content="Page not found — satoshi-Qore">
+<meta property="og:site_name" content="satoshi-Qore">
+<meta name="robots" content="noindex,follow">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#08080f;--surface:#0f0f1a;
+  --border:rgba(255,255,255,0.06);--border-hi:rgba(255,255,255,0.12);
+  --text:#94a3b8;--heading:#e2e8f0;--muted:#475569;
+  --accent:#6366f1;--accent-2:#8b5cf6;--accent-3:#0ea5e9;--green:#10b981;
+  --mono:'JetBrains Mono',monospace;--sans:'Inter',-apple-system,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;min-height:100vh;display:flex;flex-direction:column}
+
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 10%,rgba(99,102,241,0.08) 0%,transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 80%,rgba(139,92,246,0.06) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 60% at 60% 30%,rgba(14,165,233,0.04) 0%,transparent 70%);
+  pointer-events:none;z-index:0
+}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(8,8,15,0.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{max-width:900px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px}
+.nav-logo{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--heading);text-decoration:none;letter-spacing:-.01em}
+.nav-logo span{background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;padding:6px 12px;border-radius:8px;transition:color .2s,background .2s}
+.nav-links a:hover{color:var(--heading);background:rgba(255,255,255,0.06)}
+.lang-wrap{display:flex;align-items:center;gap:6px;padding-left:12px;border-left:1px solid var(--border)}
+.lang-label{font-size:11px;color:var(--muted);font-family:var(--mono)}
+#lang-select{
+  background:rgba(255,255,255,0.05);border:1px solid var(--border-hi);
+  color:var(--heading);font-family:var(--mono);font-size:11px;font-weight:500;
+  padding:4px 8px;border-radius:6px;cursor:pointer;outline:none;
+  appearance:none;-webkit-appearance:none;min-width:46px;text-align:center;
+  transition:border-color .2s,background .2s
+}
+#lang-select:hover,#lang-select:focus{border-color:var(--accent);background:rgba(99,102,241,0.1)}
+#lang-select option{background:#1a1a2e;color:var(--heading)}
+
+/* MAIN */
+main{flex:1;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;padding:40px 28px}
+.error-container{max-width:560px;width:100%;text-align:center}
+
+/* 404 BIG NUMBER */
+.error-code{
+  font-family:var(--mono);
+  font-size:clamp(6rem,20vw,10rem);
+  font-weight:700;
+  line-height:1;
+  margin-bottom:8px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 50%,var(--accent-3) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:fadeUp .6s ease both;
+  position:relative;
+  display:inline-block;
+  filter:drop-shadow(0 0 40px rgba(99,102,241,0.3));
+}
+
+/* Glitch effect */
+.error-code::before,.error-code::after{
+  content:'404';
+  position:absolute;top:0;left:0;right:0;
+  font-family:var(--mono);font-size:inherit;font-weight:inherit;line-height:inherit;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 50%,var(--accent-3) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.error-code::before{
+  animation:glitch1 4s infinite;
+  clip-path:polygon(0 0,100% 0,100% 35%,0 35%);
+  transform:translateX(-2px);
+  opacity:.6;
+}
+.error-code::after{
+  animation:glitch2 4s infinite;
+  clip-path:polygon(0 65%,100% 65%,100% 100%,0 100%);
+  transform:translateX(2px);
+  opacity:.6;
+}
+@keyframes glitch1{
+  0%,90%,100%{transform:translateX(0);opacity:0}
+  92%{transform:translateX(-4px);opacity:.6}
+  94%{transform:translateX(4px);opacity:.6}
+  96%{transform:translateX(-2px);opacity:.6}
+  98%{transform:translateX(0);opacity:0}
+}
+@keyframes glitch2{
+  0%,90%,100%{transform:translateX(0);opacity:0}
+  92%{transform:translateX(4px);opacity:.6}
+  94%{transform:translateX(-4px);opacity:.6}
+  96%{transform:translateX(2px);opacity:.6}
+  98%{transform:translateX(0);opacity:0}
+}
+
+.error-status{
+  font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:24px;
+  animation:fadeUp .6s .1s ease both;opacity:0;animation-fill-mode:both
+}
+.error-title{
+  font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;color:var(--heading);
+  letter-spacing:-.02em;margin-bottom:14px;
+  animation:fadeUp .6s .15s ease both;opacity:0;animation-fill-mode:both
+}
+.error-desc{
+  font-size:15px;color:var(--text);line-height:1.75;margin-bottom:36px;max-width:420px;margin-left:auto;margin-right:auto;
+  animation:fadeUp .6s .2s ease both;opacity:0;animation-fill-mode:both
+}
+
+/* TERMINAL BLOCK */
+.error-terminal{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:20px 24px;margin-bottom:36px;text-align:left;
+  font-family:var(--mono);font-size:13px;
+  animation:fadeUp .6s .25s ease both;opacity:0;animation-fill-mode:both
+}
+.terminal-line{display:flex;gap:10px;margin-bottom:6px;line-height:1.6}
+.terminal-line:last-child{margin-bottom:0}
+.t-prompt{color:var(--accent);flex-shrink:0}
+.t-cmd{color:var(--heading)}
+.t-out{color:var(--muted)}
+.t-err{color:#ef4444}
+.t-cursor{display:inline-block;width:8px;height:14px;background:var(--accent);margin-left:2px;animation:blink 1.2s step-end infinite;vertical-align:middle}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* BUTTONS */
+.error-actions{
+  display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
+  animation:fadeUp .6s .3s ease both;opacity:0;animation-fill-mode:both
+}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 22px;border-radius:10px;font-family:var(--sans);font-size:14px;font-weight:600;
+  text-decoration:none;transition:all .2s;cursor:pointer;letter-spacing:-.01em
+}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 30px rgba(99,102,241,0.35)}
+.btn-ghost{background:rgba(255,255,255,0.05);border:1px solid var(--border-hi);color:var(--text)}
+.btn-ghost:hover{background:rgba(255,255,255,0.09);color:var(--heading);border-color:rgba(255,255,255,0.2)}
+
+/* QUICK LINKS */
+.quick-links{
+  margin-top:48px;
+  border-top:1px solid var(--border);
+  padding-top:32px;
+  animation:fadeUp .6s .35s ease both;opacity:0;animation-fill-mode:both
+}
+.quick-label{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.quick-grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.quick-link{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 14px;border-radius:8px;font-size:13px;font-weight:500;
+  text-decoration:none;color:var(--muted);
+  background:var(--surface);border:1px solid var(--border);
+  transition:color .2s,border-color .2s,background .2s
+}
+.quick-link:hover{color:var(--heading);border-color:rgba(99,102,241,0.3);background:rgba(99,102,241,0.06)}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border);padding:24px 28px;
+  text-align:center;color:var(--muted);font-size:13px;position:relative;z-index:1
+}
+footer a{color:var(--muted);text-decoration:none;transition:color .2s}
+footer a:hover{color:var(--accent)}
+.footer-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:6px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+/* RTL */
+html[dir="rtl"] .nav-right{flex-direction:row-reverse}
+html[dir="rtl"] .lang-wrap{padding-left:0;padding-right:12px;border-left:none;border-right:1px solid var(--border)}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .nav-links{display:none}
+  .error-terminal{font-size:12px;padding:16px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="/">satoshi-<span>Qore</span></a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="/" data-i18n="nav.home">home</a>
+        <a href="/projects.html" data-i18n="nav.projects">projects</a>
+        <a href="/tools.html" data-i18n="nav.tools">tools</a>
+        <a href="/writing.html" data-i18n="nav.writing">writing</a>
+      </div>
+      <div class="lang-wrap">
+        <span class="lang-label">lang</span>
+        <select id="lang-select" onchange="setLang(this.value)" aria-label="Select language">
+          <option value="en" selected>EN</option>
+          <option value="tr">TR</option>
+          <option value="ro">RO</option>
+          <option value="de">DE</option>
+          <option value="it">IT</option>
+          <option value="es">ES</option>
+          <option value="ar">AR</option>
+          <option value="zh">ZH</option>
+          <option value="ja">JA</option>
+          <option value="ko">KO</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="error-container">
+    <div class="error-code">404</div>
+    <div class="error-status" data-i18n="err.status">PAGE NOT FOUND</div>
+    <h1 class="error-title" data-i18n="err.title">Node unreachable</h1>
+    <p class="error-desc" data-i18n="err.desc">The page you're looking for doesn't exist or has been moved. Check the URL or navigate back to a known endpoint.</p>
+
+    <div class="error-terminal">
+      <div class="terminal-line"><span class="t-prompt">$</span><span class="t-cmd" data-i18n="term.cmd">curl -s https://satoshi-qore.github.io<span id="req-path"></span></span></div>
+      <div class="terminal-line"><span class="t-prompt">&gt;</span><span class="t-err" data-i18n="term.err">Error: 404 Not Found</span></div>
+      <div class="terminal-line"><span class="t-prompt">&gt;</span><span class="t-out" data-i18n="term.hint">Hint: try / or /projects.html</span></div>
+      <div class="terminal-line"><span class="t-prompt">$</span><span class="t-cursor"></span></div>
+    </div>
+
+    <div class="error-actions">
+      <a class="btn btn-primary" href="/" data-i18n="err.btn.home">← Go Home</a>
+      <a class="btn btn-ghost" href="/projects.html" data-i18n="err.btn.projects">View Projects</a>
+    </div>
+
+    <div class="quick-links">
+      <div class="quick-label" data-i18n="err.quicklabel">Quick Links</div>
+      <div class="quick-grid">
+        <a class="quick-link" href="/">🏠 <span data-i18n="nav.home">Home</span></a>
+        <a class="quick-link" href="/projects.html">📁 <span data-i18n="nav.projects">Projects</span></a>
+        <a class="quick-link" href="/tools.html">🔧 <span data-i18n="nav.tools">Tools</span></a>
+        <a class="quick-link" href="/writing.html">✍️ <span data-i18n="nav.writing">Writing</span></a>
+        <a class="quick-link" href="https://github.com/satoshi-Qore" target="_blank" rel="noopener">⭐ GitHub</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p><span class="footer-dot"></span>© 2026 satoshi-Qore &nbsp;·&nbsp; <a href="https://github.com/satoshi-Qore/satoshi-Qore.github.io" data-i18n="footer.source">source</a></p>
+</footer>
+
+<script>
+// Show current path in terminal
+try{
+  const p=window.location.pathname;
+  const el=document.getElementById('req-path');
+  if(el&&p&&p!=='/')el.textContent=p;
+}catch(e){}
+
+const T={
+  en:{
+    'nav.home':'Home','nav.projects':'Projects','nav.tools':'Tools','nav.writing':'Writing',
+    'err.status':'PAGE NOT FOUND',
+    'err.title':'Node unreachable',
+    'err.desc':'The page you\'re looking for doesn\'t exist or has been moved. Check the URL or navigate back to a known endpoint.',
+    'term.cmd':'curl -s https://satoshi-qore.github.io',
+    'term.err':'Error: 404 Not Found',
+    'term.hint':'Hint: try / or /projects.html',
+    'err.btn.home':'← Go Home','err.btn.projects':'View Projects',
+    'err.quicklabel':'Quick Links','footer.source':'source'
+  },
+  tr:{
+    'nav.home':'Ana Sayfa','nav.projects':'Projeler','nav.tools':'Araçlar','nav.writing':'Yazılar',
+    'err.status':'SAYFA BULUNAMADI',
+    'err.title':'Node\'a ulaşılamıyor',
+    'err.desc':'Aradığınız sayfa mevcut değil veya taşınmış. URL\'yi kontrol edin ya da bilinen bir sayfaya dönün.',
+    'term.cmd':'curl -s https://satoshi-qore.github.io',
+    'term.err':'Hata: 404 Bulunamadı',
+    'term.hint':'İpucu: / veya /projects.html deneyin',
+    'err.btn.home':'← Ana Sayfaya Dön','err.btn.projects':'Projeleri Gör',
+    'err.quicklabel':'Hızlı Bağlantılar','footer.source':'kaynak'
+  },
+  ro:{
+    'nav.home':'Acasă','nav.projects':'Proiecte','nav.tools':'Unelte','nav.writing':'Articole',
+    'err.status':'PAGINĂ NEGĂSITĂ',
+    'err.title':'Nod inaccesibil',
+    'err.desc':'Pagina pe care o căutați nu există sau a fost mutată. Verificați URL-ul sau navigați înapoi.',
+    'term.cmd':'curl -s https://satoshi-qore.github.io',
+    'term.err':'Eroare: 404 Negăsit',
+    'term.hint':'Sugestie: încercați / sau /projects.html',
+    'err.btn.home':'← Acasă','err.btn.projects':'Vezi Proiecte',
+    'err.quicklabel':'Link-uri Rapide','footer.source':'sursă'
+  },
+  de:{
+    'nav.home':'Start','nav.projects':'Projekte','nav.tools':'Werkzeuge','nav.writing':'Artikel',
+    'err.status':'SEITE NICHT GEFUNDEN',
+    'err.title':'Knoten nicht erreichbar',
+    'err.desc':'Die gesuchte Seite existiert nicht oder wurde verschoben. Überprüfen Sie die URL.',
+    'term.cmd':'curl -s https://satoshi-qore.github.io',
+    'term.err':'Fehler: 404 Nicht gefunden',
+    'term.hint':'Hinweis: versuchen Sie / oder /projects.html',
+    'err.btn.home':'← Zur Startseite','err.btn.projects':'Projekte ansehen',
+    'err.quicklabel':'Schnelllinks','footer.source':'Quellcode'
+  },
+  it:{
+    'nav.home':'Home','nav.projects':'Progetti','nav.tools':'Strumenti','nav.writing':'Articoli',
+    'err.status':'PAGINA NON TROVATA',
+    'err.title':'Nodo non raggiungibile',
+    'err.desc':'La pagina che stai cercando non esiste o è stata spostata. Controlla l\'URL.',
+    'term.cmd':'curl -s https://satoshi-qore.github.io',
+    'term.err':'Errore: 404 Non Trovato',
+    'term.hint':'Suggerimento: prova / o /projects.html',
+    'err.btn.home':'← Torna alla Home','err.btn.projects':'Vedi Progetti',
+    'err.quicklabel':'Link Rapidi','footer.source':'sorgente'
+  },
+  es:{
+    'nav.home':'Inicio','nav.projects':'Proyectos','nav.tools':'Herramientas','nav.writing':'Artículos',
+    'err.status':'PÁGINA NO ENCONTRADA',
+    'err.title':'Nodo inalcanzable',
+    'err.desc':'La página que buscas no existe o ha sido movida. Comprueba la URL.',
+    'term.cmd':'curl -s https://satoshi-qore.github.io',
+    'term.err':'Error: 404 No Encontrado',
+    'term.hint':'Pista: prueba / o /projects.html',
+    'err.btn.home':'← Ir a Inicio','err.btn.projects':'Ver Proyectos',
+    'err.quicklabel':'Enlaces Rápidos','footer.source':'código fuente'
+  },
+  ar:{
+    'nav.home':'الرئيسية','nav.projects':'المشاريع','nav.tools':'الأدوات','nav.writing':'المقالات',
+    'err.status':'الصفحة غير موجودة',
+    'err.title':'العقدة غير قابلة للوصول',
+    'err.desc':'الصفحة التي تبحث عنها غير موجودة أو تم نقلها. تحقق من عنوان URL.',
+    'term.cmd':'curl -s https://satoshi-qore.github.io',
+    'term.err':'خطأ: 404 غير موجود',
+    'term.hint':'تلميح: جرب / أو /projects.html',
+    'err.btn.home':'← العودة للرئيسية','err.btn.projects':'عرض المشاريع',
+    'err.quicklabel':'روابط سريعة','footer.source':'المصدر'
+  },
+  zh:{
+    'nav.home':'主页','nav.projects':'项目','nav.tools':'工具','nav.writing':'文章',
+    'err.status':'页面未找到',
+    'err.title':'节点不可达',
+    'err.desc':'您查找的页面不存在或已被移动。请检查URL。',
+    'term.cmd':'curl -s https://satoshi-qore.github.io',
+    'term.err':'错误：404 未找到',
+    'term.hint':'提示：尝试 / 或 /projects.html',
+    'err.btn.home':'← 返回主页','err.btn.projects':'查看项目',
+    'err.quicklabel':'快速链接','footer.source':'源码'
+  },
+  ja:{
+    'nav.home':'ホーム','nav.projects':'プロジェクト','nav.tools':'ツール','nav.writing':'記事',
+    'err.status':'ページが見つかりません',
+    'err.title':'ノードに到達できません',
+    'err.desc':'お探しのページは存在しないか、移動されました。URLを確認してください。',
+    'term.cmd':'curl -s https://satoshi-qore.github.io',
+    'term.err':'エラー：404 見つかりません',
+    'term.hint':'ヒント：/ または /projects.html を試してください',
+    'err.btn.home':'← ホームへ戻る','err.btn.projects':'プロジェクトを見る',
+    'err.quicklabel':'クイックリンク','footer.source':'ソースコード'
+  },
+  ko:{
+    'nav.home':'홈','nav.projects':'프로젝트','nav.tools':'도구','nav.writing':'글',
+    'err.status':'페이지를 찾을 수 없음',
+    'err.title':'노드에 연결할 수 없음',
+    'err.desc':'찾고 있는 페이지가 존재하지 않거나 이동되었습니다. URL을 확인하세요.',
+    'term.cmd':'curl -s https://satoshi-qore.github.io',
+    'term.err':'오류: 404 찾을 수 없음',
+    'term.hint':'힌트: / 또는 /projects.html을 시도하세요',
+    'err.btn.home':'← 홈으로','err.btn.projects':'프로젝트 보기',
+    'err.quicklabel':'빠른 링크','footer.source':'소스코드'
+  }
+};
+
+function setLang(lang){
+  const t=T[lang]||T.en;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(t[k]!==undefined) el.textContent=t[k];
+  });
+  document.documentElement.lang=lang;
+  document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+  const sel=document.getElementById('lang-select');
+  if(sel) sel.value=lang;
+  try{localStorage.setItem('lang',lang);}catch(e){}
+}
+setLang(localStorage.getItem('lang')||'en');
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js').catch(()=>{}); }
+</script>
+</body>
+</html>

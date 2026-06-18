@@ -6,6 +6,19 @@
 <title>Tools · satoshi-Qore</title>
 <meta name="description" content="Operator toolbox — RPC health monitor, Prometheus stack, and incident runbooks for QoreChain nodes.">
 <meta name="theme-color" content="#08080f">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://satoshi-qore.github.io/tools.html">
+<meta property="og:title" content="Tools — satoshi-Qore">
+<meta property="og:description" content="Operator toolbox — RPC health monitor, Prometheus stack, and incident runbooks for QoreChain nodes.">
+<meta property="og:image" content="https://satoshi-qore.github.io/og-image.png">
+<meta property="og:site_name" content="satoshi-Qore">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@satoshi_Qore">
+<meta name="twitter:title" content="Tools — satoshi-Qore">
+<meta name="twitter:description" content="Operator toolbox — RPC health monitor, Prometheus stack, and incident runbooks for QoreChain nodes.">
+<meta name="twitter:image" content="https://satoshi-qore.github.io/og-image.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -155,6 +168,111 @@ html[dir="rtl"] .mini-card-name{flex-direction:row-reverse}
   .tool-block{padding:20px}
   .tool-grid{grid-template-columns:1fr}
   .nav-links{display:none}
+  .hamburger{display:flex}
+}
+.hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;width:36px;height:36px;cursor:pointer;background:rgba(255,255,255,0.05);border:1px solid var(--border-hi);border-radius:8px;gap:5px;transition:background .2s;margin-left:8px;flex-shrink:0}
+.hamburger:hover{background:rgba(255,255,255,0.09)}
+.hamburger span{display:block;width:16px;height:1.5px;background:var(--heading);border-radius:2px;transition:all .25s}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:60px;left:0;right:0;background:rgba(8,8,15,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:16px 24px 24px;z-index:99;animation:slideDown .2s ease}
+.mobile-menu.open{display:block}
+.mobile-menu a{display:block;padding:12px 4px;font-size:15px;font-weight:500;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);transition:color .2s}
+.mobile-menu a:last-child{border-bottom:none}
+.mobile-menu a:hover,.mobile-menu a.active{color:var(--heading)}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+#scroll-top{position:fixed;bottom:28px;right:28px;z-index:90;width:40px;height:40px;border-radius:10px;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.35);color:var(--accent);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;backdrop-filter:blur(8px)}
+#scroll-top.visible{opacity:1;transform:none;pointer-events:auto}
+#scroll-top:hover{background:rgba(99,102,241,0.3);border-color:rgba(99,102,241,0.6)}
+body{animation:pageIn .35s ease both}
+@keyframes pageIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes pageOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-4px)}}
+
+/* INTERACTIVE TOOLS */
+.live-tool{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:24px 0}
+.live-tool-title{font-size:15px;font-weight:700;color:var(--heading);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.live-tool-subtitle{font-size:13px;color:var(--muted);margin-bottom:20px}
+.tool-form{display:flex;flex-direction:column;gap:14px}
+.form-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.form-group{display:flex;flex-direction:column;gap:5px;flex:1;min-width:200px}
+.form-label{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.05em}
+.form-input,.form-select{
+  background:rgba(255,255,255,0.04);border:1px solid var(--border-hi);
+  color:var(--heading);font-family:var(--mono);font-size:13px;
+  padding:8px 12px;border-radius:8px;outline:none;width:100%;
+  transition:border-color .2s,background .2s
+}
+.form-input:focus,.form-select:focus{border-color:var(--accent);background:rgba(99,102,241,0.06)}
+.form-input::placeholder{color:var(--muted)}
+.form-select option{background:#1a1a2e;color:var(--heading)}
+.btn-run{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 18px;border-radius:8px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  color:#fff;font-size:13px;font-weight:600;font-family:var(--sans);
+  border:none;cursor:pointer;transition:opacity .2s,transform .2s;white-space:nowrap
+}
+.btn-run:hover{opacity:.9;transform:translateY(-1px)}
+.btn-run:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-copy{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 14px;border-radius:7px;
+  background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);
+  color:var(--accent);font-size:12px;font-weight:500;font-family:var(--mono);
+  cursor:pointer;transition:background .2s;white-space:nowrap
+}
+.btn-copy:hover{background:rgba(99,102,241,0.2)}
+
+/* RPC RESULTS */
+.rpc-results{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.rpc-result-item{
+  background:rgba(255,255,255,0.03);border:1px solid var(--border);
+  border-radius:10px;padding:14px 16px;
+  display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;
+  transition:border-color .2s
+}
+.rpc-result-item.ok{border-left:3px solid var(--green)}
+.rpc-result-item.err{border-left:3px solid #ef4444}
+.rpc-result-item.checking{border-left:3px solid var(--accent);animation:borderPulse 1s infinite}
+@keyframes borderPulse{0%,100%{border-left-color:var(--accent)}50%{border-left-color:rgba(99,102,241,0.3)}}
+.rpc-url{font-family:var(--mono);font-size:12px;color:var(--heading);margin-bottom:4px;word-break:break-all}
+.rpc-metrics{display:flex;gap:14px;flex-wrap:wrap}
+.rpc-metric{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.rpc-metric span{color:var(--heading)}
+.rpc-status-badge{
+  font-family:var(--mono);font-size:11px;font-weight:600;
+  padding:4px 10px;border-radius:6px;white-space:nowrap;flex-shrink:0
+}
+.rpc-status-badge.ok{background:rgba(16,185,129,0.12);color:var(--green);border:1px solid rgba(16,185,129,0.25)}
+.rpc-status-badge.err{background:rgba(239,68,68,0.12);color:#ef4444;border:1px solid rgba(239,68,68,0.25)}
+.rpc-status-badge.checking{background:rgba(99,102,241,0.1);color:var(--accent);border:1px solid rgba(99,102,241,0.2)}
+.rpc-hint{font-size:12px;color:var(--muted);margin-top:8px;font-style:italic}
+
+/* PROMETHEUS GENERATOR */
+.prom-form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.prom-form .form-group.full{grid-column:1/-1}
+.prom-output{
+  background:#0a0a14;border:1px solid var(--border);border-radius:10px;
+  padding:16px;margin-top:16px;position:relative;
+  font-family:var(--mono);font-size:12px;color:#94a3b8;line-height:1.7;
+  max-height:320px;overflow-y:auto;white-space:pre;
+}
+.prom-output-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)
+}
+.prom-output-label{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.05em}
+.yml-key{color:var(--accent-3)}
+.yml-val{color:#a3e635}
+.yml-str{color:#fb923c}
+.yml-comment{color:var(--muted)}
+
+@media(max-width:600px){
+  .form-row{flex-direction:column}
+  .prom-form{grid-template-columns:1fr}
+  .prom-form .form-group.full{grid-column:1}
+  .live-tool{padding:20px}
 }
 </style>
 </head>
@@ -167,7 +285,7 @@ html[dir="rtl"] .mini-card-name{flex-direction:row-reverse}
         <a href="/" data-i18n="nav.home">home</a>
         <a href="/projects.html" data-i18n="nav.projects">projects</a>
         <a href="/tools.html" class="active" data-i18n="nav.tools">tools</a>
-        <a href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener" data-i18n="nav.writing">writing</a>
+        <a href="/writing.html" data-i18n="nav.writing">writing</a>
       </nav>
       <div class="lang-wrap">
         <span class="lang-label">lang</span>
@@ -184,9 +302,18 @@ html[dir="rtl"] .mini-card-name{flex-direction:row-reverse}
           <option value="ko">KO</option>
         </select>
       </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/" data-i18n="nav.home">Home</a>
+  <a href="/projects.html" data-i18n="nav.projects">Projects</a>
+  <a href="/tools.html" class="active" data-i18n="nav.tools">Tools</a>
+  <a href="/writing.html" data-i18n="nav.writing">Writing</a>
+</div>
 
 <main>
   <div class="page-hero">
@@ -279,7 +406,90 @@ html[dir="rtl"] .mini-card-name{flex-direction:row-reverse}
     </div>
   </div>
 
+  <!-- LIVE RPC CHECKER -->
+  <div class="section">
+    <div class="section-label" data-i18n="live.label">browser-based</div>
+    <div class="section-heading" data-i18n="live.heading">Live RPC Checker</div>
+    <p class="section-desc" data-i18n="live.section-desc">Check any RPC endpoint directly from your browser — no installation needed. Requires the endpoint to allow CORS from browser origins.</p>
+  </div>
+
+  <div class="live-tool" data-animate>
+    <div class="live-tool-title">🔌 <span data-i18n="live.title">Endpoint Health Check</span></div>
+    <div class="live-tool-subtitle" data-i18n="live.subtitle">Enter one or more RPC URLs (one per line). Checks eth_blockNumber, net_peerCount, and eth_syncing.</div>
+    <div class="tool-form">
+      <div class="form-group">
+        <label class="form-label" for="rpc-urls" data-i18n="live.urlLabel">RPC ENDPOINT URLS (one per line)</label>
+        <textarea id="rpc-urls" class="form-input" rows="3" placeholder="http://localhost:8545&#10;http://node2:8545" style="resize:vertical;font-family:var(--mono);font-size:13px"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group" style="max-width:160px">
+          <label class="form-label" for="rpc-timeout" data-i18n="live.timeoutLabel">TIMEOUT (ms)</label>
+          <input id="rpc-timeout" class="form-input" type="number" value="5000" min="500" max="30000">
+        </div>
+        <button class="btn-run" id="rpc-check-btn" onclick="runRpcCheck()" data-i18n="live.btn">▶ Check Endpoints</button>
+      </div>
+    </div>
+    <div class="rpc-results" id="rpc-results"></div>
+    <div class="rpc-hint" data-i18n="live.hint">Note: The endpoint must allow browser CORS requests. Local nodes (localhost) typically work without CORS configuration.</div>
+  </div>
+
+  <!-- PROMETHEUS CONFIG GENERATOR -->
+  <div class="section">
+    <div class="section-label" data-i18n="pgen.label">config generator</div>
+    <div class="section-heading" data-i18n="pgen.heading">Prometheus Config Generator</div>
+    <p class="section-desc" data-i18n="pgen.section-desc">Fill in your node details and get a ready-to-use prometheus.yml — no manual YAML editing required.</p>
+  </div>
+
+  <div class="live-tool" data-animate>
+    <div class="live-tool-title">⚙️ <span data-i18n="pgen.title">Generate prometheus.yml</span></div>
+    <div class="live-tool-subtitle" data-i18n="pgen.subtitle">Configure your scrape targets and alerting, then copy the generated YAML directly into your monitoring stack.</div>
+    <div class="prom-form" id="prom-form">
+      <div class="form-group">
+        <label class="form-label" for="pg-jobname" data-i18n="pgen.jobLabel">JOB NAME</label>
+        <input id="pg-jobname" class="form-input" type="text" value="qorechain-node" placeholder="qorechain-node">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="pg-interval" data-i18n="pgen.intervalLabel">SCRAPE INTERVAL</label>
+        <select id="pg-interval" class="form-select">
+          <option value="15s">15s</option>
+          <option value="30s" selected>30s</option>
+          <option value="60s">60s</option>
+          <option value="2m">2m</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label class="form-label" for="pg-targets" data-i18n="pgen.targetsLabel">SCRAPE TARGETS (host:port, one per line)</label>
+        <textarea id="pg-targets" class="form-input" rows="3" placeholder="localhost:8545&#10;node2:8545&#10;node3:8545" style="resize:vertical;font-family:var(--mono);font-size:13px">localhost:8545</textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="pg-alertmgr" data-i18n="pgen.alertLabel">ALERTMANAGER (optional)</label>
+        <input id="pg-alertmgr" class="form-input" type="text" placeholder="localhost:9093">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="pg-retention" data-i18n="pgen.retentionLabel">RETENTION</label>
+        <select id="pg-retention" class="form-select">
+          <option value="7d">7 days</option>
+          <option value="15d" selected>15 days</option>
+          <option value="30d">30 days</option>
+          <option value="90d">90 days</option>
+        </select>
+      </div>
+      <div class="form-group full" style="margin-top:4px">
+        <button class="btn-run" onclick="generatePromConfig()" data-i18n="pgen.btn">⚙️ Generate Config</button>
+      </div>
+    </div>
+    <div id="prom-output-wrap" style="display:none">
+      <div class="prom-output-header">
+        <span class="prom-output-label">prometheus.yml</span>
+        <button class="btn-copy" onclick="copyPromConfig()" id="copy-btn">📋 <span data-i18n="pgen.copy">Copy</span></button>
+      </div>
+      <div class="prom-output" id="prom-output"></div>
+    </div>
+  </div>
+
 </main>
+
+<button id="scroll-top" aria-label="Scroll to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <footer>
   <p>© 2026 satoshi-Qore <span class="footer-dot">·</span> <a href="https://github.com/satoshi-Qore/satoshi-Qore.github.io" data-i18n="footer.source">source</a> <span class="footer-dot">·</span> <span style="color:var(--green)">●</span> online</p>
@@ -309,6 +519,21 @@ en:{
   'run.item1':'Node unreachable — diagnosis steps, restart sequence, escalation path',
   'run.item2':'RPC response time degradation — root cause checklist and mitigations',
   'run.item3':'Pre/post upgrade checklist — version verification, rollback procedure',
+  'live.label':'browser-based','live.heading':'Live RPC Checker',
+  'live.section-desc':'Check any RPC endpoint directly from your browser — no installation needed. Requires the endpoint to allow CORS from browser origins.',
+  'live.title':'Endpoint Health Check',
+  'live.subtitle':'Enter one or more RPC URLs (one per line). Checks eth_blockNumber, net_peerCount, and eth_syncing.',
+  'live.urlLabel':'RPC ENDPOINT URLS (one per line)','live.timeoutLabel':'TIMEOUT (ms)',
+  'live.btn':'▶ Check Endpoints',
+  'live.hint':'Note: The endpoint must allow browser CORS requests. Local nodes (localhost) typically work without CORS configuration.',
+  'pgen.label':'config generator','pgen.heading':'Prometheus Config Generator',
+  'pgen.section-desc':'Fill in your node details and get a ready-to-use prometheus.yml — no manual YAML editing required.',
+  'pgen.title':'Generate prometheus.yml',
+  'pgen.subtitle':'Configure your scrape targets and alerting, then copy the generated YAML directly into your monitoring stack.',
+  'pgen.jobLabel':'JOB NAME','pgen.intervalLabel':'SCRAPE INTERVAL',
+  'pgen.targetsLabel':'SCRAPE TARGETS (host:port, one per line)',
+  'pgen.alertLabel':'ALERTMANAGER (optional)','pgen.retentionLabel':'RETENTION',
+  'pgen.btn':'⚙️ Generate Config','pgen.copy':'Copy',
   'footer.source':'source'
 },
 tr:{
@@ -329,10 +554,25 @@ tr:{
   'run.label':'incident runbook\'ları','run.heading':'Runbook\'lar ve Kontrol Listeleri',
   'run.section-desc':'Yaygın operatör senaryoları için adım adım rehberler. Baskı altında takip edilmek üzere yazıldı.',
   'run.title':'runbooks/',
-  'run.desc':'QoreChain operatörleri için yaygın senaryolara yönelik adım adım müdahale runbook\'ları. Kesinti sırasında baskı altında takip edilmek øzere yazıldı.',
-  'run.item1':'Døğüme erişilemiyor — tanı adımları, yeniden başlatma sırası, yükseltme yolu',
-  'run.item2':'RPC yanıt süresi døşüşü — kök neden kontrol listesi ve azaltmalar',
+  'run.desc':'QoreChain operatörleri için yaygın senaryolara yönelik adım adım müdahale runbook\'ları. Kesinti sırasında baskı altında takip edilmek üzere yazıldı.',
+  'run.item1':'Düğüme erişilemiyor — tanı adımları, yeniden başlatma sırası, yükseltme yolu',
+  'run.item2':'RPC yanıt süresi düşüşü — kök neden kontrol listesi ve azaltmalar',
   'run.item3':'Yükseltme öncesi/sonrası kontrol listesi — sürüm doğrulama, geri alma prosedürü',
+  'live.label':'tarayıcı tabanlı','live.heading':'Canlı RPC Denetleyici',
+  'live.section-desc':'Herhangi bir RPC uç noktasını doğrudan tarayıcınızdan kontrol edin — kurulum gerekmez. Uç noktanın tarayıcı kaynaklı CORS isteklerine izin vermesi gerekir.',
+  'live.title':'Uç Nokta Sağlık Kontrolü',
+  'live.subtitle':'Bir veya daha fazla RPC URL\'si girin (her satıra bir tane). eth_blockNumber, net_peerCount ve eth_syncing kontrolü yapılır.',
+  'live.urlLabel':'RPC ENDPOINT URL\'LERİ (satır başına bir tane)','live.timeoutLabel':'ZAMAN AŞIMI (ms)',
+  'live.btn':'▶ Uç Noktaları Kontrol Et',
+  'live.hint':'Not: Uç nokta tarayıcı CORS isteklerine izin vermelidir. Yerel düğümler (localhost) genellikle CORS yapılandırması gerektirmez.',
+  'pgen.label':'yapılandırma üreteci','pgen.heading':'Prometheus Yapılandırma Üreteci',
+  'pgen.section-desc':'Düğüm bilgilerinizi doldurun, kullanıma hazır prometheus.yml alın — manuel YAML düzenlemesi gerekmez.',
+  'pgen.title':'prometheus.yml Oluştur',
+  'pgen.subtitle':'Scrape hedeflerinizi ve uyarı yapılandırmanızı belirleyin, oluşturulan YAML\'ı izleme yığınınıza doğrudan kopyalayın.',
+  'pgen.jobLabel':'JOB ADI','pgen.intervalLabel':'SCRAPE ARALIĞI',
+  'pgen.targetsLabel':'SCRAPE HEDEFLERİ (host:port, satır başına bir tane)',
+  'pgen.alertLabel':'ALERTMANAGER (isteğe bağlı)','pgen.retentionLabel':'SAKLAMA SÜRESİ',
+  'pgen.btn':'⚙️ Yapılandırma Oluştur','pgen.copy':'Kopyala',
   'footer.source':'kaynak'
 },
 ro:{
@@ -355,8 +595,21 @@ ro:{
   'run.title':'runbooks/',
   'run.desc':'Runbook-uri de incidente pas cu pas pentru scenarii comune ale operatorilor QoreChain.',
   'run.item1':'Nod inaccesibil — pași de diagnosticare, secvență de repornire, cale de escaladare',
-  'run.item2':'Degradarea timpului de răspuns RPC — listD� de verificare cauze principale',
+  'run.item2':'Degradarea timpului de răspuns RPC — listă de verificare cauze principale',
   'run.item3':'Listă de verificare pre/post actualizare — verificare versiune, procedură rollback',
+  'live.label':'bazat pe browser','live.heading':'Verificator RPC Live',
+  'live.section-desc':'Verificați orice endpoint RPC direct din browser — nu necesită instalare.',
+  'live.title':'Verificare Stare Endpoint','live.subtitle':'Introduceți URL-uri RPC (unul pe linie). Verifică eth_blockNumber, net_peerCount și eth_syncing.',
+  'live.urlLabel':'URL-URI ENDPOINT RPC (unul pe linie)','live.timeoutLabel':'TIMEOUT (ms)',
+  'live.btn':'▶ Verifică Endpoint-urile',
+  'live.hint':'Notă: Endpoint-ul trebuie să permită cereri CORS din browser. Nodurile locale (localhost) funcționează de obicei fără configurare CORS.',
+  'pgen.label':'generator configurație','pgen.heading':'Generator Configurație Prometheus',
+  'pgen.section-desc':'Completați detaliile nodului și obțineți un prometheus.yml gata de utilizare.',
+  'pgen.title':'Generează prometheus.yml','pgen.subtitle':'Configurați țintele de scraping și alertarea, apoi copiați YAML-ul generat.',
+  'pgen.jobLabel':'NUME JOB','pgen.intervalLabel':'INTERVAL SCRAPING',
+  'pgen.targetsLabel':'ȚINTE SCRAPING (host:port, unul pe linie)',
+  'pgen.alertLabel':'ALERTMANAGER (opțional)','pgen.retentionLabel':'RETENȚIE',
+  'pgen.btn':'⚙️ Generează Configurație','pgen.copy':'Copiază',
   'footer.source':'sursă'
 },
 de:{
@@ -381,6 +634,13 @@ de:{
   'run.item1':'Knoten nicht erreichbar — Diagnose, Neustart-Sequenz, Eskalationspfad',
   'run.item2':'RPC-Antwortzeit-Verschlechterung — Grundursachen-Checkliste',
   'run.item3':'Vor/Nach-Upgrade-Checkliste — Versionsverifizierung, Rollback',
+  'live.label':'browserbasiert','live.heading':'Live RPC-Prüfer',
+  'live.section-desc':'Überprüfen Sie jeden RPC-Endpunkt direkt in Ihrem Browser — keine Installation erforderlich.',
+  'live.title':'Endpunkt-Statusprüfung','live.btn':'▶ Endpunkte prüfen',
+  'live.hint':'Hinweis: Der Endpunkt muss Browser-CORS-Anfragen erlauben. Lokale Knoten (localhost) funktionieren meist ohne CORS-Konfiguration.',
+  'pgen.label':'Konfigurationsgenerator','pgen.heading':'Prometheus Konfigurationsgenerator',
+  'pgen.section-desc':'Geben Sie Ihre Knotendetails ein und erhalten Sie eine fertige prometheus.yml.',
+  'pgen.title':'prometheus.yml generieren','pgen.btn':'⚙️ Konfiguration generieren','pgen.copy':'Kopieren',
   'footer.source':'quellcode'
 },
 it:{
@@ -405,6 +665,13 @@ it:{
   'run.item1':'Nodo irraggiungibile — passaggi di diagnosi, sequenza di riavvio, percorso di escalation',
   'run.item2':'Degradazione del tempo di risposta RPC — lista di controllo delle cause principali',
   'run.item3':'Lista di controllo pre/post aggiornamento — verifica versione, procedura di rollback',
+  'live.label':'basato su browser','live.heading':'Verifica RPC Live',
+  'live.section-desc':'Verifica qualsiasi endpoint RPC direttamente dal browser — nessuna installazione richiesta.',
+  'live.title':'Controllo Stato Endpoint','live.btn':'▶ Verifica Endpoint',
+  'live.hint':'Nota: L\'endpoint deve consentire richieste CORS del browser. I nodi locali (localhost) di solito funzionano senza configurazione CORS.',
+  'pgen.label':'generatore configurazione','pgen.heading':'Generatore Configurazione Prometheus',
+  'pgen.section-desc':'Inserisci i dettagli del nodo e ottieni un prometheus.yml pronto all\'uso.',
+  'pgen.title':'Genera prometheus.yml','pgen.btn':'⚙️ Genera Configurazione','pgen.copy':'Copia',
   'footer.source':'sorgente'
 },
 es:{
@@ -429,6 +696,13 @@ es:{
   'run.item1':'Nodo inaccesible — pasos de diagnóstico, secuencia de reinicio, ruta de escalada',
   'run.item2':'Degradación del tiempo de respuesta RPC — lista de verificación de causa raíz',
   'run.item3':'Lista de verificación pre/post actualización — verificación de versión, procedimiento de reversión',
+  'live.label':'basado en navegador','live.heading':'Verificador RPC en Vivo',
+  'live.section-desc':'Verifica cualquier endpoint RPC directamente desde tu navegador — sin instalación.',
+  'live.title':'Verificación de Estado del Endpoint','live.btn':'▶ Verificar Endpoints',
+  'live.hint':'Nota: El endpoint debe permitir solicitudes CORS del navegador. Los nodos locales (localhost) suelen funcionar sin configuración CORS.',
+  'pgen.label':'generador de configuración','pgen.heading':'Generador de Configuración Prometheus',
+  'pgen.section-desc':'Rellena los detalles de tu nodo y obtén un prometheus.yml listo para usar.',
+  'pgen.title':'Generar prometheus.yml','pgen.btn':'⚙️ Generar Configuración','pgen.copy':'Copiar',
   'footer.source':'código fuente'
 },
 ar:{
@@ -453,6 +727,13 @@ ar:{
   'run.item1':'العقدة غير قابلة للوصول — خطوات التشخيص، تسلسل إعادة التشغيل، مسار التصعيد',
   'run.item2':'تدهور وقت استجابة RPC — قائمة تحقق السبب الجذري',
   'run.item3':'قائمة التحقق قبل/بعد الترقية — التحقق من الإصدار، إجراء التراجع',
+  'live.label':'مستند للمتصفح','live.heading':'فاحص RPC المباشر',
+  'live.section-desc':'تحقق من أي نقطة نهاية RPC مباشرة من متصفحك — لا حاجة للتثبيت.',
+  'live.title':'فحص حالة نقطة النهاية','live.btn':'▶ فحص نقاط النهاية',
+  'live.hint':'ملاحظة: يجب أن تسمح نقطة النهاية بطلبات CORS من المتصفح. العقد المحلية (localhost) تعمل عادةً دون تكوين CORS.',
+  'pgen.label':'مولّد الإعدادات','pgen.heading':'مولّد إعدادات Prometheus',
+  'pgen.section-desc':'أدخل تفاصيل عقدتك واحصل على prometheus.yml جاهز للاستخدام.',
+  'pgen.title':'إنشاء prometheus.yml','pgen.btn':'⚙️ إنشاء الإعدادات','pgen.copy':'نسخ',
   'footer.source':'المصدر'
 },
 zh:{
@@ -477,6 +758,13 @@ zh:{
   'run.item1':'节点无法访问 — 诊断步骤、重启序列、升级路径',
   'run.item2':'RPC 响应时间下降 — 根因检查清单和缓解措施',
   'run.item3':'升级前后检查清单 — 版本验证、回滚程序',
+  'live.label':'基于浏览器','live.heading':'实时RPC检查器',
+  'live.section-desc':'直接从浏览器检查任何RPC端点 — 无需安装。',
+  'live.title':'端点状态检查','live.btn':'▶ 检查端点',
+  'live.hint':'注意：端点必须允许浏览器CORS请求。本地节点（localhost）通常无需CORS配置。',
+  'pgen.label':'配置生成器','pgen.heading':'Prometheus配置生成器',
+  'pgen.section-desc':'填写节点详情，获取可直接使用的prometheus.yml。',
+  'pgen.title':'生成prometheus.yml','pgen.btn':'⚙️ 生成配置','pgen.copy':'复制',
   'footer.source':'源码'
 },
 ja:{
@@ -501,6 +789,13 @@ ja:{
   'run.item1':'ノード到達不能 — 診断手順、再起動シーケンス、エスカレーションパス',
   'run.item2':'RPC応答時間低下 — 根本原因チェックリストと緩和策',
   'run.item3':'アップグレード前後チェックリスト — バージョン確認、ロールバック手順',
+  'live.label':'ブラウザベース','live.heading':'ライブRPCチェッカー',
+  'live.section-desc':'インストール不要でブラウザから直接RPCエンドポイントを確認。',
+  'live.title':'エンドポイント状態確認','live.btn':'▶ エンドポイントを確認',
+  'live.hint':'注意：エンドポイントはブラウザからのCORSリクエストを許可する必要があります。ローカルノード（localhost）は通常設定不要です。',
+  'pgen.label':'設定ジェネレーター','pgen.heading':'Prometheus設定ジェネレーター',
+  'pgen.section-desc':'ノードの詳細を入力し、すぐに使えるprometheus.ymlを生成します。',
+  'pgen.title':'prometheus.ymlを生成','pgen.btn':'⚙️ 設定を生成','pgen.copy':'コピー',
   'footer.source':'ソースコード'
 },
 ko:{
@@ -525,6 +820,13 @@ ko:{
   'run.item1':'노드 연결 불가 — 진단 단계, 재시작 순서, 에스컬레이션 경로',
   'run.item2':'RPC 응답 시간 저하 — 근본 원인 체크리스트 및 완화 조치',
   'run.item3':'업그레이드 전후 체크리스트 — 버전 검증, 롤백 절차',
+  'live.label':'브라우저 기반','live.heading':'실시간 RPC 검사기',
+  'live.section-desc':'설치 없이 브라우저에서 직접 RPC 엔드포인트를 확인하세요.',
+  'live.title':'엔드포인트 상태 확인','live.btn':'▶ 엔드포인트 확인',
+  'live.hint':'참고: 엔드포인트는 브라우저 CORS 요청을 허용해야 합니다. 로컬 노드(localhost)는 보통 CORS 설정 없이 작동합니다.',
+  'pgen.label':'설정 생성기','pgen.heading':'Prometheus 설정 생성기',
+  'pgen.section-desc':'노드 세부 정보를 입력하고 바로 사용할 수 있는 prometheus.yml을 생성하세요.',
+  'pgen.title':'prometheus.yml 생성','pgen.btn':'⚙️ 설정 생성','pgen.copy':'복사',
   'footer.source':'소스코드'
 }
 };
@@ -546,6 +848,176 @@ function setLang(lang){
   try{localStorage.setItem('lang',lang);}catch(e){}
 }
 setLang(localStorage.getItem('lang')||'en');
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js').catch(()=>{}); }
+
+// Hamburger menu
+const burger=document.getElementById('hamburger');
+const mobileMenu=document.getElementById('mobile-menu');
+if(burger&&mobileMenu){
+  burger.addEventListener('click',()=>{
+    const open=mobileMenu.classList.toggle('open');
+    burger.classList.toggle('open',open);
+    burger.setAttribute('aria-expanded',open);
+  });
+  document.addEventListener('click',e=>{
+    if(!burger.contains(e.target)&&!mobileMenu.contains(e.target)){
+      mobileMenu.classList.remove('open');burger.classList.remove('open');
+      burger.setAttribute('aria-expanded','false');
+    }
+  });
+}
+
+// Scroll-to-top
+const scrollBtn=document.getElementById('scroll-top');
+if(scrollBtn){
+  window.addEventListener('scroll',()=>{
+    scrollBtn.classList.toggle('visible',window.scrollY>300);
+  },{passive:true});
+}
+
+// ===== LIVE RPC CHECKER =====
+async function runRpcCheck(){
+  const btn=document.getElementById('rpc-check-btn');
+  const urls=(document.getElementById('rpc-urls').value||'').split('\n').map(u=>u.trim()).filter(Boolean);
+  const timeout=parseInt(document.getElementById('rpc-timeout').value)||5000;
+  const container=document.getElementById('rpc-results');
+  if(!urls.length){container.innerHTML='<div class="rpc-hint">Enter at least one RPC URL.</div>';return;}
+  btn.disabled=true;
+  container.innerHTML=urls.map(u=>`
+    <div class="rpc-result-item checking" id="rpc-${btoa(u).slice(0,8)}">
+      <div><div class="rpc-url">${u}</div><div class="rpc-metrics"><span class="rpc-metric">Checking…</span></div></div>
+      <span class="rpc-status-badge checking">…</span>
+    </div>`).join('');
+  await Promise.all(urls.map(url=>checkRpc(url,timeout)));
+  btn.disabled=false;
+}
+
+async function checkRpc(url,timeout){
+  const id='rpc-'+btoa(url).slice(0,8);
+  const el=document.getElementById(id);
+  const t0=Date.now();
+  const call=(method,params=[])=>({jsonrpc:'2.0',method,params,id:1});
+  try{
+    const ctrl=new AbortController();
+    const timer=setTimeout(()=>ctrl.abort(),timeout);
+    const [bn,pc,sy]=await Promise.all([
+      fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(call('eth_blockNumber')),signal:ctrl.signal}).then(r=>r.json()),
+      fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(call('net_peerCount')),signal:ctrl.signal}).then(r=>r.json()).catch(()=>null),
+      fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(call('eth_syncing')),signal:ctrl.signal}).then(r=>r.json()).catch(()=>null),
+    ]);
+    clearTimeout(timer);
+    const latency=Date.now()-t0;
+    const block=bn.result?parseInt(bn.result,16):'?';
+    const peers=pc&&pc.result?parseInt(pc.result,16):'?';
+    const syncing=sy&&sy.result===false?'no':(sy&&sy.result?'yes':'?');
+    el.className='rpc-result-item ok';
+    el.innerHTML=`
+      <div>
+        <div class="rpc-url">${url}</div>
+        <div class="rpc-metrics">
+          <span class="rpc-metric">Block: <span>${block.toLocaleString()}</span></span>
+          <span class="rpc-metric">Peers: <span>${peers}</span></span>
+          <span class="rpc-metric">Syncing: <span>${syncing}</span></span>
+          <span class="rpc-metric">Latency: <span>${latency}ms</span></span>
+        </div>
+      </div>
+      <span class="rpc-status-badge ok">● HEALTHY</span>`;
+  }catch(e){
+    const latency=Date.now()-t0;
+    const msg=e.name==='AbortError'?`Timeout (${timeout}ms)`:e.message;
+    el.className='rpc-result-item err';
+    el.innerHTML=`
+      <div>
+        <div class="rpc-url">${url}</div>
+        <div class="rpc-metrics"><span class="rpc-metric">${msg}</span></div>
+      </div>
+      <span class="rpc-status-badge err">✕ ERROR</span>`;
+  }
+}
+
+// ===== PROMETHEUS CONFIG GENERATOR =====
+function generatePromConfig(){
+  const job=document.getElementById('pg-jobname').value.trim()||'qorechain-node';
+  const interval=document.getElementById('pg-interval').value;
+  const targets=(document.getElementById('pg-targets').value||'').split('\n').map(t=>t.trim()).filter(Boolean);
+  const alertmgr=document.getElementById('pg-alertmgr').value.trim();
+  const retention=document.getElementById('pg-retention').value;
+
+  const tgYaml=targets.map(t=>`        - '${t}'`).join('\n');
+  const alertBlock=alertmgr?`alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['${alertmgr}']
+
+rule_files:
+  - 'alert_rules.yml'
+
+`:'';
+
+  const yaml=`# Generated by satoshi-Qore Toolbox
+# https://satoshi-qore.github.io/tools.html
+
+global:
+  scrape_interval: ${interval}
+  evaluation_interval: ${interval}
+  external_labels:
+    operator: '${job}'
+
+${alertBlock}scrape_configs:
+
+  - job_name: '${job}'
+    static_configs:
+      - targets:
+${tgYaml}
+    metrics_path: /metrics
+    scheme: http
+
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets:
+${targets.map(t=>`        - '${t.split(':')[0]}:9100'`).join('\n')}
+
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+# Retention: ${retention}
+# Start with: docker compose -f prometheus-stack/docker-compose.yml up -d
+`;
+
+  const wrap=document.getElementById('prom-output-wrap');
+  const out=document.getElementById('prom-output');
+  out.textContent=yaml;
+  wrap.style.display='block';
+  wrap.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function copyPromConfig(){
+  const text=document.getElementById('prom-output').textContent;
+  const btn=document.getElementById('copy-btn');
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.innerHTML='✅ Copied!';
+    setTimeout(()=>{ btn.innerHTML='📋 <span>Copy</span>'; },2000);
+  }).catch(()=>{
+    // fallback
+    const ta=document.createElement('textarea');
+    ta.value=text;document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);
+    btn.innerHTML='✅ Copied!';
+    setTimeout(()=>{ btn.innerHTML='📋 <span>Copy</span>'; },2000);
+  });
+}
+
+// Smooth page transitions
+document.querySelectorAll('a[href]').forEach(a=>{
+  const href=a.getAttribute('href');
+  if(!href||href.startsWith('http')||href.startsWith('#')||href.startsWith('mailto')||a.target==='_blank') return;
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    document.body.style.animation='pageOut .2s ease forwards';
+    setTimeout(()=>{ window.location.href=href; },190);
+  });
+});
 
 // Scroll animations
 const observer=new IntersectionObserver((entries)=>{

@@ -7,6 +7,22 @@
 <title>satoshi-Qore</title>
 <meta name="description" content="Blockchain infrastructure researcher and open source developer. QoreChain validator operations, RPC monitoring, and post-quantum cryptography.">
 <meta name="theme-color" content="#08080f">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://satoshi-qore.github.io/">
+<meta property="og:title" content="satoshi-Qore — Blockchain Infrastructure">
+<meta property="og:description" content="Blockchain infrastructure researcher and open source developer. QoreChain validator operations, RPC monitoring, and post-quantum cryptography.">
+<meta property="og:image" content="https://satoshi-qore.github.io/og-image.png">
+<meta property="og:site_name" content="satoshi-Qore">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@satoshi_Qore">
+<meta name="twitter:creator" content="@satoshi_Qore">
+<meta name="twitter:title" content="satoshi-Qore — Blockchain Infrastructure">
+<meta name="twitter:description" content="Blockchain infrastructure researcher and open source developer. QoreChain validator operations, RPC monitoring, and post-quantum cryptography.">
+<meta name="twitter:image" content="https://satoshi-qore.github.io/og-image.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -231,6 +247,17 @@ main{max-width:900px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
 .contact-platform{font-size:12px;color:var(--muted);font-weight:500;margin-bottom:2px}
 .contact-handle{font-size:14px;font-weight:600;color:var(--heading);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
+/* GITHUB STATS */
+.repo-stats{display:flex;gap:14px;margin-top:12px;flex-wrap:wrap}
+.repo-stat{
+  display:flex;align-items:center;gap:5px;
+  font-family:var(--mono);font-size:11px;color:var(--muted);
+  transition:color .2s
+}
+.repo-stat svg{opacity:.6}
+.repo-card:hover .repo-stat{color:var(--text)}
+.repo-stat.loading{opacity:.4}
+
 /* icon bg colors */
 .ic-github{background:rgba(255,255,255,0.06)}
 .ic-x{background:rgba(255,255,255,0.06)}
@@ -256,12 +283,65 @@ html[dir="rtl"] .section-label::before{order:2}
 html[dir="rtl"] .nav-right{flex-direction:row-reverse}
 html[dir="rtl"] .lang-wrap{padding-left:0;padding-right:12px;border-left:none;border-right:1px solid var(--border)}
 
+/* HAMBURGER */
+.hamburger{
+  display:none;
+  flex-direction:column;justify-content:center;align-items:center;
+  width:36px;height:36px;cursor:pointer;
+  background:rgba(255,255,255,0.05);border:1px solid var(--border-hi);
+  border-radius:8px;gap:5px;transition:background .2s;
+  margin-left:8px;flex-shrink:0
+}
+.hamburger:hover{background:rgba(255,255,255,0.09)}
+.hamburger span{display:block;width:16px;height:1.5px;background:var(--heading);border-radius:2px;transition:all .25s}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* MOBILE MENU */
+.mobile-menu{
+  display:none;
+  position:fixed;top:60px;left:0;right:0;
+  background:rgba(8,8,15,0.97);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+  padding:16px 24px 24px;z-index:99;
+  animation:slideDown .2s ease
+}
+.mobile-menu.open{display:block}
+.mobile-menu a{
+  display:block;padding:12px 4px;
+  font-size:15px;font-weight:500;color:var(--muted);text-decoration:none;
+  border-bottom:1px solid var(--border);transition:color .2s
+}
+.mobile-menu a:last-child{border-bottom:none}
+.mobile-menu a:hover,.mobile-menu a.active{color:var(--heading)}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+
+/* SCROLL-TO-TOP */
+#scroll-top{
+  position:fixed;bottom:28px;right:28px;z-index:90;
+  width:40px;height:40px;border-radius:10px;
+  background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.35);
+  color:var(--accent);font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;
+  backdrop-filter:blur(8px)
+}
+#scroll-top.visible{opacity:1;transform:none;pointer-events:auto}
+#scroll-top:hover{background:rgba(99,102,241,0.3);border-color:rgba(99,102,241,0.6)}
+
+/* PAGE TRANSITION */
+body{animation:pageIn .35s ease both}
+@keyframes pageIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes pageOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-4px)}}
+
 /* RESPONSIVE */
 @media(max-width:640px){
   .focus-grid{grid-template-columns:1fr}
   .hero{padding:72px 0 56px}
   .section{padding:52px 0}
   .nav-links{display:none}
+  .hamburger{display:flex}
   .repo-card{padding:22px}
 }
 </style>
@@ -276,7 +356,7 @@ html[dir="rtl"] .lang-wrap{padding-left:0;padding-right:12px;border-left:none;bo
         <a href="/" class="active" data-i18n="nav.home">home</a>
         <a href="/projects.html" data-i18n="nav.projects">projects</a>
         <a href="/tools.html" data-i18n="nav.tools">tools</a>
-        <a href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener" data-i18n="nav.writing">writing</a>
+        <a href="/writing.html" data-i18n="nav.writing">writing</a>
       </div>
       <div class="lang-wrap">
         <span class="lang-label">lang</span>
@@ -293,9 +373,18 @@ html[dir="rtl"] .lang-wrap{padding-left:0;padding-right:12px;border-left:none;bo
           <option value="ko">KO</option>
         </select>
       </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/" class="active" data-i18n="nav.home">Home</a>
+  <a href="/projects.html" data-i18n="nav.projects">Projects</a>
+  <a href="/tools.html" data-i18n="nav.tools">Tools</a>
+  <a href="/writing.html" data-i18n="nav.writing">Writing</a>
+</div>
 
 <main>
 
@@ -361,6 +450,11 @@ html[dir="rtl"] .lang-wrap{padding-left:0;padding-right:12px;border-left:none;bo
           <span class="tag">Grafana</span>
           <span class="tag">Docker</span>
         </div>
+        <div class="repo-stats" id="stats-tools">
+          <span class="repo-stat loading" id="tools-stars"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>—</span>
+          <span class="repo-stat loading" id="tools-forks"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M6 9v2a3 3 0 003 3h6a3 3 0 003-3V9"/></svg>—</span>
+          <span class="repo-stat loading" id="tools-updated">🕐 —</span>
+        </div>
       </a>
       <a class="repo-card" href="https://github.com/satoshi-Qore/qorechain-guides" target="_blank" rel="noopener">
         <div class="repo-top">
@@ -372,6 +466,11 @@ html[dir="rtl"] .lang-wrap{padding-left:0;padding-right:12px;border-left:none;bo
           <span class="tag">Docs</span>
           <span class="tag">Multilingual</span>
           <span class="tag">QoreChain</span>
+        </div>
+        <div class="repo-stats" id="stats-guides">
+          <span class="repo-stat loading" id="guides-stars"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>—</span>
+          <span class="repo-stat loading" id="guides-forks"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M6 9v2a3 3 0 003 3h6a3 3 0 003-3V9"/></svg>—</span>
+          <span class="repo-stat loading" id="guides-updated">🕐 —</span>
         </div>
       </a>
     </div>
@@ -432,6 +531,8 @@ html[dir="rtl"] .lang-wrap{padding-left:0;padding-right:12px;border-left:none;bo
   </section>
 
 </main>
+
+<button id="scroll-top" aria-label="Scroll to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <footer>
   <p><span class="footer-dot"></span>© 2026 satoshi-Qore &nbsp;·&nbsp; <a href="https://github.com/satoshi-Qore/satoshi-Qore.github.io" data-i18n="footer.source">source</a></p>
@@ -547,13 +648,13 @@ const T = {
     'hero.desc':'أبحث في البنية التحتية للبلوكتشين، وأبني أدوات مراقبة مفتوحة المصدر، وأوثّق الأنظمة — بتركيز على QoreChain والتشفير ما بعد الكمي.',
     'hero.cta.projects':'عرض المشاريع',
     'about.label':'عني','about.title':'بناء أدوات تصمد طوال الليل',
-    'about.body':'الفضول حول ما يحدث داخل الشبكات اللامركزية قادني إلى <strong>QoreChain</strong>. أحوّل ذلك الآن إلى نتائج ملموسة: أدوات مراقبة بدون تبعيا֪ خارجية، أدلة متعددة اللغات، وكتب تشغيل.',
-    'focus.1.name':'تشغيل النود','focus.1.desc':'إعداد validator لـ QoreChain، مراقبة نقاط نهاية RPC، العمليا֪ اليومية',
+    'about.body':'الفضول حول ما يحدث داخل الشبكات اللامركزية قادني إلى <strong>QoreChain</strong>. أحوّل ذلك الآن إلى نتائج ملموسة: أدوات مراقبة بدون تبعيات خارجية، أدلة متعددة اللغات، وكتب تشغيل.',
+    'focus.1.name':'تشغيل النود','focus.1.desc':'إعداد validator لـ QoreChain، مراقبة نقاط نهاية RPC، العمليات اليومية',
     'focus.2.name':'بحث ما بعد الكمي','focus.2.desc':'المرونة على مستوى البروتوكول ضد تهديدات الحوسبة الكمية',
-    'focus.3.name':'أدوا֪ مفتوحة المصدر','focus.3.desc':'أدوا֪ Python بدون تبعيات، حزم Docker للمراقبة، سير عمل CI/CD',
+    'focus.3.name':'أدوات مفتوحة المصدر','focus.3.desc':'أدوات Python بدون تبعيات، حزم Docker للمراقبة، سير عمل CI/CD',
     'focus.4.name':'التوثيق','focus.4.desc':'أدلة متعددة اللغات، مراجع استكشاف الأخطاء، معايير المساهمة',
-    'projects.label':'المشاريع','projects.title':'مس֪ودؽات مفتوحة المصدر',
-    'repo.tools.desc':'مراقبة RPC، حزمة Prometheus + Grafana، ك֪ب تشغيل الحوادث.',
+    'projects.label':'المشاريع','projects.title':'مستودعات مفتوحة المصدر',
+    'repo.tools.desc':'مراقبة RPC، حزمة Prometheus + Grafana، كتب تشغيل الحوادث.',
     'repo.guides.desc':'إعداد validator، توثيق Light Node، الأسئلة الشائعة. متعدد اللغات.',
     'connect.label':'تواصل','connect.title':'تواصل معي',
     'footer.source':'المصدر'
@@ -578,7 +679,7 @@ const T = {
   ja: {
     'nav.home':'ホーム','nav.projects':'プロジェクト','nav.tools':'ツール','nav.writing':'記事',
     'hero.badge':'● QoreChain バリデーター オペレーター',
-    'hero.desc':'ブロックチェーンインフラを研究し、オープンソースの監視ツールを構築し、システムを文書化しています — QoreChainとポスド量子暗号に注力。',
+    'hero.desc':'ブロックチェーンインフラを研究し、オープンソースの監視ツールを構築し、システムを文書化しています — QoreChainとポスト量子暗号に注力。',
     'hero.cta.projects':'プロジェクトを見る',
     'about.label':'自己紹介','about.title':'夜を乗り越えるツールを構築する',
     'about.body':'分散型ネットワークの内部で何が起きているかへの好奇心が、私を<strong>QoreChain</strong>へと導きました。今はその好奇心を具体的な成果物に変えています：外部依存なしの監視ツール、多言語ガイド、そしてランブック。',
@@ -628,6 +729,79 @@ function setLang(lang) {
   try { localStorage.setItem('lang', lang); } catch(e) {}
 }
 setLang(localStorage.getItem('lang') || 'en');
+
+// Service Worker
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js').catch(()=>{});
+}
+
+// GitHub Live Stats
+async function fetchGitHubStats(repo, prefix) {
+  try {
+    const r = await fetch(`https://api.github.com/repos/satoshi-Qore/${repo}`, {
+      headers: { 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!r.ok) return;
+    const d = await r.json();
+    const stars = d.stargazers_count ?? '?';
+    const forks = d.forks_count ?? '?';
+    const updated = d.pushed_at ? timeAgo(new Date(d.pushed_at)) : '?';
+    const s = document.getElementById(`${prefix}-stars`);
+    const f = document.getElementById(`${prefix}-forks`);
+    const u = document.getElementById(`${prefix}-updated`);
+    if (s) { s.innerHTML = s.innerHTML.replace('—', stars); s.classList.remove('loading'); }
+    if (f) { f.innerHTML = f.innerHTML.replace('—', forks); f.classList.remove('loading'); }
+    if (u) { u.textContent = `🕐 ${updated}`; u.classList.remove('loading'); }
+  } catch(e) {}
+}
+function timeAgo(date) {
+  const diff = Math.floor((Date.now() - date) / 1000);
+  if (diff < 60) return `${diff}s ago`;
+  if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
+  if (diff < 2592000) return `${Math.floor(diff/86400)}d ago`;
+  return date.toLocaleDateString('en', {month:'short',year:'numeric'});
+}
+fetchGitHubStats('qorechain-tools', 'tools');
+fetchGitHubStats('qorechain-guides', 'guides');
+
+// Hamburger menu
+const burger=document.getElementById('hamburger');
+const mobileMenu=document.getElementById('mobile-menu');
+if(burger&&mobileMenu){
+  burger.addEventListener('click',()=>{
+    const open=mobileMenu.classList.toggle('open');
+    burger.classList.toggle('open',open);
+    burger.setAttribute('aria-expanded',open);
+  });
+  document.addEventListener('click',e=>{
+    if(!burger.contains(e.target)&&!mobileMenu.contains(e.target)){
+      mobileMenu.classList.remove('open');
+      burger.classList.remove('open');
+      burger.setAttribute('aria-expanded','false');
+    }
+  });
+}
+
+// Scroll-to-top
+const scrollBtn=document.getElementById('scroll-top');
+if(scrollBtn){
+  window.addEventListener('scroll',()=>{
+    scrollBtn.classList.toggle('visible',window.scrollY>300);
+  },{passive:true});
+}
+
+// Smooth page transitions
+document.querySelectorAll('a[href]').forEach(a=>{
+  const href=a.getAttribute('href');
+  if(!href||href.startsWith('http')||href.startsWith('#')||href.startsWith('mailto')||a.target==='_blank') return;
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    document.body.style.animation='pageOut .2s ease forwards';
+    setTimeout(()=>{ window.location.href=href; },190);
+  });
+});
+document.body.style.animation='';
 
 // Animate on scroll
 const obs = new IntersectionObserver((entries) => {

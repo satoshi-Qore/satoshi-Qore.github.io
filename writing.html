@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing — satoshi-Qore</title>
+<meta name="description" content="Articles and guides on blockchain infrastructure, QoreChain validator operations, post-quantum cryptography, and open-source monitoring tools.">
+<meta name="theme-color" content="#08080f">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://satoshi-qore.github.io/writing.html">
+<meta property="og:title" content="Writing — satoshi-Qore">
+<meta property="og:description" content="Articles and guides on blockchain infrastructure, QoreChain validator operations, post-quantum cryptography, and open-source monitoring tools.">
+<meta property="og:image" content="https://satoshi-qore.github.io/og-image.png">
+<meta property="og:site_name" content="satoshi-Qore">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@satoshi_Qore">
+<meta name="twitter:title" content="Writing — satoshi-Qore">
+<meta name="twitter:description" content="Articles and guides on blockchain infrastructure, QoreChain validator operations, post-quantum cryptography, and open-source monitoring tools.">
+<meta name="twitter:image" content="https://satoshi-qore.github.io/og-image.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#08080f;
+  --surface:#0f0f1a;
+  --border:rgba(255,255,255,0.06);
+  --border-hi:rgba(255,255,255,0.12);
+  --text:#94a3b8;
+  --heading:#e2e8f0;
+  --muted:#475569;
+  --accent:#6366f1;
+  --accent-2:#8b5cf6;
+  --accent-3:#0ea5e9;
+  --green:#10b981;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Inter',-apple-system,sans-serif;
+  --glow:rgba(99,102,241,0.15);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;min-height:100vh}
+
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 10%,rgba(99,102,241,0.08) 0%,transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 80%,rgba(139,92,246,0.06) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 60% at 60% 30%,rgba(14,165,233,0.04) 0%,transparent 70%);
+  pointer-events:none;z-index:0
+}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(8,8,15,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{max-width:900px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px}
+.nav-logo{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--heading);text-decoration:none;letter-spacing:-.01em}
+.nav-logo span{background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;padding:6px 12px;border-radius:8px;transition:color .2s,background .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--heading);background:rgba(255,255,255,0.06)}
+.lang-wrap{display:flex;align-items:center;gap:6px;padding-left:12px;border-left:1px solid var(--border)}
+.lang-label{font-size:11px;color:var(--muted);font-family:var(--mono)}
+#lang-select{
+  background:rgba(255,255,255,0.05);border:1px solid var(--border-hi);
+  color:var(--heading);font-family:var(--mono);font-size:11px;font-weight:500;
+  padding:4px 8px;border-radius:6px;cursor:pointer;outline:none;
+  appearance:none;-webkit-appearance:none;min-width:46px;text-align:center;
+  transition:border-color .2s,background .2s
+}
+#lang-select:hover,#lang-select:focus{border-color:var(--accent);background:rgba(99,102,241,0.1)}
+#lang-select option{background:#1a1a2e;color:var(--heading)}
+
+/* LAYOUT */
+main{max-width:900px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+
+/* HERO */
+.hero{padding:80px 0 60px;text-align:center}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);
+  border-radius:100px;padding:6px 16px;
+  font-family:var(--mono);font-size:12px;color:var(--accent);
+  margin-bottom:28px;animation:fadeUp .6s ease both
+}
+.hero-title{
+  font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:var(--heading);
+  letter-spacing:-.03em;line-height:1.1;margin-bottom:16px;
+  animation:fadeUp .6s .1s ease both
+}
+.hero-title .grad{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 50%,var(--accent-3) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text
+}
+.hero-desc{
+  max-width:540px;margin:0 auto 40px;font-size:16px;color:var(--text);line-height:1.75;
+  animation:fadeUp .6s .2s ease both
+}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;animation:fadeUp .6s .25s ease both}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 22px;border-radius:10px;font-family:var(--sans);font-size:14px;font-weight:600;
+  text-decoration:none;transition:all .2s;cursor:pointer;letter-spacing:-.01em
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;
+  box-shadow:0 0 0 0 rgba(99,102,241,0.4)
+}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 30px rgba(99,102,241,0.35)}
+.btn-ghost{background:rgba(255,255,255,0.05);border:1px solid var(--border-hi);color:var(--text)}
+.btn-ghost:hover{background:rgba(255,255,255,0.09);color:var(--heading);border-color:rgba(255,255,255,0.2)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border-hi) 30%,var(--border-hi) 70%,transparent);margin:0}
+
+/* SECTIONS */
+.section{padding:64px 0}
+.section-label{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px
+}
+.section-label::before{content:'';width:20px;height:1px;background:var(--accent)}
+.section-title{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700;color:var(--heading);letter-spacing:-.02em;margin-bottom:10px}
+.section-subtitle{font-size:15px;color:var(--text);max-width:520px;line-height:1.7;margin-bottom:40px}
+
+/* FEATURED ARTICLE */
+.featured-card{
+  display:block;text-decoration:none;
+  background:var(--surface);border:1px solid var(--border);border-radius:20px;
+  padding:36px 40px;margin-bottom:32px;
+  position:relative;overflow:hidden;
+  transition:border-color .2s,transform .2s,box-shadow .2s
+}
+.featured-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(99,102,241,0.06) 0%,rgba(139,92,246,0.03) 50%,transparent 100%);
+  opacity:0;transition:opacity .3s
+}
+.featured-card:hover{border-color:rgba(99,102,241,0.35);transform:translateY(-3px);box-shadow:0 20px 60px rgba(99,102,241,0.12)}
+.featured-card:hover::before{opacity:1}
+.featured-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.25);
+  border-radius:100px;padding:4px 12px;
+  font-family:var(--mono);font-size:11px;color:var(--accent);
+  margin-bottom:20px
+}
+.featured-title{font-size:clamp(1.2rem,2.5vw,1.6rem);font-weight:700;color:var(--heading);letter-spacing:-.02em;margin-bottom:12px;line-height:1.3}
+.featured-excerpt{font-size:15px;color:var(--text);line-height:1.75;margin-bottom:24px;max-width:620px}
+.featured-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.meta-date{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.meta-read{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.meta-tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{
+  font-family:var(--mono);font-size:11px;padding:3px 10px;border-radius:100px;
+  background:rgba(255,255,255,0.04);border:1px solid var(--border-hi);color:var(--muted)
+}
+.featured-arrow{
+  position:absolute;top:36px;right:40px;
+  width:36px;height:36px;border-radius:10px;
+  background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--accent);font-size:16px;
+  transition:background .2s,border-color .2s
+}
+.featured-card:hover .featured-arrow{background:rgba(99,102,241,0.22);border-color:rgba(99,102,241,0.4)}
+
+/* ARTICLE GRID */
+.article-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.article-card{
+  display:block;text-decoration:none;
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:26px 28px;
+  position:relative;overflow:hidden;
+  transition:border-color .2s,transform .2s,box-shadow .2s
+}
+.article-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(99,102,241,0.04) 0%,transparent 60%);
+  opacity:0;transition:opacity .3s
+}
+.article-card:hover{border-color:rgba(99,102,241,0.3);transform:translateY(-2px);box-shadow:0 14px 44px rgba(99,102,241,0.09)}
+.article-card:hover::before{opacity:1}
+.article-icon{font-size:24px;margin-bottom:14px}
+.article-title{font-size:15px;font-weight:700;color:var(--heading);letter-spacing:-.01em;margin-bottom:10px;line-height:1.4}
+.article-excerpt{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:16px}
+.article-meta{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.article-date{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.article-read{
+  font-family:var(--mono);font-size:11px;color:var(--accent);
+  display:flex;align-items:center;gap:4px
+}
+
+/* TOPICS */
+.topics-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.topic-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:100px;padding:8px 18px;
+  font-size:13px;font-weight:500;color:var(--text);
+  text-decoration:none;
+  transition:border-color .2s,color .2s,background .2s
+}
+.topic-pill:hover{border-color:rgba(99,102,241,0.4);color:var(--heading);background:rgba(99,102,241,0.06)}
+.topic-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* MEDIUM CTA */
+.medium-cta{
+  background:var(--surface);border:1px solid var(--border);border-radius:20px;
+  padding:48px 40px;text-align:center;margin-top:0;
+  position:relative;overflow:hidden
+}
+.medium-cta::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(99,102,241,0.06) 0%,transparent 70%);
+  pointer-events:none
+}
+.medium-cta-icon{font-size:40px;margin-bottom:16px}
+.medium-cta-title{font-size:1.4rem;font-weight:700;color:var(--heading);margin-bottom:10px;letter-spacing:-.02em}
+.medium-cta-desc{font-size:15px;color:var(--text);max-width:420px;margin:0 auto 28px;line-height:1.7}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border);padding:32px 28px;
+  text-align:center;color:var(--muted);font-size:13px;position:relative;z-index:1
+}
+footer a{color:var(--muted);text-decoration:none;transition:color .2s}
+footer a:hover{color:var(--accent)}
+.footer-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:6px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* RTL */
+html[dir="rtl"] .section-label::before{order:2}
+html[dir="rtl"] .nav-right{flex-direction:row-reverse}
+html[dir="rtl"] .lang-wrap{padding-left:0;padding-right:12px;border-left:none;border-right:1px solid var(--border)}
+html[dir="rtl"] .featured-arrow{right:auto;left:40px}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .article-grid{grid-template-columns:1fr}
+  .hero{padding:56px 0 44px}
+  .section{padding:48px 0}
+  .nav-links{display:none}
+  .featured-card{padding:24px}
+  .featured-arrow{top:24px;right:24px}
+  .medium-cta{padding:36px 24px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="/">satoshi-<span>Qore</span></a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="/" data-i18n="nav.home">home</a>
+        <a href="/projects.html" data-i18n="nav.projects">projects</a>
+        <a href="/tools.html" data-i18n="nav.tools">tools</a>
+        <a href="/writing.html" class="active" data-i18n="nav.writing">writing</a>
+      </div>
+      <div class="lang-wrap">
+        <span class="lang-label">lang</span>
+        <select id="lang-select" onchange="setLang(this.value)" aria-label="Select language">
+          <option value="en" selected>EN</option>
+          <option value="tr">TR</option>
+          <option value="ro">RO</option>
+          <option value="de">DE</option>
+          <option value="it">IT</option>
+          <option value="es">ES</option>
+          <option value="ar">AR</option>
+          <option value="zh">ZH</option>
+          <option value="ja">JA</option>
+          <option value="ko">KO</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <section class="hero">
+    <div class="hero-badge" data-i18n="hero.badge">✍️ Articles &amp; Guides</div>
+    <h1 class="hero-title" data-i18n-html="hero.title">Writing on <span class="grad">Blockchain Infrastructure</span></h1>
+    <p class="hero-desc" data-i18n="hero.desc">In-depth articles on QoreChain validator operations, post-quantum cryptography, open-source monitoring, and the systems behind decentralized networks.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener" data-i18n="hero.cta.medium">Read on Medium ↗</a>
+      <a class="btn btn-ghost" href="https://x.com/satoshi_Qore" target="_blank" rel="noopener" data-i18n="hero.cta.updates">Follow for Updates</a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section">
+    <div class="section-label" data-i18n="featured.label">Featured</div>
+    <h2 class="section-title" data-i18n="featured.title">Latest Article</h2>
+
+    <a class="featured-card" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener">
+      <div class="featured-arrow">↗</div>
+      <div class="featured-badge">⭐ <span data-i18n="featured.badge">Featured</span></div>
+      <div class="featured-title" data-i18n="featured.art1.title">RPC Health Monitoring for QoreChain Validators: A Complete Guide</div>
+      <div class="featured-excerpt" data-i18n="featured.art1.excerpt">A deep dive into building reliable, dependency-free RPC health monitoring for validator nodes. Covers endpoint selection, alert thresholds, Prometheus metrics exposition, and what to do when nodes go silent at 3am.</div>
+      <div class="featured-meta">
+        <span class="meta-date" data-i18n="featured.art1.date">June 2026</span>
+        <span class="meta-read" data-i18n="featured.art1.read">12 min read</span>
+        <div class="meta-tags">
+          <span class="tag">RPC</span>
+          <span class="tag">Monitoring</span>
+          <span class="tag">QoreChain</span>
+        </div>
+      </div>
+    </a>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section">
+    <div class="section-label" data-i18n="articles.label">Articles</div>
+    <h2 class="section-title" data-i18n="articles.title">All Writing</h2>
+    <p class="section-subtitle" data-i18n="articles.subtitle">Technical guides, research notes, and operator playbooks.</p>
+
+    <div class="article-grid">
+      <a class="article-card" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener">
+        <div class="article-icon">🔐</div>
+        <div class="article-title" data-i18n="art2.title">Post-Quantum Cryptography in Blockchain: Where We Stand</div>
+        <div class="article-excerpt" data-i18n="art2.excerpt">An overview of CRYSTALS-Kyber, Dilithium, and FALCON, and what blockchain protocols need to do now — before quantum advantage becomes real.</div>
+        <div class="article-meta">
+          <span class="article-date" data-i18n="art2.date">May 2026</span>
+          <span class="article-read">9 min ↗</span>
+        </div>
+      </a>
+
+      <a class="article-card" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener">
+        <div class="article-icon">📊</div>
+        <div class="article-title" data-i18n="art3.title">Prometheus + Grafana Stack for Blockchain Node Operators</div>
+        <div class="article-excerpt" data-i18n="art3.excerpt">Step-by-step setup of a battle-tested observability stack. Custom dashboards, alerting rules, and Docker Compose configs you can copy-paste.</div>
+        <div class="article-meta">
+          <span class="article-date" data-i18n="art3.date">Apr 2026</span>
+          <span class="article-read">15 min ↗</span>
+        </div>
+      </a>
+
+      <a class="article-card" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener">
+        <div class="article-icon">⚙️</div>
+        <div class="article-title" data-i18n="art4.title">Setting Up a QoreChain Validator Node from Scratch</div>
+        <div class="article-excerpt" data-i18n="art4.excerpt">From bare metal to active validator: hardware selection, OS hardening, binary installation, key management, and day-1 monitoring setup.</div>
+        <div class="article-meta">
+          <span class="article-date" data-i18n="art4.date">Mar 2026</span>
+          <span class="article-read">20 min ↗</span>
+        </div>
+      </a>
+
+      <a class="article-card" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener">
+        <div class="article-icon">🚨</div>
+        <div class="article-title" data-i18n="art5.title">Incident Runbooks: How to Respond When Your Node Goes Down</div>
+        <div class="article-excerpt" data-i18n="art5.excerpt">Real-world incident response playbooks for common validator failures — missed blocks, sync issues, disk exhaustion, and network partitions.</div>
+        <div class="article-meta">
+          <span class="article-date" data-i18n="art5.date">Feb 2026</span>
+          <span class="article-read">11 min ↗</span>
+        </div>
+      </a>
+
+      <a class="article-card" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener">
+        <div class="article-icon">🐍</div>
+        <div class="article-title" data-i18n="art6.title">Writing Dependency-Free Python Monitoring Scripts</div>
+        <div class="article-excerpt" data-i18n="art6.excerpt">Why zero external dependencies matters for production tooling, and how to build robust monitoring scripts using only the Python standard library.</div>
+        <div class="article-meta">
+          <span class="article-date" data-i18n="art6.date">Jan 2026</span>
+          <span class="article-read">8 min ↗</span>
+        </div>
+      </a>
+
+      <a class="article-card" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener">
+        <div class="article-icon">🌐</div>
+        <div class="article-title" data-i18n="art7.title">Light Node vs Full Node: What Operators Need to Know</div>
+        <div class="article-excerpt" data-i18n="art7.excerpt">A practical comparison of Light Node and full node setups — resource requirements, trust assumptions, use cases, and when to choose each.</div>
+        <div class="article-meta">
+          <span class="article-date" data-i18n="art7.date">Dec 2025</span>
+          <span class="article-read">7 min ↗</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section">
+    <div class="section-label" data-i18n="topics.label">Topics</div>
+    <h2 class="section-title" data-i18n="topics.title">Browse by Topic</h2>
+    <div class="topics-grid">
+      <a class="topic-pill" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener"><span class="topic-dot" style="background:#6366f1"></span><span data-i18n="topic.rpc">RPC Monitoring</span></a>
+      <a class="topic-pill" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener"><span class="topic-dot" style="background:#8b5cf6"></span><span data-i18n="topic.pqc">Post-Quantum Crypto</span></a>
+      <a class="topic-pill" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener"><span class="topic-dot" style="background:#0ea5e9"></span><span data-i18n="topic.validator">Validator Operations</span></a>
+      <a class="topic-pill" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener"><span class="topic-dot" style="background:#10b981"></span><span data-i18n="topic.tools">Open Source Tools</span></a>
+      <a class="topic-pill" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener"><span class="topic-dot" style="background:#f59e0b"></span><span data-i18n="topic.incident">Incident Response</span></a>
+      <a class="topic-pill" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener"><span class="topic-dot" style="background:#ef4444"></span><span data-i18n="topic.infra">Infrastructure</span></a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section">
+    <div class="medium-cta">
+      <div class="medium-cta-icon">📝</div>
+      <div class="medium-cta-title" data-i18n="cta.title">All articles on Medium</div>
+      <div class="medium-cta-desc" data-i18n="cta.desc">The full archive — including earlier guides, research notes, and deep dives — is published on Medium.</div>
+      <a class="btn btn-primary" href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener" data-i18n="cta.btn">Open Medium Profile ↗</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p><span class="footer-dot"></span>© 2026 satoshi-Qore &nbsp;·&nbsp; <a href="https://github.com/satoshi-Qore/satoshi-Qore.github.io" data-i18n="footer.source">source</a></p>
+</footer>
+
+<script>
+const T = {
+  en: {
+    'nav.home':'Home','nav.projects':'Projects','nav.tools':'Tools','nav.writing':'Writing',
+    'hero.badge':'✍️ Articles & Guides',
+    'hero.title':'Writing on <span class="grad">Blockchain Infrastructure</span>',
+    'hero.desc':'In-depth articles on QoreChain validator operations, post-quantum cryptography, open-source monitoring, and the systems behind decentralized networks.',
+    'hero.cta.medium':'Read on Medium ↗','hero.cta.updates':'Follow for Updates',
+    'featured.label':'Featured','featured.title':'Latest Article','featured.badge':'Featured',
+    'featured.art1.title':'RPC Health Monitoring for QoreChain Validators: A Complete Guide',
+    'featured.art1.excerpt':'A deep dive into building reliable, dependency-free RPC health monitoring for validator nodes. Covers endpoint selection, alert thresholds, Prometheus metrics exposition, and what to do when nodes go silent at 3am.',
+    'featured.art1.date':'June 2026','featured.art1.read':'12 min read',
+    'articles.label':'Articles','articles.title':'All Writing',
+    'articles.subtitle':'Technical guides, research notes, and operator playbooks.',
+    'art2.title':'Post-Quantum Cryptography in Blockchain: Where We Stand',
+    'art2.excerpt':'An overview of CRYSTALS-Kyber, Dilithium, and FALCON, and what blockchain protocols need to do now — before quantum advantage becomes real.',
+    'art2.date':'May 2026',
+    'art3.title':'Prometheus + Grafana Stack for Blockchain Node Operators',
+    'art3.excerpt':'Step-by-step setup of a battle-tested observability stack. Custom dashboards, alerting rules, and Docker Compose configs you can copy-paste.',
+    'art3.date':'Apr 2026',
+    'art4.title':'Setting Up a QoreChain Validator Node from Scratch',
+    'art4.excerpt':'From bare metal to active validator: hardware selection, OS hardening, binary installation, key management, and day-1 monitoring setup.',
+    'art4.date':'Mar 2026',
+    'art5.title':'Incident Runbooks: How to Respond When Your Node Goes Down',
+    'art5.excerpt':'Real-world incident response playbooks for common validator failures — missed blocks, sync issues, disk exhaustion, and network partitions.',
+    'art5.date':'Feb 2026',
+    'art6.title':'Writing Dependency-Free Python Monitoring Scripts',
+    'art6.excerpt':'Why zero external dependencies matters for production tooling, and how to build robust monitoring scripts using only the Python standard library.',
+    'art6.date':'Jan 2026',
+    'art7.title':'Light Node vs Full Node: What Operators Need to Know',
+    'art7.excerpt':'A practical comparison of Light Node and full node setups — resource requirements, trust assumptions, use cases, and when to choose each.',
+    'art7.date':'Dec 2025',
+    'topics.label':'Topics','topics.title':'Browse by Topic',
+    'topic.rpc':'RPC Monitoring','topic.pqc':'Post-Quantum Crypto',
+    'topic.validator':'Validator Operations','topic.tools':'Open Source Tools',
+    'topic.incident':'Incident Response','topic.infra':'Infrastructure',
+    'cta.title':'All articles on Medium',
+    'cta.desc':'The full archive — including earlier guides, research notes, and deep dives — is published on Medium.',
+    'cta.btn':'Open Medium Profile ↗',
+    'footer.source':'source'
+  },
+  tr: {
+    'nav.home':'Ana Sayfa','nav.projects':'Projeler','nav.tools':'Araçlar','nav.writing':'Yazılar',
+    'hero.badge':'✍️ Makaleler & Rehberler',
+    'hero.title':'<span class="grad">Blockchain Altyapısı</span> Üzerine Yazılar',
+    'hero.desc':'QoreChain validator operasyonları, post-kuantum kriptografi, açık kaynak izleme ve merkezi olmayan ağların arkasındaki sistemler üzerine derinlemesine makaleler.',
+    'hero.cta.medium':'Medium\'da Oku ↗','hero.cta.updates':'Takip Et',
+    'featured.label':'Öne Çıkan','featured.title':'Son Makale','featured.badge':'Öne Çıkan',
+    'featured.art1.title':'QoreChain Validator\'ları için RPC Sağlık İzleme: Eksiksiz Rehber',
+    'featured.art1.excerpt':'Validator node\'ları için güvenilir, bağımlılıksız RPC sağlık izleme sistemi kurmaya dair derin bir inceleme. Uç nokta seçimi, uyarı eşikleri, Prometheus metrik yayını ve sabah 3\'te node\'lar sessizleştiğinde ne yapılacağı ele alınıyor.',
+    'featured.art1.date':'Haziran 2026','featured.art1.read':'12 dk okuma',
+    'articles.label':'Makaleler','articles.title':'Tüm Yazılar',
+    'articles.subtitle':'Teknik rehberler, araştırma notları ve operatör oyun kitapları.',
+    'art2.title':'Blockchain\'de Post-Kuantum Kriptografi: Şu An Neredeyiz',
+    'art2.excerpt':'CRYSTALS-Kyber, Dilithium ve FALCON\'a genel bakış; kuantum avantajı gerçek olmadan önce blockchain protokollerinin şimdi yapması gerekenler.',
+    'art2.date':'Mayıs 2026',
+    'art3.title':'Blockchain Node Operatörleri için Prometheus + Grafana Stack\'i',
+    'art3.excerpt':'Savaşta test edilmiş bir gözlemlenebilirlik stack\'inin adım adım kurulumu. Özel dashboard\'lar, uyarı kuralları ve kopyala-yapıştır Docker Compose dosyaları.',
+    'art3.date':'Nis 2026',
+    'art4.title':'Sıfırdan QoreChain Validator Node Kurulumu',
+    'art4.excerpt':'Çıplak metalden aktif validator\'a: donanım seçimi, işletim sistemi sertleştirme, ikili kurulum, anahtar yönetimi ve 1. gün izleme kurulumu.',
+    'art4.date':'Mar 2026',
+    'art5.title':'Incident Runbook\'ları: Node\'unuz Çöktüğünde Nasıl Tepki Verilir',
+    'art5.excerpt':'Yaygın validator arızaları için gerçek dünya incident yanıt playbook\'ları — kaçırılan bloklar, senkronizasyon sorunları, disk tükenmesi ve ağ bölünmeleri.',
+    'art5.date':'Şub 2026',
+    'art6.title':'Bağımlılıksız Python İzleme Scriptleri Yazmak',
+    'art6.excerpt':'Üretim araçlarında sıfır harici bağımlılığın neden önemli olduğu ve yalnızca Python standart kütüphanesini kullanarak sağlam izleme scriptleri nasıl oluşturulur.',
+    'art6.date':'Oca 2026',
+    'art7.title':'Light Node - Full Node Karşılaştırması: Operatörlerin Bilmesi Gerekenler',
+    'art7.excerpt':'Light Node ve full node kurulumlarının pratik karşılaştırması — kaynak gereksinimleri, güven varsayımları, kullanım senaryoları ve ne zaman hangisini seçmeli.',
+    'art7.date':'Ara 2025',
+    'topics.label':'Konular','topics.title':'Konuya Göre Gözat',
+    'topic.rpc':'RPC İzleme','topic.pqc':'Post-Kuantum Kripto',
+    'topic.validator':'Validator Operasyonları','topic.tools':'Açık Kaynak Araçlar',
+    'topic.incident':'Incident Yanıt','topic.infra':'Altyapı',
+    'cta.title':'Tüm makaleler Medium\'da',
+    'cta.desc':'Önceki rehberler, araştırma notları ve derinlemesine incelemeler dahil tam arşiv Medium\'da yayınlanıyor.',
+    'cta.btn':'Medium Profilini Aç ↗',
+    'footer.source':'kaynak'
+  },
+  ro: {
+    'nav.home':'Acasă','nav.projects':'Proiecte','nav.tools':'Unelte','nav.writing':'Articole',
+    'hero.badge':'✍️ Articole & Ghiduri',
+    'hero.title':'Scrieri despre <span class="grad">Infrastructura Blockchain</span>',
+    'hero.desc':'Articole aprofundate despre operațiunile validator QoreChain, criptografia post-cuantică, monitorizarea open-source și sistemele din spatele rețelelor descentralizate.',
+    'hero.cta.medium':'Citește pe Medium ↗','hero.cta.updates':'Urmărește pentru noutăți',
+    'featured.label':'Recomandat','featured.title':'Ultimul Articol','featured.badge':'Recomandat',
+    'featured.art1.title':'Monitorizarea Sănătății RPC pentru Validatorii QoreChain: Ghid Complet',
+    'featured.art1.excerpt':'O analiză aprofundată a construirii unui sistem de monitorizare RPC fiabil și fără dependențe pentru noduri validator.',
+    'featured.art1.date':'Iunie 2026','featured.art1.read':'12 min citire',
+    'articles.label':'Articole','articles.title':'Toate Scrierile',
+    'articles.subtitle':'Ghiduri tehnice, note de cercetare și manuale de operator.',
+    'art2.title':'Criptografie Post-Cuantică în Blockchain: Unde Ne Aflăm','art2.excerpt':'O prezentare generală a CRYSTALS-Kyber, Dilithium și FALCON.','art2.date':'Mai 2026',
+    'art3.title':'Stack Prometheus + Grafana pentru Operatorii de Noduri Blockchain','art3.excerpt':'Configurare pas cu pas a unui stack de observabilitate testat în producție.','art3.date':'Apr 2026',
+    'art4.title':'Configurarea unui Nod Validator QoreChain de la Zero','art4.excerpt':'De la hardware la validator activ: selecție hardware, instalare, gestionare chei.','art4.date':'Mar 2026',
+    'art5.title':'Runbook-uri pentru Incidente: Cum să Răspunzi Când Nodul Tău Cade','art5.excerpt':'Manuale de răspuns la incidente pentru defecțiunile comune ale validatorilor.','art5.date':'Feb 2026',
+    'art6.title':'Scrierea Scripturilor de Monitorizare Python fără Dependențe','art6.excerpt':'De ce dependențele zero contează și cum să construiești scripturi robuste.','art6.date':'Ian 2026',
+    'art7.title':'Light Node vs Nod Complet: Ce Trebuie să Știe Operatorii','art7.excerpt':'Comparație practică — cerințe de resurse, ipoteze de încredere, cazuri de utilizare.','art7.date':'Dec 2025',
+    'topics.label':'Subiecte','topics.title':'Răsfoiește după Subiect',
+    'topic.rpc':'Monitorizare RPC','topic.pqc':'Cripto Post-Cuantică',
+    'topic.validator':'Operațiuni Validator','topic.tools':'Unelte Open Source',
+    'topic.incident':'Răspuns la Incidente','topic.infra':'Infrastructură',
+    'cta.title':'Toate articolele pe Medium','cta.desc':'Arhiva completă este publicată pe Medium.','cta.btn':'Deschide Profilul Medium ↗','footer.source':'sursă'
+  },
+  de: {
+    'nav.home':'Start','nav.projects':'Projekte','nav.tools':'Werkzeuge','nav.writing':'Artikel',
+    'hero.badge':'✍️ Artikel & Guides',
+    'hero.title':'Schreiben über <span class="grad">Blockchain-Infrastruktur</span>',
+    'hero.desc':'Ausführliche Artikel über QoreChain-Validator-Betrieb, Post-Quanten-Kryptographie, Open-Source-Monitoring und dezentrale Netzwerke.',
+    'hero.cta.medium':'Auf Medium lesen ↗','hero.cta.updates':'Updates folgen',
+    'featured.label':'Empfohlen','featured.title':'Neuester Artikel','featured.badge':'Empfohlen',
+    'featured.art1.title':'RPC-Gesundheitsüberwachung für QoreChain-Validatoren: Ein vollständiger Leitfaden',
+    'featured.art1.excerpt':'Ein tiefer Einblick in den Aufbau zuverlässiger, abhängigkeitsfreier RPC-Gesundheitsüberwachung für Validator-Knoten.',
+    'featured.art1.date':'Juni 2026','featured.art1.read':'12 Min. Lesezeit',
+    'articles.label':'Artikel','articles.title':'Alle Artikel','articles.subtitle':'Technische Guides, Forschungsnotizen und Betreiberhandbücher.',
+    'art2.title':'Post-Quanten-Kryptographie in Blockchain: Wo wir stehen','art2.excerpt':'Überblick über CRYSTALS-Kyber, Dilithium und FALCON.','art2.date':'Mai 2026',
+    'art3.title':'Prometheus + Grafana Stack für Blockchain-Knotenbetreiber','art3.excerpt':'Schritt-für-Schritt-Einrichtung eines kampferprobten Observability-Stacks.','art3.date':'Apr 2026',
+    'art4.title':'Einrichtung eines QoreChain-Validator-Knotens von Grund auf','art4.excerpt':'Von der Hardware bis zum aktiven Validator: Auswahl, Installation, Schlüsselverwaltung.','art4.date':'Mär 2026',
+    'art5.title':'Incident-Runbooks: Wie man reagiert, wenn der Knoten ausfällt','art5.excerpt':'Praxisnahe Incident-Response-Playbooks für häufige Validator-Ausfälle.','art5.date':'Feb 2026',
+    'art6.title':'Abhängigkeitsfreie Python-Monitoring-Skripte schreiben','art6.excerpt':'Warum null externe Abhängigkeiten wichtig sind und wie man robuste Skripte baut.','art6.date':'Jan 2026',
+    'art7.title':'Light Node vs. vollständiger Knoten: Was Betreiber wissen müssen','art7.excerpt':'Praktischer Vergleich — Ressourcenanforderungen, Vertrauensannahmen, Anwendungsfälle.','art7.date':'Dez 2025',
+    'topics.label':'Themen','topics.title':'Nach Thema durchsuchen',
+    'topic.rpc':'RPC-Überwachung','topic.pqc':'Post-Quanten-Krypto',
+    'topic.validator':'Validator-Betrieb','topic.tools':'Open-Source-Tools',
+    'topic.incident':'Incident Response','topic.infra':'Infrastruktur',
+    'cta.title':'Alle Artikel auf Medium','cta.desc':'Das vollständige Archiv ist auf Medium veröffentlicht.','cta.btn':'Medium-Profil öffnen ↗','footer.source':'Quellcode'
+  },
+  it: {
+    'nav.home':'Home','nav.projects':'Progetti','nav.tools':'Strumenti','nav.writing':'Articoli',
+    'hero.badge':'✍️ Articoli & Guide',
+    'hero.title':'Scritture sull\'<span class="grad">Infrastruttura Blockchain</span>',
+    'hero.desc':'Articoli approfonditi sulle operazioni validator QoreChain, crittografia post-quantistica, monitoraggio open-source e reti decentralizzate.',
+    'hero.cta.medium':'Leggi su Medium ↗','hero.cta.updates':'Segui per aggiornamenti',
+    'featured.label':'In evidenza','featured.title':'Ultimo Articolo','featured.badge':'In evidenza',
+    'featured.art1.title':'Monitoraggio della Salute RPC per i Validatori QoreChain: Una Guida Completa',
+    'featured.art1.excerpt':'Un\'analisi approfondita sulla costruzione di un monitoraggio RPC affidabile e senza dipendenze per i nodi validator.',
+    'featured.art1.date':'Giugno 2026','featured.art1.read':'12 min di lettura',
+    'articles.label':'Articoli','articles.title':'Tutte le Scritture','articles.subtitle':'Guide tecniche, note di ricerca e manuali per operatori.',
+    'art2.title':'Crittografia Post-Quantistica in Blockchain: Dove Siamo','art2.excerpt':'Una panoramica di CRYSTALS-Kyber, Dilithium e FALCON.','art2.date':'Mag 2026',
+    'art3.title':'Stack Prometheus + Grafana per Operatori di Nodi Blockchain','art3.excerpt':'Configurazione passo-passo di uno stack di osservabilità collaudato.','art3.date':'Apr 2026',
+    'art4.title':'Configurare un Nodo Validator QoreChain da Zero','art4.excerpt':'Da hardware a validator attivo: selezione, installazione, gestione chiavi.','art4.date':'Mar 2026',
+    'art5.title':'Runbook per Incidenti: Come Rispondere quando il Nodo Cade','art5.excerpt':'Playbook di risposta agli incidenti per i guasti comuni dei validator.','art5.date':'Feb 2026',
+    'art6.title':'Scrivere Script di Monitoraggio Python senza Dipendenze','art6.excerpt':'Perché zero dipendenze conta e come costruire script robusti.','art6.date':'Gen 2026',
+    'art7.title':'Light Node vs Nodo Completo: Cosa Devono Sapere gli Operatori','art7.excerpt':'Confronto pratico — requisiti di risorse, assunzioni di fiducia, casi d\'uso.','art7.date':'Dic 2025',
+    'topics.label':'Argomenti','topics.title':'Esplora per Argomento',
+    'topic.rpc':'Monitoraggio RPC','topic.pqc':'Cripto Post-Quantistica',
+    'topic.validator':'Operazioni Validator','topic.tools':'Strumenti Open Source',
+    'topic.incident':'Risposta agli Incidenti','topic.infra':'Infrastruttura',
+    'cta.title':'Tutti gli articoli su Medium','cta.desc':'L\'archivio completo è pubblicato su Medium.','cta.btn':'Apri Profilo Medium ↗','footer.source':'sorgente'
+  },
+  es: {
+    'nav.home':'Inicio','nav.projects':'Proyectos','nav.tools':'Herramientas','nav.writing':'Artículos',
+    'hero.badge':'✍️ Artículos & Guías',
+    'hero.title':'Escritos sobre <span class="grad">Infraestructura Blockchain</span>',
+    'hero.desc':'Artículos detallados sobre operaciones validator QoreChain, criptografía post-cuántica, monitoreo open-source y redes descentralizadas.',
+    'hero.cta.medium':'Leer en Medium ↗','hero.cta.updates':'Seguir para actualizaciones',
+    'featured.label':'Destacado','featured.title':'Último Artículo','featured.badge':'Destacado',
+    'featured.art1.title':'Monitoreo de Salud RPC para Validadores QoreChain: Una Guía Completa',
+    'featured.art1.excerpt':'Un análisis profundo sobre la construcción de monitoreo RPC confiable y sin dependencias para nodos validator.',
+    'featured.art1.date':'Junio 2026','featured.art1.read':'12 min de lectura',
+    'articles.label':'Artículos','articles.title':'Todos los Escritos','articles.subtitle':'Guías técnicas, notas de investigación y manuales de operador.',
+    'art2.title':'Criptografía Post-Cuántica en Blockchain: Dónde Estamos','art2.excerpt':'Una descripción de CRYSTALS-Kyber, Dilithium y FALCON.','art2.date':'May 2026',
+    'art3.title':'Stack Prometheus + Grafana para Operadores de Nodos Blockchain','art3.excerpt':'Configuración paso a paso de un stack de observabilidad probado en batalla.','art3.date':'Abr 2026',
+    'art4.title':'Configurar un Nodo Validator QoreChain desde Cero','art4.excerpt':'Desde hardware hasta validator activo: selección, instalación, gestión de claves.','art4.date':'Mar 2026',
+    'art5.title':'Runbooks de Incidentes: Cómo Responder Cuando tu Nodo Cae','art5.excerpt':'Playbooks de respuesta a incidentes para fallos comunes de validadores.','art5.date':'Feb 2026',
+    'art6.title':'Escribir Scripts de Monitoreo Python sin Dependencias','art6.excerpt':'Por qué cero dependencias importa y cómo construir scripts robustos.','art6.date':'Ene 2026',
+    'art7.title':'Light Node vs Nodo Completo: Lo que los Operadores Necesitan Saber','art7.excerpt':'Comparación práctica — requisitos de recursos, suposiciones de confianza, casos de uso.','art7.date':'Dic 2025',
+    'topics.label':'Temas','topics.title':'Explorar por Tema',
+    'topic.rpc':'Monitoreo RPC','topic.pqc':'Cripto Post-Cuántica',
+    'topic.validator':'Operaciones Validator','topic.tools':'Herramientas Open Source',
+    'topic.incident':'Respuesta a Incidentes','topic.infra':'Infraestructura',
+    'cta.title':'Todos los artículos en Medium','cta.desc':'El archivo completo está publicado en Medium.','cta.btn':'Abrir Perfil de Medium ↗','footer.source':'código fuente'
+  },
+  ar: {
+    'nav.home':'الرئيسية','nav.projects':'المشاريع','nav.tools':'الأدوات','nav.writing':'المقالات',
+    'hero.badge':'✍️ مقالات وأدلة',
+    'hero.title':'كتابات حول <span class="grad">بنية Blockchain التحتية</span>',
+    'hero.desc':'مقالات متعمقة حول عمليات validator QoreChain، التشفير ما بعد الكمي، المراقبة مفتوحة المصدر والشبكات اللامركزية.',
+    'hero.cta.medium':'اقرأ على Medium ↗','hero.cta.updates':'تابع للتحديثات',
+    'featured.label':'مميز','featured.title':'أحدث مقال','featured.badge':'مميز',
+    'featured.art1.title':'مراقبة صحة RPC لـ Validator QoreChain: دليل شامل',
+    'featured.art1.excerpt':'تعمق في بناء مراقبة RPC موثوقة وخالية من التبعيات لعقد validator.',
+    'featured.art1.date':'يونيو 2026','featured.art1.read':'12 دقيقة قراءة',
+    'articles.label':'مقالات','articles.title':'جميع الكتابات','articles.subtitle':'أدلة تقنية ومذكرات بحثية وكتيبات المشغل.',
+    'art2.title':'التشفير ما بعد الكمي في Blockchain: أين نحن الآن','art2.excerpt':'نظرة عامة على CRYSTALS-Kyber وDilithium وFALCON.','art2.date':'مايو 2026',
+    'art3.title':'حزمة Prometheus + Grafana لمشغلي عقد Blockchain','art3.excerpt':'إعداد خطوة بخطوة لحزمة رصد موثوقة.','art3.date':'أبريل 2026',
+    'art4.title':'إعداد عقدة Validator QoreChain من الصفر','art4.excerpt':'من المعدات إلى validator نشط: الاختيار، التثبيت، إدارة المفاتيح.','art4.date':'مارس 2026',
+    'art5.title':'كتيبات الحوادث: كيف تستجيب عندما تتعطل عقدتك','art5.excerpt':'كتيبات استجابة للحوادث الشائعة لـ validator.','art5.date':'فبراير 2026',
+    'art6.title':'كتابة سكريبتات مراقبة Python بدون تبعيات','art6.excerpt':'لماذا يهم صفر التبعيات وكيفية بناء سكريبتات قوية.','art6.date':'يناير 2026',
+    'art7.title':'Light Node مقابل العقدة الكاملة: ما يحتاج المشغلون معرفته','art7.excerpt':'مقارنة عملية — متطلبات الموارد، افتراضات الثقة، حالات الاستخدام.','art7.date':'ديسمبر 2025',
+    'topics.label':'المواضيع','topics.title':'تصفح حسب الموضوع',
+    'topic.rpc':'مراقبة RPC','topic.pqc':'تشفير ما بعد الكمي',
+    'topic.validator':'عمليات Validator','topic.tools':'أدوات مفتوحة المصدر',
+    'topic.incident':'استجابة الحوادث','topic.infra':'البنية التحتية',
+    'cta.title':'جميع المقالات على Medium','cta.desc':'الأرشيف الكامل منشور على Medium.','cta.btn':'افتح ملف Medium ↗','footer.source':'المصدر'
+  },
+  zh: {
+    'nav.home':'主页','nav.projects':'项目','nav.tools':'工具','nav.writing':'文章',
+    'hero.badge':'✍️ 文章与指南',
+    'hero.title':'关于<span class="grad">区块链基础设施</span>的写作',
+    'hero.desc':'关于QoreChain验证者运营、后量子密码学、开源监控和去中心化网络系统的深度文章。',
+    'hero.cta.medium':'在Medium上阅读 ↗','hero.cta.updates':'关注以获取更新',
+    'featured.label':'精选','featured.title':'最新文章','featured.badge':'精选',
+    'featured.art1.title':'QoreChain验证者的RPC健康监控：完整指南',
+    'featured.art1.excerpt':'深入研究为验证者节点构建可靠、无依赖的RPC健康监控系统。',
+    'featured.art1.date':'2026年6月','featured.art1.read':'12分钟阅读',
+    'articles.label':'文章','articles.title':'所有写作','articles.subtitle':'技术指南、研究笔记和运营手册。',
+    'art2.title':'区块链中的后量子密码学：我们目前所处的位置','art2.excerpt':'CRYSTALS-Kyber、Dilithium和FALCON概述。','art2.date':'2026年5月',
+    'art3.title':'区块链节点运营者的Prometheus + Grafana栈','art3.excerpt':'经过战斗测试的可观测性栈的逐步设置。','art3.date':'2026年4月',
+    'art4.title':'从零开始设置QoreChain验证者节点','art4.excerpt':'从裸机到活跃验证者：硬件选择、安装、密钥管理。','art4.date':'2026年3月',
+    'art5.title':'事件手册：节点宕机时如何响应','art5.excerpt':'常见验证者故障的真实事件响应手册。','art5.date':'2026年2月',
+    'art6.title':'编写无依赖的Python监控脚本','art6.excerpt':'为什么零外部依赖很重要以及如何构建健壮的脚本。','art6.date':'2026年1月',
+    'art7.title':'Light Node与全节点：运营者需要了解什么','art7.excerpt':'实用比较——资源需求、信任假设、使用场景。','art7.date':'2025年12月',
+    'topics.label':'主题','topics.title':'按主题浏览',
+    'topic.rpc':'RPC监控','topic.pqc':'后量子密码',
+    'topic.validator':'验证者运营','topic.tools':'开源工具',
+    'topic.incident':'事件响应','topic.infra':'基础设施',
+    'cta.title':'所有文章在Medium上','cta.desc':'完整存档已在Medium上发布。','cta.btn':'打开Medium主页 ↗','footer.source':'源码'
+  },
+  ja: {
+    'nav.home':'ホーム','nav.projects':'プロジェクト','nav.tools':'ツール','nav.writing':'記事',
+    'hero.badge':'✍️ 記事とガイド',
+    'hero.title':'<span class="grad">ブロックチェーンインフラ</span>についての執筆',
+    'hero.desc':'QoreChainバリデーター運用、ポスト量子暗号、オープンソース監視、分散ネットワークシステムに関する詳細な記事。',
+    'hero.cta.medium':'Mediumで読む ↗','hero.cta.updates':'アップデートをフォロー',
+    'featured.label':'注目','featured.title':'最新記事','featured.badge':'注目',
+    'featured.art1.title':'QoreChainバリデーターのRPCヘルス監視：完全ガイド',
+    'featured.art1.excerpt':'バリデーターノード向けの信頼性が高く依存関係のないRPCヘルス監視の構築を深く探ります。',
+    'featured.art1.date':'2026年6月','featured.art1.read':'12分で読む',
+    'articles.label':'記事','articles.title':'すべての記事','articles.subtitle':'技術ガイド、研究ノート、オペレーターハンドブック。',
+    'art2.title':'ブロックチェーンにおけるポスト量子暗号：現状','art2.excerpt':'CRYSTALS-Kyber、Dilithium、FALCONの概要。','art2.date':'2026年5月',
+    'art3.title':'ブロックチェーンノードオペレーター向けPrometheus + Grafanaスタック','art3.excerpt':'実戦テスト済みの可観測性スタックのステップバイステップ設定。','art3.date':'2026年4月',
+    'art4.title':'ゼロからQoreChainバリデーターノードを設定する','art4.excerpt':'ベアメタルからアクティブバリデーターまで：ハードウェア選択、インストール、鍵管理。','art4.date':'2026年3月',
+    'art5.title':'インシデントランブック：ノードが落ちたときの対応方法','art5.excerpt':'一般的なバリデーター障害の実際のインシデント対応プレイブック。','art5.date':'2026年2月',
+    'art6.title':'依存関係なしのPythonモニタリングスクリプト作成','art6.excerpt':'ゼロ外部依存関係が重要な理由と堅牢なスクリプトの構築方法。','art6.date':'2026年1月',
+    'art7.title':'Light Nodeとフルノード：オペレーターが知っておくべきこと','art7.excerpt':'実用的な比較 — リソース要件、信頼の前提、ユースケース。','art7.date':'2025年12月',
+    'topics.label':'トピック','topics.title':'トピックで探す',
+    'topic.rpc':'RPC監視','topic.pqc':'ポスト量子暗号',
+    'topic.validator':'バリデーター運用','topic.tools':'オープンソースツール',
+    'topic.incident':'インシデント対応','topic.infra':'インフラ',
+    'cta.title':'すべての記事はMediumに','cta.desc':'完全なアーカイブはMediumで公開されています。','cta.btn':'Mediumプロフィールを開く ↗','footer.source':'ソースコード'
+  },
+  ko: {
+    'nav.home':'홈','nav.projects':'프로젝트','nav.tools':'도구','nav.writing':'글',
+    'hero.badge':'✍️ 글과 가이드',
+    'hero.title':'<span class="grad">블록체인 인프라</span>에 관한 글',
+    'hero.desc':'QoreChain 밸리데이터 운영, 포스트 양자 암호학, 오픈소스 모니터링, 분산 네트워크 시스템에 관한 심층 글.',
+    'hero.cta.medium':'Medium에서 읽기 ↗','hero.cta.updates':'업데이트 팔로우',
+    'featured.label':'추천','featured.title':'최신 글','featured.badge':'추천',
+    'featured.art1.title':'QoreChain 밸리데이터를 위한 RPC 상태 모니터링: 완전한 가이드',
+    'featured.art1.excerpt':'밸리데이터 노드를 위한 신뢰할 수 있는 의존성 없는 RPC 상태 모니터링 구축에 대한 심층 분석.',
+    'featured.art1.date':'2026년 6월','featured.art1.read':'12분 읽기',
+    'articles.label':'글','articles.title':'모든 글','articles.subtitle':'기술 가이드, 연구 노트, 운영자 플레이북.',
+    'art2.title':'블록체인의 포스트 양자 암호학: 현재 우리의 위치','art2.excerpt':'CRYSTALS-Kyber, Dilithium, FALCON 개요.','art2.date':'2026년 5월',
+    'art3.title':'블록체인 노드 운영자를 위한 Prometheus + Grafana 스택','art3.excerpt':'실전 테스트된 관찰 가능성 스택의 단계별 설정.','art3.date':'2026년 4월',
+    'art4.title':'처음부터 QoreChain 밸리데이터 노드 설정하기','art4.excerpt':'하드웨어부터 활성 밸리데이터까지: 선택, 설치, 키 관리.','art4.date':'2026년 3월',
+    'art5.title':'인시던트 런북: 노드가 다운되었을 때 대응 방법','art5.excerpt':'일반적인 밸리데이터 장애에 대한 실제 인시던트 대응 플레이북.','art5.date':'2026년 2월',
+    'art6.title':'의존성 없는 Python 모니터링 스크립트 작성','art6.excerpt':'외부 의존성 제로가 중요한 이유와 강력한 스크립트 구축 방법.','art6.date':'2026년 1월',
+    'art7.title':'Light Node vs 풀 노드: 운영자가 알아야 할 것','art7.excerpt':'실용적인 비교 — 리소스 요구 사항, 신뢰 가정, 사용 사례.','art7.date':'2025년 12월',
+    'topics.label':'주제','topics.title':'주제별 탐색',
+    'topic.rpc':'RPC 모니터링','topic.pqc':'포스트 양자 암호',
+    'topic.validator':'밸리데이터 운영','topic.tools':'오픈소스 도구',
+    'topic.incident':'인시던트 대응','topic.infra':'인프라',
+    'cta.title':'모든 글은 Medium에','cta.desc':'전체 아카이브는 Medium에 게시됩니다.','cta.btn':'Medium 프로필 열기 ↗','footer.source':'소스코드'
+  }
+};
+
+function setLang(lang){
+  const t=T[lang]||T.en;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(t[k]!==undefined) el.textContent=t[k];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{
+    const k=el.getAttribute('data-i18n-html');
+    if(t[k]!==undefined) el.innerHTML=t[k];
+  });
+  document.documentElement.lang=lang;
+  document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+  const sel=document.getElementById('lang-select');
+  if(sel) sel.value=lang;
+  try{localStorage.setItem('lang',lang);}catch(e){}
+}
+setLang(localStorage.getItem('lang')||'en');
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js').catch(()=>{}); }
+
+// Animate on scroll
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='none';}
+  });
+},{threshold:0.08});
+document.querySelectorAll('.article-card,.topic-pill,.featured-card').forEach(el=>{
+  el.style.opacity='0';el.style.transform='translateY(16px)';
+  el.style.transition='opacity .5s ease, transform .5s ease, border-color .2s, box-shadow .2s';
+  obs.observe(el);
+});
+</script>
+</body>
+</html>
