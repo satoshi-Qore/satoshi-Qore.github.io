@@ -561,7 +561,9 @@ function setLang(lang){
   document.documentElement.dir=lang==='ar'?'rtl':'ltr';
   const sel=document.getElementById('lang-select');
   if(sel) sel.value=lang;
+  try{localStorage.setItem('lang',lang);}catch(e){}
 }
+setLang(localStorage.getItem('lang')||'en');
 
 // Scroll animations
 const observer=new IntersectionObserver((entries)=>{
