@@ -4,179 +4,681 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Projects · satoshi-Qore</title>
-<meta name="theme-color" content="#0c0c0c">
+<meta name="description" content="Open source projects by satoshi-Qore: QoreChain infrastructure tools, documentation, and protocol research.">
+<meta name="theme-color" content="#08080f">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://satoshi-qore.github.io/projects.html">
+<meta property="og:title" content="Projects · satoshi-Qore">
+<meta property="og:description" content="Open source projects by satoshi-Qore: QoreChain infrastructure tools, documentation, and protocol research.">
+<meta property="og:image" content="https://satoshi-qore.github.io/og-image.png">
+<meta property="og:site_name" content="satoshi-Qore">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@satoshi_Qore">
+<meta name="twitter:title" content="Projects · satoshi-Qore">
+<meta name="twitter:description" content="Open source projects by satoshi-Qore: QoreChain infrastructure tools, documentation, and protocol research.">
+<meta name="twitter:image" content="https://satoshi-qore.github.io/og-image.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0c0c0c;--surface:#111;--surface-2:#161616;--border:#1e1e1e;--border-hi:#2a2a2a;--text:#b8c0cc;--muted:#525866;--heading:#e2e8f0;--green:#00d46a;--green-dim:#00843f;--green-bg:rgba(0,212,106,0.07);--amber:#f59e0b;--blue:#60a5fa;--mono:'JetBrains Mono','Fira Code',monospace;}
+:root{
+  --bg:#08080f;--surface:#0f0f1a;
+  --border:rgba(255,255,255,0.06);--border-hi:rgba(255,255,255,0.12);
+  --text:#94a3b8;--heading:#e2e8f0;--muted:#475569;
+  --accent:#6366f1;--accent-2:#8b5cf6;--accent-3:#0ea5e9;--green:#10b981;
+  --mono:'JetBrains Mono',monospace;--sans:'Inter',-apple-system,sans-serif;
+}
 html{scroll-behavior:smooth}
-body{font-family:var(--mono);background:var(--bg);color:var(--text);line-height:1.7;font-size:13px}
-body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px);pointer-events:none;z-index:9999}
-nav{position:sticky;top:0;z-index:100;background:rgba(12,12,12,0.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
-.nav-wrap{max-width:860px;margin:0 auto;padding:0 24px}
-.nav-top{display:flex;align-items:center;justify-content:space-between;padding:7px 0 5px;border-bottom:1px solid var(--border)}
-.nav-path{font-size:11px;color:var(--muted)}.nav-path .cur{color:var(--green)}.nav-path .sep{margin:0 4px;color:var(--border-hi)}
-.lang-selector{display:flex;align-items:center;gap:5px;flex-shrink:0}
-.lang-label{font-size:10px;color:var(--muted)}
-#lang-select{background:var(--surface);border:1px solid var(--border-hi);color:var(--green);font-family:var(--mono);font-size:11px;font-weight:500;padding:3px 6px;border-radius:3px;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;min-width:44px;text-align:center}
-#lang-select:hover,#lang-select:focus{border-color:var(--green-dim)}
-#lang-select option{background:#1a1a1a;color:var(--text)}
-.nav-menu-row{display:flex;align-items:center;padding:5px 0;gap:4px}
-.nav-prompt{color:var(--green);font-size:12px;font-weight:700;flex-shrink:0}
-.nav-menu{display:flex;gap:0;list-style:none}
-.nav-menu a{color:var(--muted);text-decoration:none;font-size:12px;padding:3px 10px;border-radius:3px;transition:color .15s,background .15s}
-.nav-menu a:hover,.nav-menu a.active{color:var(--green);background:var(--green-bg)}
-.nav-sep{color:var(--border-hi);font-size:12px;padding:3px 2px}
-main{max-width:860px;margin:0 auto;padding:0 24px}
-.page-header{padding:64px 0 48px}
-.term-line{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px}
-.prompt{color:var(--green);font-weight:700;flex-shrink:0}
-.cmd{color:var(--heading)}
-.page-title{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;color:var(--heading);letter-spacing:-0.02em;line-height:1.1;margin-left:22px;margin-top:8px}
-.page-title em{color:var(--green);font-style:normal}
-.cursor{display:inline-block;width:.55em;height:1em;background:var(--green);vertical-align:text-bottom;animation:blink .9s step-end infinite;margin-left:2px}
-@keyframes blink{50%{opacity:0}}
-.section{padding:48px 0;border-top:1px solid var(--border)}
-.section-cmd{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.repo-meta{margin-left:22px;margin-bottom:20px;font-size:11px;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap}
-.repo-meta a{color:var(--green);text-decoration:none}
-.repo-meta a:hover{text-decoration:underline}
-.repo-badge{display:inline-flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);padding:2px 8px;border-radius:3px;font-size:10px}
-.desc-block{margin-left:22px;padding:12px 16px;border-left:2px solid var(--border-hi);background:var(--surface);font-size:13px;color:var(--text);line-height:1.8;margin-bottom:20px;max-width:660px}
-.tree-block{margin-left:22px}
-.tree-line{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
-.tree-line:last-child{border-bottom:none}
-.tree-char{color:var(--muted);flex-shrink:0;min-width:22px}
-.tree-name{color:var(--green);flex-shrink:0;min-width:220px}
-.tree-slash{color:var(--green-dim)}
-.tree-desc{color:var(--muted);font-size:12px;line-height:1.5}
-.tag-row{margin-left:22px;margin-top:16px;display:flex;flex-wrap:wrap;gap:6px}
-.tag{font-size:10px;padding:2px 8px;border:1px solid var(--border-hi);border-radius:3px;color:var(--muted)}
-footer{border-top:1px solid var(--border);padding:22px 24px;text-align:center;color:var(--muted);font-size:11px;font-family:var(--mono)}
-footer a{color:var(--muted);text-decoration:none}
-footer a:hover{color:var(--green)}
-html[dir="rtl"] .desc-block{border-left:none;border-right:2px solid var(--border-hi)}
-html[dir="rtl"] .tree-block,html[dir="rtl"] .tag-row,html[dir="rtl"] .repo-meta{margin-left:0;margin-right:22px}
-html[dir="rtl"] .page-title{margin-left:0;margin-right:22px}
-html[dir="rtl"] .section-cmd{flex-direction:row-reverse}
-@media(max-width:520px){.nav-menu-row{display:none}.page-header{padding:40px 0 32px}.section{padding:36px 0}}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;min-height:100vh}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 10%,rgba(99,102,241,0.08) 0%,transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 80%,rgba(139,92,246,0.06) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 60% at 60% 30%,rgba(14,165,233,0.04) 0%,transparent 70%);
+  pointer-events:none;z-index:0
+}
+/* ── Nav ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(8,8,15,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:900px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px}
+.nav-logo{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--heading);text-decoration:none;letter-spacing:-.01em}
+.nav-logo span{background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;padding:6px 12px;border-radius:8px;transition:color .2s,background .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--heading);background:rgba(255,255,255,0.06)}
+.lang-wrap{display:flex;align-items:center;gap:6px;padding-left:12px;border-left:1px solid var(--border)}
+.lang-label{font-size:11px;color:var(--muted);font-family:var(--mono)}
+#lang-select{background:rgba(255,255,255,0.05);border:1px solid var(--border-hi);color:var(--heading);font-family:var(--mono);font-size:11px;font-weight:500;padding:4px 8px;border-radius:6px;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;min-width:46px;text-align:center;transition:border-color .2s,background .2s}
+#lang-select:hover,#lang-select:focus{border-color:var(--accent);background:rgba(99,102,241,0.1)}
+#lang-select option{background:#1a1a2e;color:var(--heading)}
+.hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;width:36px;height:36px;cursor:pointer;background:rgba(255,255,255,0.05);border:1px solid var(--border-hi);border-radius:8px;gap:5px;transition:background .2s;margin-left:8px;flex-shrink:0}
+.hamburger:hover{background:rgba(255,255,255,0.09)}
+.hamburger span{display:block;width:16px;height:1.5px;background:var(--heading);border-radius:2px;transition:all .25s}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:60px;left:0;right:0;background:rgba(8,8,15,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:16px 24px 24px;z-index:99;animation:slideDown .2s ease}
+.mobile-menu.open{display:block}
+.mobile-menu a{display:block;padding:12px 4px;font-size:15px;font-weight:500;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);transition:color .2s}
+.mobile-menu a:last-child{border-bottom:none}
+.mobile-menu a:hover,.mobile-menu a.active{color:var(--heading)}
+/* ── Layout ── */
+main{max-width:900px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border-hi) 30%,var(--border-hi) 70%,transparent)}
+/* ── Page hero ── */
+.page-hero{padding:80px 0 56px}
+.section-label{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px}
+.section-label::before{content:'';width:20px;height:1px;background:var(--accent)}
+.page-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:var(--heading);letter-spacing:-.03em;line-height:1.15;margin-bottom:14px;animation:fadeUp .6s .1s ease both}
+.page-subtitle{font-size:16px;color:var(--text);max-width:560px;line-height:1.75;animation:fadeUp .6s .2s ease both}
+/* ── Sections ── */
+.section{padding:64px 0}
+/* ── Repo detail cards ── */
+.repo-detail{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;position:relative;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.repo-detail::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(99,102,241,0.04) 0%,transparent 60%);opacity:0;transition:opacity .3s}
+.repo-detail:hover{border-color:rgba(99,102,241,0.25);box-shadow:0 8px 32px rgba(99,102,241,0.07)}
+.repo-detail:hover::before{opacity:1}
+.repo-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.repo-org{font-family:var(--mono);font-size:12px;color:var(--muted);margin-bottom:4px}
+.repo-name{font-size:18px;font-weight:700;color:var(--heading);letter-spacing:-.02em}
+.repo-link{display:inline-flex;align-items:center;gap:6px;text-decoration:none;padding:8px 14px;border-radius:8px;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);color:var(--accent);font-family:var(--mono);font-size:11px;font-weight:500;transition:background .2s,border-color .2s;white-space:nowrap;flex-shrink:0;margin-top:4px}
+.repo-link:hover{background:rgba(99,102,241,0.15);border-color:rgba(99,102,241,0.4)}
+.repo-badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.repo-badge{font-family:var(--mono);font-size:10px;padding:2px 10px;border-radius:100px;background:rgba(255,255,255,0.04);border:1px solid var(--border-hi);color:var(--muted)}
+.repo-desc{font-size:14px;color:var(--text);line-height:1.75;margin-bottom:24px;max-width:660px}
+/* ── File list ── */
+.file-list{background:rgba(0,0,0,0.25);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px}
+.file-list-header{padding:9px 16px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em}
+.file-item{display:flex;align-items:baseline;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border);transition:background .15s}
+.file-item:last-child{border-bottom:none}
+.file-item:hover{background:rgba(99,102,241,0.04)}
+.file-icon{font-size:12px;flex-shrink:0;line-height:1.7}
+.file-name{font-family:var(--mono);font-size:12px;color:var(--accent);flex-shrink:0;min-width:180px}
+.file-desc{font-size:12px;color:var(--muted);line-height:1.55}
+/* ── Tags ── */
+.tag-row{display:flex;gap:8px;flex-wrap:wrap}
+.tag{font-family:var(--mono);font-size:11px;padding:3px 10px;border-radius:100px;background:rgba(255,255,255,0.04);border:1px solid var(--border-hi);color:var(--muted)}
+/* ── Footer ── */
+footer{border-top:1px solid var(--border);padding:32px 28px;text-align:center;color:var(--muted);font-size:13px;position:relative;z-index:1}
+footer a{color:var(--muted);text-decoration:none;transition:color .2s}
+footer a:hover{color:var(--accent)}
+.footer-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:6px;animation:pulse 2s infinite}
+/* ── Scroll-to-top ── */
+#scroll-top{position:fixed;bottom:28px;right:28px;z-index:90;width:40px;height:40px;border-radius:10px;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.35);color:var(--accent);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;backdrop-filter:blur(8px)}
+#scroll-top.visible{opacity:1;transform:none;pointer-events:auto}
+#scroll-top:hover{background:rgba(99,102,241,0.3);border-color:rgba(99,102,241,0.6)}
+/* ── Animations ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+body{animation:pageIn .35s ease both}
+@keyframes pageIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes pageOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-4px)}}
+/* ── RTL ── */
+html[dir="rtl"] .section-label::before{order:2}
+html[dir="rtl"] .nav-right{flex-direction:row-reverse}
+html[dir="rtl"] .lang-wrap{padding-left:0;padding-right:12px;border-left:none;border-right:1px solid var(--border)}
+html[dir="rtl"] .file-name{min-width:180px}
+html[dir="rtl"] .repo-header{flex-direction:row-reverse}
+/* ── Responsive ── */
+@media(max-width:640px){
+  .page-hero{padding:56px 0 40px}
+  .section{padding:48px 0}
+  .repo-detail{padding:22px}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .file-name{min-width:120px}
+  .repo-header{flex-direction:column;gap:12px}
+  .repo-link{align-self:flex-start}
+}
 </style>
 </head>
 <body>
+
 <nav>
-  <div class="nav-wrap">
-    <div class="nav-top">
-      <div class="nav-path"><span class="cur">satoshi-Qore</span><span class="sep">/</span><span>satoshi-Qore.github.io</span><span class="sep">~</span><span class="cur">main</span></div>
-      <div class="lang-selector">
-        <span class="lang-label">lang:</span>
+  <div class="nav-inner">
+    <a class="nav-logo" href="/">satoshi-<span>Qore</span></a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="/" data-i18n="nav.home">home</a>
+        <a href="/projects.html" class="active" data-i18n="nav.projects">projects</a>
+        <a href="/tools.html" data-i18n="nav.tools">tools</a>
+        <a href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener" data-i18n="nav.writing">writing</a>
+      </div>
+      <div class="lang-wrap">
+        <span class="lang-label">lang</span>
         <select id="lang-select" onchange="setLang(this.value)" aria-label="Select language">
-          <option value="en" selected>EN</option><option value="tr">TR</option><option value="ro">RO</option><option value="de">DE</option><option value="it">IT</option><option value="es">ES</option><option value="ar">AR</option><option value="zh">ZH</option><option value="ja">JA</option><option value="ko">KO</option>
+          <option value="en" selected>EN</option>
+          <option value="tr">TR</option>
+          <option value="ro">RO</option>
+          <option value="de">DE</option>
+          <option value="it">IT</option>
+          <option value="es">ES</option>
+          <option value="ar">AR</option>
+          <option value="zh">ZH</option>
+          <option value="ja">JA</option>
+          <option value="ko">KO</option>
         </select>
       </div>
-    </div>
-    <div class="nav-menu-row">
-      <span class="nav-prompt">$</span>
-      <ul class="nav-menu">
-        <li><a href="/" data-i18n="nav.home">home</a></li><li><span class="nav-sep">·</span></li>
-        <li><a href="/projects.html" class="active" data-i18n="nav.projects">projects</a></li><li><span class="nav-sep">·</span></li>
-        <li><a href="/tools.html" data-i18n="nav.tools">tools</a></li><li><span class="nav-sep">·</span></li>
-        <li><a href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener" data-i18n="nav.writing">writing</a></li>
-      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/" data-i18n="nav.home">Home</a>
+  <a href="/projects.html" class="active" data-i18n="nav.projects">Projects</a>
+  <a href="/tools.html" data-i18n="nav.tools">Tools</a>
+  <a href="https://medium.com/@satoshi_Qore" target="_blank" rel="noopener" data-i18n="nav.writing">Writing</a>
+</div>
+
 <main>
-  <div class="page-header">
-    <div class="term-line"><span class="prompt">$</span><span class="cmd" data-i18n="page.cmd">ls -la projects/</span></div>
-    <div class="page-title" data-i18n="page.title">Open source projects<span class="cursor"></span></div>
-    <p style="margin-left:22px;margin-top:12px;color:var(--muted);font-size:12px;" data-i18n="page.subtitle">Infrastructure tools, community knowledge, and protocol research around the QoreChain ecosystem.</p>
+
+  <div class="page-hero">
+    <div class="section-label" data-i18n="nav.projects">Projects</div>
+    <h1 class="page-title" data-i18n="page.title">Open source projects</h1>
+    <p class="page-subtitle" data-i18n="page.subtitle">Infrastructure tools, community knowledge, and protocol research around the QoreChain ecosystem.</p>
   </div>
 
-  <section class="section">
-    <div class="section-cmd"><span class="prompt">$</span><span class="cmd">cat qorechain-tools/README.md</span></div>
-    <div class="repo-meta">
-      <a href="https://github.com/satoshi-Qore/qorechain-tools" target="_blank" rel="noopener">github.com/satoshi-Qore/qorechain-tools ↗</a>
-      <span class="repo-badge">python</span>
-      <span class="repo-badge">docker</span>
-      <span class="repo-badge">prometheus</span>
-    </div>
-    <div class="desc-block" data-i18n-html="tools.desc">RPC health monitoring, Prometheus + Grafana stack, incident runbooks, and upgrade checklists. Dependency-free Python tools for QoreChain operators.</div>
-    <div class="section-cmd" style="margin-top:16px"><span class="prompt">$</span><span class="cmd">ls qorechain-tools/</span></div>
-    <div class="tree-block">
-      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">scripts<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="tools.item1">rpc_health_monitor.py — endpoint health checker, no dependencies</span></div>
-      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">docker<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="tools.item2">prometheus-stack/ — full monitoring setup with Grafana dashboards</span></div>
-      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">runbooks<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="tools.item3">node-down.md, high-latency.md — operator response guides</span></div>
-      <div class="tree-line"><span class="tree-char">└──</span><span class="tree-name">checklists<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="tools.item4">upgrade.md — pre/post upgrade verification steps</span></div>
-    </div>
-    <div class="tag-row">
-      <span class="tag">python</span><span class="tag">monitoring</span><span class="tag">prometheus</span><span class="tag">grafana</span><span class="tag">docker</span><span class="tag">runbooks</span>
+  <div class="divider"></div>
+
+  <!-- qorechain-tools -->
+  <section class="section" id="tools">
+    <div class="repo-detail">
+      <div class="repo-header">
+        <div>
+          <div class="repo-org">satoshi-Qore /</div>
+          <div class="repo-name">qorechain-tools</div>
+        </div>
+        <a class="repo-link" href="https://github.com/satoshi-Qore/qorechain-tools" target="_blank" rel="noopener">View on GitHub ↗</a>
+      </div>
+      <div class="repo-badges">
+        <span class="repo-badge">python</span>
+        <span class="repo-badge">docker</span>
+        <span class="repo-badge">prometheus</span>
+      </div>
+      <p class="repo-desc" data-i18n-html="tools.desc">RPC health monitoring, Prometheus + Grafana stack, incident runbooks, and upgrade checklists. Dependency-free Python tools for QoreChain operators.</p>
+      <div class="file-list">
+        <div class="file-list-header">qorechain-tools/</div>
+        <div class="file-item">
+          <span class="file-icon">📁</span>
+          <span class="file-name">scripts/</span>
+          <span class="file-desc" data-i18n="tools.item1">rpc_health_monitor.py — endpoint health checker, no dependencies</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">📁</span>
+          <span class="file-name">docker/</span>
+          <span class="file-desc" data-i18n="tools.item2">prometheus-stack/ — full monitoring setup with Grafana dashboards</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">📁</span>
+          <span class="file-name">runbooks/</span>
+          <span class="file-desc" data-i18n="tools.item3">node-down.md, high-latency.md — operator response guides</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">📁</span>
+          <span class="file-name">checklists/</span>
+          <span class="file-desc" data-i18n="tools.item4">upgrade.md — pre/post upgrade verification steps</span>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag">python</span><span class="tag">monitoring</span><span class="tag">prometheus</span><span class="tag">grafana</span><span class="tag">docker</span><span class="tag">runbooks</span>
+      </div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="section-cmd"><span class="prompt">$</span><span class="cmd">cat qorechain-guides/README.md</span></div>
-    <div class="repo-meta">
-      <a href="https://github.com/satoshi-Qore/qorechain-guides" target="_blank" rel="noopener">github.com/satoshi-Qore/qorechain-guides ↗</a>
-      <span class="repo-badge">multilingual</span>
-      <span class="repo-badge">docs</span>
-    </div>
-    <div class="desc-block" data-i18n-html="guides.desc">A bilingual QoreChain Academy knowledge hub for users, node operators, contributors, developers, and researchers. Includes guides, FAQs, troubleshooting notes, and Eigenstate 2 resources.</div>
-    <div class="section-cmd" style="margin-top:16px"><span class="prompt">$</span><span class="cmd">ls qorechain-guides/</span></div>
-    <div class="tree-block">
-      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">en<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="guides.item1">getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md</span></div>
-      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">tr<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="guides.item2">baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md</span></div>
-      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">*/light-node<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="guides.item3">en/light-node/, tr/light-node/ — full Light Node guide, operations, monitoring</span></div>
-      <div class="tree-line"><span class="tree-char">└──</span><span class="tree-name">CONTRIBUTING.md</span><span class="tree-desc" data-i18n="guides.item4">Contribution standards, style guide, PR process</span></div>
-    </div>
-    <div class="tag-row">
-      <span class="tag">documentation</span><span class="tag">multilingual</span><span class="tag">validator</span><span class="tag">light-node</span><span class="tag">faq</span>
+  <div class="divider"></div>
+
+  <!-- qorechain-guides -->
+  <section class="section" id="guides">
+    <div class="repo-detail">
+      <div class="repo-header">
+        <div>
+          <div class="repo-org">satoshi-Qore /</div>
+          <div class="repo-name">qorechain-guides</div>
+        </div>
+        <a class="repo-link" href="https://github.com/satoshi-Qore/qorechain-guides" target="_blank" rel="noopener">View on GitHub ↗</a>
+      </div>
+      <div class="repo-badges">
+        <span class="repo-badge">multilingual</span>
+        <span class="repo-badge">docs</span>
+      </div>
+      <p class="repo-desc" data-i18n-html="guides.desc">A bilingual QoreChain Academy knowledge hub for users, node operators, contributors, developers, and researchers. Includes guides, FAQs, troubleshooting notes, and Eigenstate 2 resources.</p>
+      <div class="file-list">
+        <div class="file-list-header">qorechain-guides/</div>
+        <div class="file-item">
+          <span class="file-icon">📁</span>
+          <span class="file-name">en/</span>
+          <span class="file-desc" data-i18n="guides.item1">getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">📁</span>
+          <span class="file-name">tr/</span>
+          <span class="file-desc" data-i18n="guides.item2">baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">📁</span>
+          <span class="file-name">*/light-node/</span>
+          <span class="file-desc" data-i18n="guides.item3">en/light-node/, tr/light-node/ — full Light Node guide, operations, monitoring</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">📄</span>
+          <span class="file-name">CONTRIBUTING.md</span>
+          <span class="file-desc" data-i18n="guides.item4">Contribution standards, style guide, PR process</span>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag">documentation</span><span class="tag">multilingual</span><span class="tag">validator</span><span class="tag">light-node</span><span class="tag">faq</span>
+      </div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="section-cmd"><span class="prompt">$</span><span class="cmd">cat chronicle-legacy-protocol/README.md</span></div>
-    <div class="repo-meta">
-      <a href="https://github.com/satoshi-Qore/chronicle-legacy-protocol" target="_blank" rel="noopener">github.com/satoshi-Qore/chronicle-legacy-protocol ↗</a>
-      <span class="repo-badge">protocol</span>
-      <span class="repo-badge">research</span>
-    </div>
-    <div class="desc-block" data-i18n-html="chronicle.desc">A protocol research project exploring memory objects, contribution history, reputation, knowledge inheritance, attestation, and long-term ecosystem memory.</div>
-    <div class="section-cmd" style="margin-top:16px"><span class="prompt">$</span><span class="cmd">ls chronicle-legacy-protocol/</span></div>
-    <div class="tree-block">
-      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">docs<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="chronicle.item1">Attestation_Authority_Model.md — attestation authority and reviewer tier definitions</span></div>
-      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">README.md</span><span class="tree-desc" data-i18n="chronicle.item2">Protocol overview, research scope, and Memory Layer structure</span></div>
-      <div class="tree-line"><span class="tree-char">└──</span><span class="tree-name">CONTRIBUTING.md</span><span class="tree-desc" data-i18n="chronicle.item3">Contribution guidelines and research standards</span></div>
-    </div>
-    <div class="tag-row">
-      <span class="tag">protocol</span><span class="tag">research</span><span class="tag">attestation</span><span class="tag">reputation</span><span class="tag">memory-objects</span>
+  <div class="divider"></div>
+
+  <!-- chronicle-legacy-protocol -->
+  <section class="section" id="chronicle">
+    <div class="repo-detail">
+      <div class="repo-header">
+        <div>
+          <div class="repo-org">satoshi-Qore /</div>
+          <div class="repo-name">chronicle-legacy-protocol</div>
+        </div>
+        <a class="repo-link" href="https://github.com/satoshi-Qore/chronicle-legacy-protocol" target="_blank" rel="noopener">View on GitHub ↗</a>
+      </div>
+      <div class="repo-badges">
+        <span class="repo-badge">protocol</span>
+        <span class="repo-badge">research</span>
+      </div>
+      <p class="repo-desc" data-i18n-html="chronicle.desc">A protocol research project exploring memory objects, contribution history, reputation, knowledge inheritance, attestation, and long-term ecosystem memory.</p>
+      <div class="file-list">
+        <div class="file-list-header">chronicle-legacy-protocol/</div>
+        <div class="file-item">
+          <span class="file-icon">📁</span>
+          <span class="file-name">docs/</span>
+          <span class="file-desc" data-i18n="chronicle.item1">Attestation_Authority_Model.md — attestation authority and reviewer tier definitions</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">📄</span>
+          <span class="file-name">README.md</span>
+          <span class="file-desc" data-i18n="chronicle.item2">Protocol overview, research scope, and Memory Layer structure</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">📄</span>
+          <span class="file-name">CONTRIBUTING.md</span>
+          <span class="file-desc" data-i18n="chronicle.item3">Contribution guidelines and research standards</span>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag">protocol</span><span class="tag">research</span><span class="tag">attestation</span><span class="tag">reputation</span><span class="tag">memory-objects</span>
+      </div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="section-cmd"><span class="prompt">$</span><span class="cmd">cat qorechain-academic-paper/README.md</span></div>
-    <div class="repo-meta">
-      <a href="https://github.com/satoshi-Qore/qorechain-academic-paper" target="_blank" rel="noopener">github.com/satoshi-Qore/qorechain-academic-paper ↗</a>
-      <span class="repo-badge">research</span>
-      <span class="repo-badge">academic</span>
-    </div>
-    <div class="desc-block" data-i18n-html="academic.desc">Academic research notes on QoreChain covering post-quantum security, AI-native infrastructure, multi-VM design, and broader ecosystem research.</div>
-    <div class="section-cmd" style="margin-top:16px"><span class="prompt">$</span><span class="cmd">ls qorechain-academic-paper/</span></div>
-    <div class="tree-block">
-      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">paper<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="academic.item1">QoreChain_Academic_Paper.md — main research draft</span></div>
-      <div class="tree-line"><span class="tree-char">├──</span><span class="tree-name">references<span class="tree-slash">/</span></span><span class="tree-desc" data-i18n="academic.item2">bibliography.md — structured citation and source tracking</span></div>
-      <div class="tree-line"><span class="tree-char">└──</span><span class="tree-name">CONTRIBUTING.md</span><span class="tree-desc" data-i18n="academic.item3">Research contribution and academic standards</span></div>
-    </div>
-    <div class="tag-row">
-      <span class="tag">academic</span><span class="tag">post-quantum</span><span class="tag">ai-native</span><span class="tag">multi-vm</span><span class="tag">research</span>
+  <div class="divider"></div>
+
+  <!-- qorechain-academic-paper -->
+  <section class="section" id="academic">
+    <div class="repo-detail">
+      <div class="repo-header">
+        <div>
+          <div class="repo-org">satoshi-Qore /</div>
+          <div class="repo-name">qorechain-academic-paper</div>
+        </div>
+        <a class="repo-link" href="https://github.com/satoshi-Qore/qorechain-academic-paper" target="_blank" rel="noopener">View on GitHub ↗</a>
+      </div>
+      <div class="repo-badges">
+        <span class="repo-badge">research</span>
+        <span class="repo-badge">academic</span>
+      </div>
+      <p class="repo-desc" data-i18n-html="academic.desc">Academic research notes on QoreChain covering post-quantum security, AI-native infrastructure, multi-VM design, and broader ecosystem research.</p>
+      <div class="file-list">
+        <div class="file-list-header">qorechain-academic-paper/</div>
+        <div class="file-item">
+          <span class="file-icon">📁</span>
+          <span class="file-name">paper/</span>
+          <span class="file-desc" data-i18n="academic.item1">QoreChain_Academic_Paper.md — main research draft</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">📁</span>
+          <span class="file-name">references/</span>
+          <span class="file-desc" data-i18n="academic.item2">bibliography.md — structured citation and source tracking</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">📄</span>
+          <span class="file-name">CONTRIBUTING.md</span>
+          <span class="file-desc" data-i18n="academic.item3">Research contribution and academic standards</span>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag">academic</span><span class="tag">post-quantum</span><span class="tag">ai-native</span><span class="tag">multi-vm</span><span class="tag">research</span>
+      </div>
     </div>
   </section>
+
 </main>
-<footer><p>© 2026 satoshi-Qore &nbsp;·&nbsp; <a href="https://github.com/satoshi-Qore/satoshi-Qore.github.io" data-i18n="footer.source">source</a> &nbsp;·&nbsp; <span style="color:var(--green)">●</span> online</p></footer>
+
+<button id="scroll-top" aria-label="Scroll to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<footer>
+  <p><span class="footer-dot"></span>© 2026 satoshi-Qore &nbsp;·&nbsp; <a href="https://github.com/satoshi-Qore/satoshi-Qore.github.io" data-i18n="footer.source">source</a></p>
+</footer>
+
 <script>
-const T={en:{'nav.home':'home','nav.projects':'projects','nav.tools':'tools','nav.writing':'writing','page.cmd':'ls -la projects/','page.title':'Open source projects','page.subtitle':'Infrastructure tools, community knowledge, and protocol research around the QoreChain ecosystem.','tools.desc':'RPC health monitoring, Prometheus + Grafana stack, incident runbooks, and upgrade checklists. Dependency-free Python tools for QoreChain operators.','tools.item1':'rpc_health_monitor.py — endpoint health checker, no dependencies','tools.item2':'prometheus-stack/ — full monitoring setup with Grafana dashboards','tools.item3':'node-down.md, high-latency.md — operator response guides','tools.item4':'upgrade.md — pre/post upgrade verification steps','guides.desc':'A bilingual QoreChain Academy knowledge hub for users, node operators, contributors, developers, and researchers. Includes guides, FAQs, troubleshooting notes, and Eigenstate 2 resources.','guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'en/light-node/, tr/light-node/ — full Light Node guide, operations, monitoring','guides.item4':'Contribution standards, style guide, PR process','chronicle.desc':'A protocol research project exploring memory objects, contribution history, reputation, knowledge inheritance, attestation, and long-term ecosystem memory.','chronicle.item1':'Attestation_Authority_Model.md — attestation authority and reviewer tier definitions','chronicle.item2':'Protocol overview, research scope, and Memory Layer structure','chronicle.item3':'Contribution guidelines and research standards','academic.desc':'Academic research notes on QoreChain covering post-quantum security, AI-native infrastructure, multi-VM design, and broader ecosystem research.','academic.item1':'QoreChain_Academic_Paper.md — main research draft','academic.item2':'bibliography.md — structured citation and source tracking','academic.item3':'Research contribution and academic standards','footer.source':'source'},tr:{'nav.home':'ana sayfa','nav.projects':'projeler','nav.tools':'araçlar','nav.writing':'yazılar','page.cmd':'ls -la projeler/','page.title':'Açık kaynak projeler','page.subtitle':'QoreChain ekosistemi etrafında altyapı araçları, topluluk bilgisi ve protokol araştırması.','tools.desc':'RPC sağlık izleme, Prometheus + Grafana stack, incident runbook’ları ve yükseltme kontrol listeleri. QoreChain operatörleri için bağımlılıksız Python araçları.','tools.item1':'rpc_health_monitor.py — bağımlılıksız uç nokta sağlık denetleyicisi','tools.item2':'prometheus-stack/ — Grafana dashboard’larıyla tam izleme kurulumu','tools.item3':'node-down.md, high-latency.md — operatör müdahale rehberleri','tools.item4':'upgrade.md — yükseltme öncesi/sonrası doğrulama adımları','guides.desc':'Kullanıcılar, node operatörleri, katkıcılar, geliştiriciler ve araştırmacılar için iki dilli QoreChain Akademi bilgi merkezi. Rehberler, SSS, sorun giderme notları ve Eigenstate 2 kaynakları içerir.','guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'en/light-node/, tr/light-node/ — tam Light Node rehberi, operasyonlar, izleme','guides.item4':'Katkı standartları, stil kılavuzu, PR süreci','chronicle.desc':'Bellek nesneleri, katkı geçmişi, itibar, bilgi mirası, onay ve uzun vadeli ekosistem belleğini araştıran bir protokol araştD�rma projesi.','chronicle.item1':'Attestation_Authority_Model.md — onay otoritesi ve gözden geçirici katman tanımları','chronicle.item2':'Protokol genel bakışı, araştD�rma kapsamı ve Bellek Katmanı yapısı','chronicle.item3':'Katkı yönergeleri ve araştırma standartları','academic.desc':'Kuantum sonrası güvenlik, yapay zeka yerel altyapı, çok VM tasarımı ve daha geniş ekosistem araştırmasını kapsayan QoreChain akademik araştırma notları.','academic.item1':'QoreChain_Academic_Paper.md — ana araştırma taslağı','academic.item2':'bibliography.md — yapılandırılmış atıf ve kaynak takibi','academic.item3':'Araştırma katkısı ve akademik standartlar','footer.source':'kaynak'},de:{'nav.home':'start','nav.projects':'projekte','nav.tools':'werkzeuge','nav.writing':'artikel','page.cmd':'ls -la projekte/','page.title':'Open-Source-Projekte','page.subtitle':'Infrastrukturwerkzeuge, Community-Wissen und Protokollforschung rund um das QoreChain-Ökosystem.','tools.desc':'RPC-Überwachung, Prometheus + Grafana Stack, Incident-Runbooks und Upgrade-Checklisten. Abhängigkeitsfreie Python-Tools für QoreChain-Operatoren.','tools.item1':'rpc_health_monitor.py — Endpunkt-Gesundheitsprüfer, keine Abhängigkeiten','tools.item2':'prometheus-stack/ — vollständiges Monitoring mit Grafana-Dashboards','tools.item3':'node-down.md, high-latency.md — Operator-Reaktionsleitfäden','tools.item4':'upgrade.md — Vor/Nach-Upgrade-Verifizierungsschritte','guides.desc':'Ein zweisprachiger QoreChain Academy Wissensspeicher für Nutzer, Node-Operatoren, Beitragende, Entwickler und Forscher. Enthält Anleitungen, FAQs, Fehlerbehebungsnotizen und Eigenstate 2 Ressourcen.','guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'en/light-node/, tr/light-node/ — vollständiger Light Node Guide, Betrieb, Monitoring','guides.item4':'Beitragsstandards, Stilhandbuch, PR-Prozess','chronicle.desc':'Ein Protokollforschungsprojekt, das Speicherobjekte, Beitragshistorie, Reputation, Wissensvererbung, Attestierung und langfristiges Ökosystemgedächtnis untersucht.','chronicle.item1':'Attestation_Authority_Model.md — Attestierungsautorität und Reviewer-Tier-Definitionen','chronicle.item2':'Protokollübersicht, Forschungsumfang und Memory Layer Struktur','chronicle.item3':'Beitragsrichtlinien und Forschungsstandards','academic.desc':'Akademische Forschungsnotizen zu QoreChain, die Post-Quanten-Sicherheit, KI-native Infrastruktur, Multi-VM-Design und breitere Ökosystemforschung abdecken.','academic.item1':'QoreChain_Academic_Paper.md — Hauptforschungsentwurf','academic.item2':'bibliography.md — strukturierte Zitation und Quellenverfolgung','academic.item3':'Forschungsbeitrag und akademische Standards','footer.source':'quellcode'},es:{'nav.home':'inicio','nav.projects':'proyectos','nav.tools':'herramientas','nav.writing':'artículos','page.cmd':'ls -la proyectos/','page.title':'Proyectos de código abierto','page.subtitle':'Herramientas de infraestructura, conocimiento comunitario e investigación de protocolos en torno al ecosistema QoreChain.','tools.desc':'Monitoreo de salud RPC, stack Prometheus + Grafana, runbooks de incidentes y listas de verificación. Herramientas Python sin dependencias para operadores QoreChain.','tools.item1':'rpc_health_monitor.py — verificador de salud de endpoints, sin dependencias','tools.item2':'prometheus-stack/ — configuración completa de monitoreo con dashboards Grafana','tools.item3':'node-down.md, high-latency.md — guías de respuesta para operadores','tools.item4':'upgrade.md — pasos de verificación pre/post actualización','guides.desc':'Un centro de conocimiento bilingüe de QoreChain Academy para usuarios, operadores de nodos, colaboradores, desarrolladores e investigadores. Incluye guías, FAQs, notas de solución de problemas y recursos de Eigenstate 2.','guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'en/light-node/, tr/light-node/ — guía completa Light Node, operaciones, monitoreo','guides.item4':'Estándares de contribución, guía de estilo, proceso de PR','chronicle.desc':'Un proyecto de investigación de protocolo que explora objetos de memoria, historial de contribuciones, reputación, herencia de conocimiento, atestación y memoria del ecosistema a largo plazo.','chronicle.item1':'Attestation_Authority_Model.md — autoridad de atestación y definiciones de nivel de revisor','chronicle.item2':'Descripción general del protocolo, alcance de investigación y estructura de Memory Layer','chronicle.item3':'Directrices de contribución y estándares de investigación','academic.desc':'Notas de investigación académica sobre QoreChain que cubren seguridad post-cuántica, infraestructura nativa de IA, diseño multi-VM e investigación más amplia del ecosistema.','academic.item1':'QoreChain_Academic_Paper.md — borrador de investigación principal','academic.item2':'bibliography.md — seguimiento estructurado de citas y fuentes','academic.item3':'Contribución de investigación y estándares académicos','footer.source':'código fuente'},fr:{'nav.home':'accueil','nav.projects':'projets','nav.tools':'outils','nav.writing':'articles','page.cmd':'ls -la projets/','page.title':'Projets open source','page.subtitle':'Outils d’infrastructure, connaissances communautaires et recherche de protocoles autour de l’écosystème QoreChain.','tools.desc':'Surveillance RPC, stack Prometheus + Grafana, runbooks d’incidents et listes de contrôle. Outils Python sans dépendances pour les opérateurs QoreChain.','tools.item1':'rpc_health_monitor.py — vérificateur de santé des endpoints, sans dépendances','tools.item2':'prometheus-stack/ — configuration complète avec tableaux de bord Grafana','tools.item3':'node-down.md, high-latency.md — guides de réponse opérateur','tools.item4':'upgrade.md — étapes de vérification pré/post mise à niveau','guides.desc':'Un hub de connaissances bilingue QoreChain Academy pour les utilisateurs, opérateurs de nœuds, contributeurs, développeurs et chercheurs. Inclut guides, FAQs, notes de dépannage et ressources Eigenstate 2.','guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'en/light-node/, tr/light-node/ — guide Light Node complet, opérations, monitoring','guides.item4':'Standards de contribution, guide de style, processus PR','chronicle.desc':'Un projet de recherche sur les protocoles explorant les objets mémoire, l’historique des contributions, la réputation, l’héritage des connaissances, l’attestation et la mémoire à long terme de l’écosystème.','chronicle.item1':'Attestation_Authority_Model.md — autorité d’attestation et définitions des niveaux de réviseur','chronicle.item2':'Vue d’ensemble du protocole, portée de la recherche et structure du Memory Layer','chronicle.item3':'Directives de contribution et normes de recherche','academic.desc':'Notes de recherche académique sur QoreChain couvrant la sécurité post-quantique, l’infrastructure native IA, la conception multi-VM et la recherche plus large sur l’écosystème.','academic.item1':'QoreChain_Academic_Paper.md — brouillon de recherche principal','academic.item2':'bibliography.md — suivi structuré des citations et des sources','academic.item3':'Contribution à la recherche et normes académiques','footer.source':'source'},ro:{'nav.home':'acasă','nav.projects':'proiecte','nav.tools':'unelte','nav.writing':'articole','page.cmd':'ls -la proiecte/','page.title':'Proiecte open source','page.subtitle':'Instrumente de infrastructură, cunoștințe comunitare și cercetare de protocol în jurul ecosistemului QoreChain.','tools.desc':'Monitorizare RPC, stack Prometheus + Grafana, runbook-uri pentru incidente și liste de verificare. Unelte Python fără dependențe pentru operatorii QoreChain.','tools.item1':'rpc_health_monitor.py —verificator sănătate endpoint, fără dependențe','tools.item2':'prometheus-stack/ — configurație completă cu dashboard-uri Grafana','tools.item3':'node-down.md, high-latency.md — ghiduri de răspuns operator','tools.item4':'upgrade.md — pași de verificare pre/post actualizare','guides.desc':'Un hub de cungștințe bilingv QoreChain Academy pentru utilizatori, operatori de noduri, contributori, dezvoltatori și cercetători. Include ghiduri, FAQ-uri, note de depanare și resurse Eigenstate 2.','guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'en/light-node/, tr/light-node/ — ghid complet Light Node, operațiuni, monitorizare','guides.item4':'Standarde de contribuție, ghid de stil, proces PR','chronicle.desc':'Un proiect de cercetare a protocolului care explorează obiecte de memorie, istoricul contribuțiilor, reputația, moștenirea cunoștințelor, atestarea și memoria pe termen lung a ecosistemului.','chronicle.item1':'Attestation_Authority_Model.md — autoritate de atestare și definiții ale nivelurilor de recenzent','chronicle.item2':'Prezentare generală a protocolului, domeniu de cercetare și structura Memory Layer','chronicle.item3':'Ghiduri de contribuție și standarde de cercetare','academic.desc':'Note de cercetare academică despre QoreChain acoperind securitatea post-cuantică, infrastructura nativă AI, designul multi-VM și cercetarea mai largă a ecosistemului.','academic.item1':'QoreChain_Academic_Paper.md — proiect de cercetare principal','academic.item2':'bibliography.md — urmărire structurată a citărilor și surselor','academic.item3':'Contribuție la cercetare și standarde academice','footer.source':'sursă'},it:{'nav.home':'home','nav.projects':'progetti','nav.tools':'strumenti','nav.writing':'articoli','page.cmd':'ls -la progetti/','page.title':'Progetti open source','page.subtitle':'Strumenti di infrastruttura, conoscenza della comunità e ricerca di protocolli attorno all’ecosistema QoreChain.','tools.desc':'Monitoraggio RPC, stack Prometheus + Grafana, runbook per incidenti e checklist. Strumenti Python senza dipendenze per gli operatori QoreChain.','tools.item1':'rpc_health_monitor.py — verificatore di salute endpoint, senza dipendenze','tools.item2':'prometheus-stack/ — configurazione completa con dashboard Grafana','tools.item3':'node-down.md, high-latency.md — guide di risposta operatore','tools.item4':'upgrade.md — passaggi di verifica pre/post aggiornamento','guides.desc':'Un hub di conoscenza bilingue di QoreChain Academy per utenti, operatori di nodi, collaboratori, sviluppatori e ricercatori. Include guide, FAQ, note di risoluzione problemi e risorse Eigenstate 2.','guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'en/light-node/, tr/light-node/ — guida completa Light Node, operazioni, monitoraggio','guides.item4':'Standard di contribuzione, guida di stile, processo PR','chronicle.desc':'Un progetto di ricerca sul protocollo che esplora oggetti memoria, cronologia dei contributi, reputazione, eredità della conoscenza, attestazione e memoria a lungo termine dell’ecosistema.','chronicle.item1':'Attestation_Authority_Model.md — autorità di attestazione e definizioni dei livelli di revisore','chronicle.item2':'Panoramica del protocollo, ambito di ricerca e struttura del Memory Layer','chronicle.item3':'Linee guida per i contributi e standard di ricerca','academic.desc':'Note di ricerca accademica su QoreChain che coprono sicurezza post-quantistica, infrastruttura nativa AI, design multi-VM e ricerca più ampia sull’ecosistema.','academic.item1':'QoreChain_Academic_Paper.md — bozza di ricerca principale','academic.item2':'bibliography.md — tracciamento strutturato di citazioni e fonti','academic.item3':'Contributo alla ricerca e standard accademici','footer.source':'sorgente'},ar:{'nav.home':'الرئيسية','nav.projects':'المشاريع','nav.tools':'الأدوات','nav.writing':'المقالات','page.cmd':'ls -la projects/','page.title':'مشاريع مفتوحة المصدر','page.subtitle':'أدوات البنية التحتية والمعرفة المجتمعية وأزحاث البروتوكول حول نظ البيئي QoreChain البيئي.','tools.desc':'مراقبة صحة RPC، حزمة Prometheus + Grafana، كتب تشغيل الحوادث وقوائ٥م الکتت؀يق. أدوات Python بدون تبعيات لمشغقي QoreChain.','tools.item1':'rpc_health_monitor.py — مدقق صحة نقاط النهاية، بدون تبعيات','tools.item2':'prometheus-stack/ — إعداد مراقبة كامل مى لوحات Grafana','tools.item3':'node-down.md, high-latency.md — أدلة استجابة المشغل','tools.item4':'upgrade.md — خطوات التحقق قبل/بعد الترقية','guides.desc':'مركز مظرفة ثنائي اللغة لـ QoreChain Academy للمستخدمين ومشغلي العقد والمساهمين والمطورين والباحثين. يتضمن أدلة وأسئلة شائعة وملاحظات استكشاف الأخطاء وموارد Eigenstate 2.','guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'en/light-node/, tr/light-node/ — دليل Light Node الكامل والعمليات والمراقبة','guides.item4':'مظايير المساهمة، دليل الأسل الکلافوآ والذاكز PR','chronicle.desc':'مشروع بحثي في البروتوكول يستكشف كائنات الذاكرة وتاريخ المساهمات والسمعة وتوارث المعرفة والتصديق وذاكرة النظام البيئي على المدى الطويل.','chronicle.item1':'Attestation_Authority_Model.md — سلطة التصديق وتعريفات مستوى المراجع','chronicle.item2':'نظرة عامة على البروتوكول ونطاق البحث وبنية Memory Layer','chronicle.item3':'إرؼادات المساهمة ومعايير البحث','academic.desc':'ملاحظات بحثية أكاديمية حوف QoreChain تغطي الأمان ما بعد الكمي والبنية التحتية الأعل هيلال للبييئة والافطرقة الظرييية والأبحاث للبيئي والأوسع.','academic.item1':'QoreChain_Academic_Paper.md — مسودة البحث الرئيسية','academic.item2':'bibliography.md — تتبع منظم للاستؼهادات والمصادر','academic.item3':'مساهمة البحث وامميعيير الأكاديمية','footer.source':'المصدر'},zh:{'nav.home':'主页','nav.projects':'项目','nav.tools':'工具','nav.writing':'文章','page.cmd':'ls -la projects/','page.title':'开源项目','page.subtitle':'围绕 QoreChain 生态系统的基础设施工具、社区知识和协议研究。','tools.desc':'RPC 健康监控，Prometheus + Grafana 栈，事件运行手册和升级清单。为 QoreChain 运营者提供的无依赖 Python 工具。','tools.item1':'rpc_health_monitor.py — 端点健康检查器，无依赖','tools.item2':'prometheus-stack/ — 带 Grafana 仪表板的完整监控设置','tools.item3':'node-down.md, high-latency.md — 运营者响应指南','tools.item4':'upgrade.md — 升级前后验证步骤','guides.desc':'为用户、节点运营者、贡献者、开发者和研究者提供的双语 QoreChain Academy 知识库。包含指南、FAQ、故障排除说明和 Eigenstate 2 资源。','guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'en/light-node/, tr/light-node/ — 完整 Light Node 指南、运营、监控','guides.item4':'贡献标准，风格指南，PR 流程','chronicle.desc':'一个协议研究项目，探索记忆对象、贡献历史、声誉、知识继承、认证和长期生态系统记忆。','chronicle.item1':'Attestation_Authority_Model.md — 认证权威和审查者层级定义','chronicle.item2':'协议概述、研究范围和记忆层结构','chronicle.item3':'贡献指南和研究标准','academic.desc':'关于 QoreChain 的学术研究笔记，涵盖后量子安全、AI 原生基础设施、多 VM 设计和更广泛的生态系统研究。','academic.item1':'QoreChain_Academic_Paper.md — 主要研究草稿','academic.item2':'bibliography.md — 结构化引用和来源跟踪','academic.item3':'研究贡献和学术标准','footer.source':'源码'},ja:{'nav.home':'ホーム','nav.projects':'プロジェクト','nav.tools':'ツール','nav.writing':'記事','page.cmd':'ls -la projects/','page.title':'オープンソースプロジェクト','page.subtitle':'QoreChain エコシステム周辺のインフラツール、コミュニティ知識、プロトコル研究。','tools.desc':'RPCヘルス監視、Prometheus + Grafanaスタック、インシデントランブック、アップグレードチェックリスト。QoreChainオペレーター向けの依存関係なしPythonツール。','tools.item1':'rpc_health_monitor.py — 依存なしエンドポイントヘルスチェッカー','tools.item2':'prometheus-stack/ — Grafanaダッシュボード付き完全監視設定','tools.item3':'node-down.md, high-latency.md — オペレーター対応ガイド','tools.item4':'upgrade.md — アップグレード前後の検証手順','guides.desc':'ユーザー、ノードオペレーター、コントリビューター、開発者、研究者向けの二言語対応 QoreChain Academy ナレッジハブ。ガイド、FAQ、トラブルシューティングノート、Eigenstate 2 リソースを含む。','guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'en/light-node/, tr/light-node/ — 完全 Light Node ガイド、運用、モニタリング','guides.item4':'コントリビューション標準、スタイルガイド、PRプロセス','chronicle.desc':'メモリオブジェクト、貢献履歴、評判、知識の継承、証明、長期的なエコシステム記憶を探求するプロトコル研究プロジェクト。','chronicle.item1':'Attestation_Authority_Model.md — 証明権限とレビュアーティア定義','chronicle.item2':'プロトコル概要、研究範囲、Memory Layer 構造','chronicle.item3':'コントリビューションガイドラインと研究標準','academic.desc':'�}スト量子セキュリティ、AI ネイティブインフラ、マルチ VM 設計、より広いエコシステム研究をカバーする QoreChain の学術研究ノート。','academic.item1':'QoreChain_Academic_Paper.md — メイン研究草稿','academic.item2':'bibliography.md — 構造化された引用とソース追跡','academic.item3':'研究貢献と学術標準','footer.source':'ソースコード'},ko:{'nav.home':(홈','nav.projects':(프로젝트','nav.tools':'도구','nav.writing':'글','page.cmd':'ls -la projects/','page.title':'오픈소스 프로젝트','page.subtitle':'QoreChain 생태계 주변의 인프라 도구, 커뮤니티 지식 및 프로토콜 연구.','tools.desc':'RPC 상태 모니터링, Prometheus + Grafana 스택, 인시던트 런북 및 업그레이드 체크리스트. QoreChain 운영자를 위한 의존성 없는 Python 도구.','tools.item1':'rpc_health_monitor.py — 의존성 없는 엔드포인트 상태 검사기','tools.item2':'prometheus-stack/ — Grafana 대시보드가 포함된 완전한 모니터링 설정','tools.item3':'node-down.md, high-latency.md — 운영자 대응 가이드','tools.item4':'upgrade.md — 업그레이드 전후 검증 단계','guides.desc':'사용자, 노드 운영자, 기여자, 개발자 및 연구자를 위한 이중 언어 QoreChain Academy 지식 허브. 가이드, FAQ, 문제 해결 노트 및 Eigenstate 2 리소스 포함.','guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md','guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md','guides.item3':'en/light-node/, tr/light-node/ — 전체 Light Node 가이드, 운영, 모니터링','guides.item4':'기여 표준, 스타일 가이드, PR 프로세스','chronicle.desc':'메모리 객체, 기여 역사, 평판, 지식 상속, 증명 및 장기 생태계 메모리를 탐구하는 프로토콜 연구 프로젝트.','chronicle.item1':'Attestation_Authority_Model.md — 증명 권한 및 검토자 계층 정의','chronicle.item2':'프로토콜 개요, 연구 범위 및 Memory Layer 구조','chronicle.item3':'기여 가이드라인 및 연구 표준','academic.desc':'포스트 양자 보안, AI 네이티브 인프라, 멀티 VM 설계 및 더 넓은 생태계 연구를 다루는 QoreChain 학술 연구 노트.','academic.item1':'QoreChain_Academic_Paper.md — 주요 연구 초안','academic.item2':'bibliography.md — 구조화된 인용 및 출처 추적','academic.item3':'연구 기여 및 학술 표준','footer.source':'소스코드'}};
-function setLang(lang){const t=T[lang]||T.en;document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(t[k]!==undefined)el.textContent=t[k]});document.querySelectorAll('[data-i18n-html]').forEach(el=>{const k=el.getAttribute('data-i18n-html');if(t[k]!==undefined)el.innerHTML=t[k]});document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';const sel=document.getElementById('lang-select');if(sel)sel.value=lang;}
+const T={
+  en:{
+    'nav.home':'home','nav.projects':'projects','nav.tools':'tools','nav.writing':'writing',
+    'page.title':'Open source projects',
+    'page.subtitle':'Infrastructure tools, community knowledge, and protocol research around the QoreChain ecosystem.',
+    'tools.desc':'RPC health monitoring, Prometheus + Grafana stack, incident runbooks, and upgrade checklists. Dependency-free Python tools for QoreChain operators.',
+    'tools.item1':'rpc_health_monitor.py — endpoint health checker, no dependencies',
+    'tools.item2':'prometheus-stack/ — full monitoring setup with Grafana dashboards',
+    'tools.item3':'node-down.md, high-latency.md — operator response guides',
+    'tools.item4':'upgrade.md — pre/post upgrade verification steps',
+    'guides.desc':'A bilingual QoreChain Academy knowledge hub for users, node operators, contributors, developers, and researchers. Includes guides, FAQs, troubleshooting notes, and Eigenstate 2 resources.',
+    'guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md',
+    'guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md',
+    'guides.item3':'en/light-node/, tr/light-node/ — full Light Node guide, operations, monitoring',
+    'guides.item4':'Contribution standards, style guide, PR process',
+    'chronicle.desc':'A protocol research project exploring memory objects, contribution history, reputation, knowledge inheritance, attestation, and long-term ecosystem memory.',
+    'chronicle.item1':'Attestation_Authority_Model.md — attestation authority and reviewer tier definitions',
+    'chronicle.item2':'Protocol overview, research scope, and Memory Layer structure',
+    'chronicle.item3':'Contribution guidelines and research standards',
+    'academic.desc':'Academic research notes on QoreChain covering post-quantum security, AI-native infrastructure, multi-VM design, and broader ecosystem research.',
+    'academic.item1':'QoreChain_Academic_Paper.md — main research draft',
+    'academic.item2':'bibliography.md — structured citation and source tracking',
+    'academic.item3':'Research contribution and academic standards',
+    'footer.source':'source'
+  },
+  tr:{
+    'nav.home':'Ana Sayfa','nav.projects':'Projeler','nav.tools':'Araçlar','nav.writing':'Yazılar',
+    'page.title':'Açık kaynak projeler',
+    'page.subtitle':'QoreChain ekosistemi etrafında altyapı araçları, topluluk bilgisi ve protokol araştırması.',
+    'tools.desc':'RPC sağlık izleme, Prometheus + Grafana stack, incident runbook\'ları ve yükseltme kontrol listeleri. QoreChain operatörleri için bağımlılıksız Python araçları.',
+    'tools.item1':'rpc_health_monitor.py — bağımlılıksız uç nokta sağlık denetleyicisi',
+    'tools.item2':'prometheus-stack/ — Grafana dashboard\'larıyla tam izleme kurulumu',
+    'tools.item3':'node-down.md, high-latency.md — operatör müdahale rehberleri',
+    'tools.item4':'upgrade.md — yükseltme öncesi/sonrası doğrulama adımları',
+    'guides.desc':'Kullanıcılar, node operatörleri, katkıcılar, geliştiriciler ve araştD�rmacılar için iki dilli QoreChain Akademi bilgi merkezi. Rehberler, SSS, sorun giderme notları ve Eigenstate 2 kaynakları içerir.',
+    'guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md',
+    'guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md',
+    'guides.item3':'en/light-node/, tr/light-node/ — tam Light Node rehberi, operasyonlar, izleme',
+    'guides.item4':'Katkı standartları, stil kılavuzu, PR süreci',
+    'chronicle.desc':'Bellek nesneleri, katkı geçmişi, itibar, bilgi mirası, onay ve uzun vadeli ekosistem belleğini araştıran bir protokol araştırma projesi.',
+    'chronicle.item1':'Attestation_Authority_Model.md — onay otoritesi ve gözden geçirici katman tanımları',
+    'chronicle.item2':'Protokol genel bakışı, araştD�rma kapsamı ve Bellek Katmanı yapısı',
+    'chronicle.item3':'Katkı yönergeleri ve araştırma standartları',
+    'academic.desc':'Kuantum sonrası güvenlik, yapay zeka yerel altyapı, çok VM tasarımı ve daha geniş ekosistem araştırmasını kapsayan QoreChain akademik araştD�rma notları.',
+    'academic.item1':'QoreChain_Academic_Paper.md — ana araştırma taslağı',
+    'academic.item2':'bibliography.md — yapılandırılmış atıf ve kaynak takibi',
+    'academic.item3':'AraştD�rma katkısı ve akademik standartlar',
+    'footer.source':'kaynak'
+  },
+  ro:{
+    'nav.home':'Acasă','nav.projects':'Proiecte','nav.tools':'Unelte','nav.writing':'Articole',
+    'page.title':'Proiecte open source',
+    'page.subtitle':'Instrumente de infrastructură, cunoștințe comunitare și cercetare de protocol în jurul ecosistemului QoreChain.',
+    'tools.desc':'Monitorizare RPC, stack Prometheus + Grafana, runbook-uri pentru incidente și liste de verificare. Unelte Python fără dependențe pentru operatorii QoreChain.',
+    'tools.item1':'rpc_health_monitor.py — verificator sănătate endpoint, fără dependențe',
+    'tools.item2':'prometheus-stack/ — configurație completă cu dashboard-uri Grafana',
+    'tools.item3':'node-down.md, high-latency.md — ghiduri de răspuns operator',
+    'tools.item4':'upgrade.md — pași de verificare pre/post actualizare',
+    'guides.desc':'Un hub de cunhștințe bilingv QoreChain Academy pentru utilizatori, operatori de noduri, contributori, dezvoltatori și cercetători. Include ghiduri, FAQ-uri, note de depanare și resurse Eigenstate 2.',
+    'guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md',
+    'guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md',
+    'guides.item3':'en/light-node/, tr/light-node/ — ghid complet Light Node, operațiuni, monitorizare',
+    'guides.item4':'Standarde de contribuție, ghid de stil, proces PR',
+    'chronicle.desc':'Un proiect de cercetare a protocolului care explorează obiecte de memorie, istoricul contribuțiilor, reputația, moștenirea cunhștințelor, atestarea și memoria pe termen lung a ecosistemului.',
+    'chronicle.item1':'Attestation_Authority_Model.md — autoritate de atestare și definiții ale nivelurilor de recenzent',
+    'chronicle.item2':'Prezentare generală a protocolului, domeniu de cercetare și structura Memory Layer',
+    'chronicle.item3':'Ghiduri de contribuție și standarde de cercetare',
+    'academic.desc':'Note de cercetare academică despre QoreChain acoperind securitatea post-cuantică, infrastructura nativă AI, designul multi-VM și cercetarea mai largă a ecosistemului.',
+    'academic.item1':'QoreChain_Academic_Paper.md — proiect de cercetare principal',
+    'academic.item2':'bibliography.md — urmărire structurat�� a citărilor și surselor',
+    'academic.item3':'Contribuție la cercetare și standarde academice',
+    'footer.source':'sursă'
+  },
+  de:{
+    'nav.home':'Start','nav.projects':'Projekte','nav.tools':'Werkzeuge','nav.writing':'Artikel',
+    'page.title':'Open-Source-Projekte',
+    'page.subtitle':'Infrastrukturwerkzeuge, Community-Wissen und Protokollforschung rund um das QoreChain-Ökosystem.',
+    'tools.desc':'RPC-Überwachung, Prometheus + Grafana Stack, Incident-Runbooks und Upgrade-Checklisten. Abhängigkeitsfreie Python-Tools für QoreChain-Operatoren.',
+    'tools.item1':'rpc_health_monitor.py — Endpunkt-Gesundheitsprüfer, keine Abhängigkeiten',
+    'tools.item2':'prometheus-stack/ — vollständiges Monitoring mit Grafana-Dashboards',
+    'tools.item3':'node-down.md, high-latency.md — Operator-Reaktionsleitfäden',
+    'tools.item4':'upgrade.md — Vor/Nach-Upgrade-Verifizierungsschritte',
+    'guides.desc':'Ein zweisprachiger QoreChain Academy Wissensspeicher für Nutzer, Node-Operatoren, Beitragende, Entwickler und Forscher. Enthält Anleitungen, FAQs, Fehlerbehebungsnotizen und Eigenstate 2 Ressourcen.',
+    'guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md',
+    'guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md',
+    'guides.item3':'en/light-node/, tr/light-node/ — vollständiger Light Node Guide, Betrieb, Monitoring',
+    'guides.item4':'Beitragsstandards, Stilhandbuch, PR-Prozess',
+    'chronicle.desc':'Ein Protokollforschungsprojekt, das Speicherobjekte, Beitragshistorie, Reputation, Wissensvererbung, Attestierung und langfristiges Ökosystemgedächtnis untersucht.',
+    'chronicle.item1':'Attestation_Authority_Model.md — Attestierungsautorität und Reviewer-Tier-Definitionen',
+    'chronicle.item2':'Protokollübersicht, Forschungsumfang und Memory Layer Struktur',
+    'chronicle.item3':'Beitragsrichtlinien und Forschungsstandards',
+    'academic.desc':'Akademische Forschungsnotizen zu QoreChain, die Post-Quanten-Sicherheit, KI-native Infrastruktur, Multi-VM-Design und breitere Ökosystemforschung abdecken.',
+    'academic.item1':'QoreChain_Academic_Paper.md — Hauptforschungsentwurf',
+    'academic.item2':'bibliography.md — strukturierte Zitation und Quellenverfolgung',
+    'academic.item3':'Forschungsbeitrag und akademische Standards',
+    'footer.source':'Quellcode'
+  },
+  it:{
+    'nav.home':'Home','nav.projects':'Progetti','nav.tools':'Strumenti','nav.writing':'Articoli',
+    'page.title':'Progetti open source',
+    'page.subtitle':'Strumenti di infrastruttura, conoscenza della comunità e ricerca di protocolli attorno all\'ecosistema QoreChain.',
+    'tools.desc':'Monitoraggio RPC, stack Prometheus + Grafana, runbook per incidenti e checklist. Strumenti Python senza dipendenze per gli operatori QoreChain.',
+    'tools.item1':'rpc_health_monitor.py — verificatore di salute endpoint, senza dipendenze',
+    'tools.item2':'prometheus-stack/ — configurazione completa con dashboard Grafana',
+    'tools.item3':'node-down.md, high-latency.md — guide di risposta operatore',
+    'tools.item4':'upgrade.md — passaggi di verifica pre/post aggiornamento',
+    'guides.desc':'Un hub di conoscenza bilingue di QoreChain Academy per utenti, operatori di nodi, collaboratori, sviluppatori e ricercatori. Include guide, FAQ, note di risoluzione problemi e risorse Eigenstate 2.',
+    'guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md',
+    'guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md',
+    'guides.item3':'en/light-node/, tr/light-node/ — guida completa Light Node, operazioni, monitoraggio',
+    'guides.item4':'Standard di contribuzione, guida di stile, processo PR',
+    'chronicle.desc':'Un progetto di ricerca sul protocollo che esplora oggetti memoria, cronologia dei contributi, reputazione, eredità della conoscenza, attestazione e memoria a lungo termine dell\'ecosistema.',
+    'chronicle.item1':'Attestation_Authority_Model.md — autorità di attestazione e definizioni dei livelli di revisore',
+    'chronicle.item2':'Panoramica del protocollo, ambito di ricerca e struttura del Memory Layer',
+    'chronicle.item3':'Linee guida per i contributi e standard di ricerca',
+    'academic.desc':'Note di ricerca accademica su QoreChain che coprono sicurezza post-quantistica, infrastruttura nativa AI, design multi-VM e ricerca più ampia sull\'ecosistema.',
+    'academic.item1':'QoreChain_Academic_Paper.md — bozza di ricerca principale',
+    'academic.item2':'bibliography.md — tracciamento strutturato di citazioni e fonti',
+    'academic.item3':'Contributo alla ricerca e standard accademici',
+    'footer.source':'sorgente'
+  },
+  es:{
+    'nav.home':'Inicio','nav.projects':'Proyectos','nav.tools':'Herramientas','nav.writing':'Artículos',
+    'page.title':'Proyectos de código abierto',
+    'page.subtitle':'Herramientas de infraestructura, conocimiento comunitario e investigación de protocolos en torno al ecosistema QoreChain.',
+    'tools.desc':'Monitoreo de salud RPC, stack Prometheus + Grafana, runbooks de incidentes y listas de verificación. Herramientas Python sin dependencias para operadores QoreChain.',
+    'tools.item1':'rpc_health_monitor.py — verificador de salud de endpoints, sin dependencias',
+    'tools.item2':'prometheus-stack/ — configuración completa de monitoreo con dashboards Grafana',
+    'tools.item3':'node-down.md, high-latency.md — guías de respuesta para operadores',
+    'tools.item4':'upgrade.md — pasos de verificación pre/post actualización',
+    'guides.desc':'Un centro de conocimiento bilingüe de QoreChain Academy para usuarios, operadores de nodos, colaboradores, desarrolladores e investigadores. Incluye guías, FAQs, notas de solución de problemas y recursos de Eigenstate 2.',
+    'guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md',
+    'guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md',
+    'guides.item3':'en/light-node/, tr/light-node/ — guía completa Light Node, operaciones, monitoreo',
+    'guides.item4':'Estándares de contribución, guía de estilo, proceso de PR',
+    'chronicle.desc':'Un proyecto de investigación de protocolo que explora objetos de memoria, historial de contribuciones, reputación, herencia del conocimiento, atestación y memoria a largo plazo del ecosistema.',
+    'chronicle.item1':'Attestation_Authority_Model.md — autoridad de atestación y definiciones de nivel de revisor',
+    'chronicle.item2':'Descripción general del protocolo, alcance de investigación y estructura de Memory Layer',
+    'chronicle.item3':'Directrices de contribución y estándares de investigación',
+    'academic.desc':'Notas de investigación académica sobre QoreChain que cubren seguridad post-cuántica, infraestructura nativa de IA, diseño multi-VM e investigación más amplia del ecosistema.',
+    'academic.item1':'QoreChain_Academic_Paper.md — borrador de investigación principal',
+    'academic.item2':'bibliography.md — seguimiento estructurado de citas y fuentes',
+    'academic.item3':'Contribución de investigación y estándares académicos',
+    'footer.source':'código fuente'
+  },
+  ar:{
+    'nav.home':'الرئيسية','nav.projects':'المشاريع','nav.tools':'الأدوات','nav.writing':'المقالات',
+    'page.title':'مشاريع مفتوحة المصدر',
+    'page.subtitle':'أدوات البنية التحتية والمعرفة المجتمعية وأبحاث البروتوكول حول نظام QoreChain البيئي.',
+    'tools.desc':'مراقبة صحة RPC، حزمة Prometheus + Grafana، كتب تشغيل الحوادث وقوائم التحقق. أدوات Python بدون تبعيات لمشغلي QoreChain.',
+    'tools.item1':'rpc_health_monitor.py — مدقق صحة نقاط النهاية، بدون تبعيات',
+    'tools.item2':'prometheus-stack/ — إعداد مراقبة كامل مع لوحات Grafana',
+    'tools.item3':'node-down.md, high-latency.md — أدلة استضابة المشغل',
+    'tools.item4':'upgrade.md — خطوات التحقق قبل/بعد الترقية',
+    'guides.desc':'مركز معرفة ثنائي اللغة لـ QoreChain Academy للمستخدمين ومشغلي العقد والمساهمين والمطورين والباحثين. يتضمن أدلة وأسئلة شائعة وملاحظات استكشاف الأخطاء وموارد Eigenstate 2.',
+    'guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md',
+    'guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md',
+    'guides.item3':'en/light-node/, tr/light-node/ — دليل Light Node الكامل والعمليات والمراقبة',
+    'guides.item4':'معايير المساهمة، دلىل الأسلوب، عملية PR',
+    'chronicle.desc':'مشروع بحثي في البروتوكول يستكشف كائنات الذاكرة وتاريخ المساهمات والسمعة وتوارث المعرفة والتصديق وذاكرة النظام البيئي على المدى الطويل.',
+    'chronicle.item1':'Attestation_Authority_Model.md — سلطة التصديق وتعريفات مستوى المراجع',
+    'chronicle.item2':'نظرة عامة على البروتوكول ونطاق البحث وبنية Memory Layer',
+    'chronicle.item3':'إرشادات المساهمة ومعايير البحث',
+    'academic.desc':'ملاحظات بحثية أكاديمية حول QoreChain تغطي الأمان ما بعد الكمي والبنية التحتية الأصلية للذكاء الاعطناعي وتصميم متعدد الآلات الافتر الاتراٺيت وأبحاث النظام البيئي البيئي الأوسع.',
+    'academic.item1':'QoreChain_Academic_Paper.md — مسودة البحث الرئيسية',
+    'academic.item2':'bibliography.md — تتبع منظ للاستشهادات والمصادر',
+    'academic.item3':'❫"المعايير الأكاديمية',
+    'footer.source':'المصدر'
+  },
+  zh:{
+    'nav.home':'主页','nav.projects':'项目','nav.tools':'工具','nav.writing':'文章',
+    'page.title':'开源项目',
+    'page.subtitle':'围绕 QoreChain 生态系统的基础设施工具、社区知识和协议研究。',
+    'tools.desc':'RPC 健康监控，Prometheus + Grafana 栈，事件运行手册和升级清单。为 QoreChain 运营者提供的无依赖 Python 工具。',
+    'tools.item1':'rpc_health_monitor.py — 端点健康检查器，无依赖',
+    'tools.item2':'prometheus-stack/ — 带 Grafana 仪表板的完整监控设置',
+    'tools.item3':'node-down.md, high-latency.md — 运营者响应指南',
+    'tools.item4':'upgrade.md — 升级前后验证步骤',
+    'guides.desc':'为用户、节点运营者、贡献者、开发者和研究者提供的双语 QoreChain Academy 知识库。包含指南、FAQ、故障排除说明和 Eigenstate 2 资源。',
+    'guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md',
+    'guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md',
+    'guides.item3':'en/light-node/, tr/light-node/ — 完整 Light Node 指南、运营、监控',
+    'guides.item4':'贡献标准，风格指南，PR 流程',
+    'chronicle.desc':'一个协议研究项目，探索记忆对象、贡献历史、声誉、知识继承、认证和长期生态系统记忆。',
+    'chronicle.item1':'Attestation_Authority_Model.md — 认证权威和审查者层级定义',
+    'chronicle.item2':'协议概述、研究范围和记忆层结构',
+    'chronicle.item3':'贡献指南和研究标准',
+    'academic.desc':'关于 QoreChain 的学术研究笔记，涵盖后量子安全、AI 原生基础设施、多 VM 设计和更广泛的生态系统研究。',
+    'academic.item1':'QoreChain_Academic_Paper.md — 主要研究草稿',
+    'academic.item2':'bibliography.md — 结构化引用和来源跟踪',
+    'academic.item3':'研究贡献和学术标准',
+    'footer.source':'源码'
+  },
+  ja:{
+    'nav.home':'ホーム','nav.projects':'プロジェクト','nav.tools':'ツール','nav.writing':'記事',
+    'page.title':'オープンソースプロジェクト',
+    'page.subtitle':'QoreChain エコシステム周辺のインフラツール、コミュニティ知識、プロトコル研究。',
+    'tools.desc':'RPCヘルス監視、Prometheus + Grafanaスタック、インシデントランブック、アップグレードチェックリスト。QoreChainオペレーター向けの依存関係なしPythonツール。',
+    'tools.item1':'rpc_health_monitor.py — 依存なしエンドポイントヘルスチェッカー',
+    'tools.item2':'prometheus-stack/ — Grafanaダッシュボード付き完全監視設定',
+    'tools.item3':'node-down.md, high-latency.md — オペレーター対応ガイド',
+    'tools.item4':'upgrade.md — アップグレード前後の検証手順',
+    'guides.desc':'ユーザー、ノードオペレーター、コントリビューター、開発者、研究者向けの二言語対応 QoreChain Academy ナレッジハブ。ガイド、FAQ、トラブルシューティングノート、Eigenstate 2 リソースを含む。',
+    'guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md',
+    'guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md',
+    'guides.item3':'en/light-node/, tr/light-node/ — 完全 Light Node ガイド、運用、モニタリング',
+    'guides.item4':'コントリビューション標準、スタイルガイド、PRプロセス',
+    'chronicle.desc':'メモリオブジェクト、貢献履歴、評判、知識の継承、証明、長期的なエコシステム記憶を探求するプロトコル研究プロジェクト。',
+    'chronicle.item1':'Attestation_Authority_Model.md — 証明権限とレビュアーティア定義',
+    'chronicle.item2':'プロトコル概要、研究範囲、Memory Layer 構造',
+    'chronicle.item3':'コントリビューションガイドラインと研究標準',
+    'academic.desc':'ポスト量子セキュリティ、AI ネイティブインフラ、マルチ VM 設計、より広えエコシステム研究をカバーする QoreChain の学術研究ノート。',
+    'academic.item1':'QoreChain_Academic_Paper.md — メイン研究草稿',
+    'academic.item2':'bibliography.md — 構造化された引用とソース追跡',
+    'academic.item3':'研究貢献と学術標準',
+    'footer.source':'ソースコード'
+  },
+  ko:{
+    'nav.home':'홈','nav.projects':'프로젝트','nav.tools':'도구','nav.writing':'글',
+    'page.title':'오픈소스 프로젝트',
+    'page.subtitle':'QoreChain 생태계 주변의 인프라 도구, 커뮤니티 지식 및 프로토콜 연구.',
+    'tools.desc':'RPC 상태 모니터링, Prometheus + Grafana 스택, 인시던트 런북 및 업그레이드 체크리스트. QoreChain 운영자를 위한 의존성 없는 Python 도구.',
+    'tools.item1':'rpc_health_monitor.py — 의존성 없는 엔드포인트 상태 검사기',
+    'tools.item2':'prometheus-stack/ — Grafana 대시보드가 포함된 완전한 모니터링 설정',
+    'tools.item3':'node-down.md, high-latency.md — 운영자 대응 가이드',
+    'tools.item4':'upgrade.md — 업그레이드 전후 검증 단계',
+    'guides.desc':'사용자, 노드 운영자, 기여자, 개발자 및 연구자를 위한 이중 언어 QoreChain Academy 지식 허브. 가이드, FAQ, 문제 해결 노트 및 Eigenstate 2 리소스 포함.',
+    'guides.item1':'getting-started.md, faq.md, troubleshooting.md, eigenstate-2-on-chain.md',
+    'guides.item2':'baslangic-rehberi.md, sss.md, sorun-giderme.md, terimler-sozlugu.md',
+    'guides.item3':'en/light-node/, tr/light-node/ — 전체 Light Node 가이드, 운영, 모니터링',
+    'guides.item4':'기여 표준, 스타일 가이드, PR 프로세스',
+    'chronicle.desc':'메모리 객체, 기여 역사, 평판, 지식 상속, 증명 및 장기 생태계 메모리를 탐구하는 프로토콜 연구 프로젝트.',
+    'chronicle.item1':'Attestation_Authority_Model.md — 증명 권한 및 검토자 계층 정의',
+    'chronicle.item2':'프로토콜 개요, 연구 범위 및 Memory Layer 구조',
+    'chronicle.item3':'기여 가이드라인 및 연구 표준',
+    'academic.desc':'포스트 양자 보안, AI 네이티브 인프라, 멀티 VM 설계 및 더 넓은 생태계 연구를 다루는 QoreChain 학술 연구 노트.',
+    'academic.item1':'QoreChain_Academic_Paper.md — 주요 연구 초안',
+    'academic.item2':'bibliography.md — 구조화된 인용 및 출처 추적',
+    'academic.item3':'연구 기여 및 학술 표준',
+    'footer.source':'소스코드'
+  }
+};
+
+function setLang(lang){
+  const t=T[lang]||T.en;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(t[k]!==undefined)el.textContent=t[k];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{
+    const k=el.getAttribute('data-i18n-html');
+    if(t[k]!==undefined)el.innerHTML=t[k];
+  });
+  document.documentElement.lang=lang;
+  document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+  const sel=document.getElementById('lang-select');
+  if(sel)sel.value=lang;
+  try{localStorage.setItem('lang',lang);}catch(e){}
+}
+setLang(localStorage.getItem('lang')||'en');
+
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js').catch(()=>{});
+}
+
+const burger=document.getElementById('hamburger');
+const mobileMenu=document.getElementById('mobile-menu');
+if(burger&&mobileMenu){
+  burger.addEventListener('click',()=>{
+    const open=mobileMenu.classList.toggle('open');
+    burger.classList.toggle('open',open);
+    burger.setAttribute('aria-expanded',open);
+  });
+  document.addEventListener('click',e=>{
+    if(!burger.contains(e.target)&&!mobileMenu.contains(e.target)){
+      mobileMenu.classList.remove('open');
+      burger.classList.remove('open');
+      burger.setAttribute('aria-expanded','false');
+    }
+  });
+}
+
+const scrollBtn=document.getElementById('scroll-top');
+if(scrollBtn){
+  window.addEventListener('scroll',()=>{
+    scrollBtn.classList.toggle('visible',window.scrollY>300);
+  },{passive:true});
+}
+
+document.querySelectorAll('a[href]').forEach(a=>{
+  const href=a.getAttribute('href');
+  if(!href||href.startsWith('http')||href.startsWith('#')||href.startsWith('mailto')||a.target==='_blank')return;
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    document.body.style.animation='pageOut .2s ease forwards';
+    setTimeout(()=>{window.location.href=href;},190);
+  });
+});
+document.body.style.animation='';
+
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='none';}
+  });
+},{threshold:0.1});
+document.querySelectorAll('.repo-detail').forEach(el=>{
+  el.style.opacity='0';el.style.transform='translateY(16px)';
+  el.style.transition='opacity .5s ease, transform .5s ease, border-color .2s, box-shadow .2s';
+  obs.observe(el);
+});
 </script>
 </body>
 </html>
