@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#07111f" />
+  <title>QoreChain Node Dashboard</title>
+  <style>
+    :root{--bg:#06101d;--panel:#0b1827cc;--panel2:#0d1d2f;--line:#17304a;--text:#f4f7fb;--muted:#8fa4b8;--gold:#d5b463;--green:#53d18b;--amber:#e4b95f;--red:#ff6b78;--blue:#5aa7ff}
+    *{box-sizing:border-box}html,body{margin:0;background:radial-gradient(circle at 70% 8%,#11304f 0,#081724 30%,#050b12 72%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100%}
+    body{padding:28px}.wrap{max-width:1320px;margin:0 auto}.top{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:22px}.eyebrow{display:flex;align-items:center;gap:8px;color:#b8c9d8;font-size:12px;letter-spacing:.14em;text-transform:uppercase}.dot{width:9px;height:9px;border-radius:999px;background:var(--muted);box-shadow:0 0 0 4px #ffffff08}.dot.online{background:var(--green);box-shadow:0 0 18px #53d18b88}.dot.offline{background:var(--red);box-shadow:0 0 18px #ff6b7888}h1{font-size:34px;line-height:1.1;margin:7px 0 0}.badge{border:1px solid var(--line);background:#0b1724aa;padding:10px 14px;border-radius:14px;color:#c9d7e3;font-size:13px}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}.card{background:linear-gradient(180deg,#102238cc,#091521d9);border:1px solid #1b3855;border-radius:22px;box-shadow:inset 0 1px 0 #ffffff0a,0 18px 45px #00000033}.hero{grid-column:span 12;padding:22px}.heroRow{display:grid;grid-template-columns:1.25fr 1fr;gap:18px;align-items:stretch}.statusBox{padding:24px;border-radius:18px;background:linear-gradient(135deg,#10283d,#0a1725);border:1px solid #1a3a57}.statusTitle{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}.statusMain{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:38px;font-weight:760}.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.fact{padding:16px;border-radius:16px;background:#091727;border:1px solid #18324d}.label{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}.value{font-size:22px;font-weight:700;margin-top:7px}.sub{font-size:12px;color:var(--muted);margin-top:4px}.gauges{grid-column:span 12;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.gaugeCard{padding:18px}.gauge{--p:0;position:relative;width:156px;height:92px;margin:10px auto 4px;overflow:hidden}.gauge::before{content:"";position:absolute;left:8px;right:8px;bottom:-70px;height:140px;border-radius:50%;border:14px solid #193047;border-top-color:var(--green);border-right-color:var(--amber);border-left-color:#31516e;transform:rotate(0deg)}.needle{position:absolute;left:50%;bottom:9px;width:62px;height:3px;border-radius:999px;background:linear-gradient(90deg,var(--gold),#fff0bb);transform-origin:0 50%;transform:rotate(calc(-180deg + (var(--p) * 1.8deg)));transition:transform .9s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 12px #d5b46380}.needle::after{content:"";position:absolute;left:-6px;top:-5px;width:12px;height:12px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px #d5b46388}.gaugeValue{text-align:center;font-size:22px;font-weight:750}.gaugeSub{text-align:center;color:var(--muted);font-size:12px;margin-top:4px}.metric{grid-column:span 4;padding:18px}.server{grid-column:span 12;padding:20px}.bars{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.barItem{padding:12px 0}.barTrack{height:8px;border-radius:99px;background:#152a3d;overflow:hidden;margin-top:8px}.barFill{height:100%;width:0;background:linear-gradient(90deg,#4e9dff,#63d49a);transition:width .7s ease}.footer{margin-top:16px;color:#667d91;font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.offlineMsg{display:none;margin-top:12px;color:#ff9aa4;font-size:13px}.offlineMsg.show{display:block}@media(max-width:980px){.heroRow{grid-template-columns:1fr}.gauges{grid-template-columns:repeat(2,1fr)}.metric{grid-column:span 6}}@media(max-width:640px){body{padding:16px}.top{flex-direction:column}.gauges{grid-template-columns:1fr}.facts{grid-template-columns:1fr}.metric{grid-column:span 12}.bars{grid-template-columns:1fr}.statusMain{font-size:30px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="top">
+      <div><div class="eyebrow"><span id="topDot" class="dot"></span>QoreChain · Mainnet</div><h1>Personal Node Dashboard</h1></div>
+      <div class="badge" id="lastUpdated">Waiting for telemetry…</div>
+    </div>
+
+    <section class="grid">
+      <div class="card hero">
+        <div class="heroRow">
+          <div class="statusBox">
+            <div class="statusTitle">Node Status</div>
+            <div class="statusMain"><span id="statusDot" class="dot"></span><span id="status">Unavailable</span></div>
+            <div id="offlineMsg" class="offlineMsg show">Telemetry endpoint is not configured yet.</div>
+          </div>
+          <div class="facts">
+            <div class="fact"><div class="label">Sync Height</div><div id="height" class="value">—</div></div>
+            <div class="fact"><div class="label">Peers</div><div id="peers" class="value">—</div></div>
+            <div class="fact"><div class="label">Uptime</div><div id="uptime" class="value">—</div></div>
+            <div class="fact"><div class="label">Version</div><div id="version" class="value">—</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gauges">
+        <div class="card gaugeCard"><div class="label">Sync Health</div><div class="gauge"><span id="syncNeedle" class="needle"></span></div><div id="syncValue" class="gaugeValue">Unavailable</div><div id="syncSub" class="gaugeSub">No data</div></div>
+        <div class="card gaugeCard"><div class="label">Peer Activity</div><div class="gauge"><span id="peerNeedle" class="needle"></span></div><div id="peerValue" class="gaugeValue">Unavailable</div><div class="gaugeSub">Real peer count</div></div>
+        <div class="card gaugeCard"><div class="label">Uptime Continuity</div><div class="gauge"><span id="uptimeNeedle" class="needle"></span></div><div id="uptimeGaugeValue" class="gaugeValue">Unavailable</div><div class="gaugeSub">Service uptime</div></div>
+        <div class="card gaugeCard"><div class="label">Block Freshness</div><div class="gauge"><span id="blockNeedle" class="needle"></span></div><div id="blockValue" class="gaugeValue">Unavailable</div><div class="gaugeSub">Latest block age</div></div>
+      </div>
+
+      <div class="card metric"><div class="label">Network</div><div id="network" class="value">—</div></div>
+      <div class="card metric"><div class="label">Blocks Behind</div><div id="behind" class="value">—</div></div>
+      <div class="card metric"><div class="label">Sync State</div><div id="syncState" class="value">—</div></div>
+
+      <div class="card server">
+        <div class="label">Server Health</div>
+        <div class="bars">
+          <div class="barItem"><div>CPU <strong id="cpu">—</strong></div><div class="barTrack"><div id="cpuBar" class="barFill"></div></div></div>
+          <div class="barItem"><div>Memory <strong id="memory">—</strong></div><div class="barTrack"><div id="memoryBar" class="barFill"></div></div></div>
+          <div class="barItem"><div>Disk <strong id="disk">—</strong></div><div class="barTrack"><div id="diskBar" class="barFill"></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer"><span>Dashboard UI hosted on GitHub Pages</span><span>Raw RPC remains private</span></div>
+  </main>
+
+<script>
+  // Set this to the future authenticated HTTPS gateway. Do not use 127.0.0.1:8421 or raw 26657 here.
+  const TELEMETRY_ENDPOINT = '';
+  const POLL_MS = 15000;
+  let timer = null;
+  let lastTelemetry = null;
+
+  const $ = id => document.getElementById(id);
+  const setNeedle = (id,p) => $(id).style.setProperty('--p', Math.max(0,Math.min(100,p)));
+  const pct = n => Number.isFinite(Number(n)) ? `${Number(n).toFixed(1)}%` : '—';
+  const ageSeconds = iso => Math.max(0, Math.floor((Date.now()-Date.parse(iso))/1000));
+  const ageText = s => s < 60 ? `${s}s ago` : s < 3600 ? `${Math.floor(s/60)}m ago` : `${Math.floor(s/3600)}h ago`;
+
+  function offline(message='Telemetry unavailable'){
+    $('status').textContent='Offline'; $('statusDot').className='dot offline'; $('topDot').className='dot offline';
+    $('offlineMsg').textContent=message; $('offlineMsg').classList.add('show');
+    ['height','peers','uptime','version','network','behind','syncState','cpu','memory','disk'].forEach(id=>$(id).textContent='—');
+    $('syncValue').textContent=$('peerValue').textContent=$('uptimeGaugeValue').textContent=$('blockValue').textContent='Unavailable';
+    $('syncSub').textContent='No data'; ['syncNeedle','peerNeedle','uptimeNeedle','blockNeedle'].forEach(id=>setNeedle(id,0));
+    ['cpuBar','memoryBar','diskBar'].forEach(id=>$(id).style.width='0%'); $('lastUpdated').textContent='Telemetry unavailable';
+  }
+
+  function render(d){
+    lastTelemetry=d; const n=d.node||{}, s=d.server||{}; const synced=d.status==='synced' && n.catching_up===false;
+    $('status').textContent=synced?'Online · Synced':'Degraded'; $('statusDot').className='dot online'; $('topDot').className='dot online'; $('offlineMsg').classList.remove('show');
+    $('height').textContent=Number(n.local_height||0).toLocaleString(); $('peers').textContent=n.peers ?? '—'; $('uptime').textContent=s.uptime ?? '—'; $('version').textContent=n.version ?? '—';
+    $('network').textContent=n.network ?? '—'; $('behind').textContent=n.blocks_behind ?? '—'; $('syncState').textContent=n.catching_up===false?'Synced':n.catching_up===true?'Catching Up':'Unknown';
+    const behind=Number(n.blocks_behind||0); const syncScore=!synced?35:behind===0?100:behind<=5?82:behind<=25?58:25; setNeedle('syncNeedle',syncScore); $('syncValue').textContent=synced?'Healthy':'Degraded'; $('syncSub').textContent=`${behind} blocks behind`;
+    const peers=Number(n.peers||0); setNeedle('peerNeedle',Math.min(100,(peers/8)*100)); $('peerValue').textContent=String(peers);
+    const up=Number(s.uptime_seconds||0); const upScore=up<3600?20:up<21600?45:up<86400?72:100; setNeedle('uptimeNeedle',upScore); $('uptimeGaugeValue').textContent=s.uptime||'—';
+    const age=Number.isFinite(Date.parse(n.latest_block_time))?ageSeconds(n.latest_block_time):999999; const fresh=age<=10?100:age<=30?78:age<=60?52:20; setNeedle('blockNeedle',fresh); $('blockValue').textContent=age<999999?ageText(age):'Unavailable';
+    [['cpu',s.cpu_usage_percent],['memory',s.memory_usage_percent],['disk',s.disk_usage_percent]].forEach(([id,v])=>{$(id).textContent=pct(v); $(id+'Bar').style.width=`${Math.max(0,Math.min(100,Number(v)||0))}%`;});
+    $('lastUpdated').textContent=`Updated ${new Date().toLocaleTimeString()}`;
+  }
+
+  async function poll(){
+    if(!TELEMETRY_ENDPOINT){offline('Telemetry endpoint is not configured yet.');return;}
+    try{const r=await fetch(TELEMETRY_ENDPOINT,{cache:'no-store',credentials:'omit'});if(!r.ok)throw new Error('bad response');const d=await r.json();if(!d||!d.node||!d.server)throw new Error('bad schema');render(d);}catch{offline();}
+  }
+  function start(){clearInterval(timer);poll();timer=setInterval(()=>{if(!document.hidden)poll();},POLL_MS)}
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)poll()});
+  start();
+</script>
+</body>
+</html>
