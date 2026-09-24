@@ -1,7 +1,7 @@
 // satoshi-Qore Service Worker
 // Offline-first strategy with stale-while-revalidate for pages
 
-const CACHE_NAME = 'sqore-v1';
+const CACHE_NAME = 'sqore-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -46,7 +46,15 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Stale-while-revalidate for HTML pages
+  // Node dashboard must always prefer the live page so telemetry fixes are not held by an old cached HTML shell.
+  if (url.pathname === '/node/' || url.pathname === '/node/index.html') {
+    event.respondWith(
+      fetch(event.request, { cache: 'no-store' }).catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Stale-while-revalidate for other HTML pages
   event.respondWith(
     caches.open(CACHE_NAME).then(async (cache) => {
       const cached = await cache.match(event.request);
